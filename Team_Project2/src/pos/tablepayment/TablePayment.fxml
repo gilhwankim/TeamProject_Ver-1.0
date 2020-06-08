@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.text.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.layout.HBox?>
+
+<HBox xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <VBox layoutX="27.0" layoutY="30.0">
+         <children>
+            <Label id="tableNo" alignment="CENTER" prefHeight="30.0" prefWidth="420.0" text="No">
+               <font>
+                  <Font size="18.0" />
+               </font>
+            </Label>
+            <TableView id="tableView" minHeight="530.0" minWidth="420.0">
+              <columns>
+                <TableColumn prefWidth="167.0" text="메뉴명" />
+                <TableColumn minWidth="0.0" prefWidth="101.0" text="단가" />
+                  <TableColumn prefWidth="53.0" text="수량" />
+                  <TableColumn prefWidth="97.0" text="금액" />
+              </columns>
+            </TableView>
+            <HBox>
+               <children>
+                  <Button id="plus" prefHeight="30.0" prefWidth="30.0" text="+" />
+                  <Button id="minus" prefHeight="30.0" prefWidth="30.0" text="-" />
+                  <Label id="payTotal" alignment="CENTER_RIGHT" prefHeight="30.0" prefWidth="358.0" text="총금액">
+                     <padding>
+                        <Insets left="10.0" right="10.0" />
+                     </padding>
+                  </Label>
+               </children>
+            </HBox>
+            <HBox prefHeight="100.0" prefWidth="200.0">
+               <children>
+                  <Button id="payCash" minHeight="150.0" minWidth="140.0" mnemonicParsing="false" text="현금" />
+                  <Button id="payCard" minHeight="150.0" minWidth="140.0" mnemonicParsing="false" text="카드" />
+                  <Button id="payOrder" minHeight="150.0" minWidth="140.0" mnemonicParsing="false" text="주문" />
+               </children>
+            </HBox>
+         </children>
+      </VBox>
+      <VBox>
+         <children>
+            <TabPane id="tp" minHeight="720.0" minWidth="548.0" tabClosingPolicy="UNAVAILABLE">
+              <tabs>
+                
+              </tabs>
+               <padding>
+                  <Insets left="5.0" />
+               </padding>
+               <VBox.margin>
+                  <Insets />
+               </VBox.margin>
+            </TabPane>
+         </children>
+      </VBox>
+   </children>
+   <padding>
+      <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+   </padding>
+</HBox>

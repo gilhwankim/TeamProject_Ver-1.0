@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<VBox prefHeight="210.0" prefWidth="220.0" spacing="5.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <ImageView id="menuImg" fitHeight="140.0" fitWidth="210.0" pickOnBounds="true">
+      </ImageView>
+      <Label id="labelName" prefHeight="35.0" prefWidth="200.0" text="메뉴명">
+         <font>
+            <Font size="20.0" />
+         </font>
+         <VBox.margin>
+            <Insets left="5.0" right="5.0" />
+         </VBox.margin>
+      </Label>
+      <Label id="labelPrice" alignment="CENTER_RIGHT" contentDisplay="RIGHT" prefHeight="30.0" prefWidth="200.0" text="가격">
+         <VBox.margin>
+            <Insets left="5.0" right="5.0" />
+         </VBox.margin>
+      </Label>
+   </children>
+   <padding>
+      <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+   </padding>
+</VBox>

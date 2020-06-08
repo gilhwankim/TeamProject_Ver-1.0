@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<HBox xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <Label id="name" text="메뉴이름" />
+      <HBox alignment="TOP_RIGHT" HBox.hgrow="ALWAYS">
+         <children>
+            <Label id="cnt" text="개수" HBox.hgrow="ALWAYS" />
+         </children>
+      </HBox>
+   </children>
+</HBox>

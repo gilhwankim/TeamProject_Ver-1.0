@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.image.*?>
+<?import javafx.scene.control.*?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<BorderPane fx:id="bp" prefHeight="500.0" prefWidth="500.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="pos.javafile.PosController">
+   <center>
+      <GridPane fx:id="gp" BorderPane.alignment="CENTER">
+         <columnConstraints>
+            <ColumnConstraints hgrow="ALWAYS" />
+            <ColumnConstraints hgrow="ALWAYS" />
+            <ColumnConstraints hgrow="ALWAYS" />
+         </columnConstraints>
+         <rowConstraints>
+            <RowConstraints vgrow="ALWAYS" />
+            <RowConstraints vgrow="ALWAYS" />
+            <RowConstraints vgrow="ALWAYS" />
+         </rowConstraints>
+      </GridPane>
+   </center>
+   <right>
+      <VBox BorderPane.alignment="CENTER">
+         <children>
+            <TextField fx:id="cal" maxWidth="40.0" text="5" />
+            <TextField fx:id="row" maxWidth="40.0" text="5" />
+            <Button fx:id="apply" focusTraversable="false" mnemonicParsing="false" text="적용" />
+            <Button fx:id="home" focusTraversable="false" mnemonicParsing="false" text="홈" />
+            <Button fx:id="menuSetting" focusTraversable="false" mnemonicParsing="false" text="메뉴관리" />
+            <Button fx:id="reset" focusTraversable="false" mnemonicParsing="false" text="초기화" />
+            <Button focusTraversable="false" mnemonicParsing="false" text="Button" />
+            <Button focusTraversable="false" mnemonicParsing="false" text="Button" />
+            <Button focusTraversable="false" mnemonicParsing="false" text="Button" />
+            <Button focusTraversable="false" mnemonicParsing="false" text="Button" />
+         </children>
+      </VBox>
+   </right>
+</BorderPane>
