@@ -82,11 +82,11 @@ public class PosController implements Initializable{
       if(seatData != null) {
          tables = seatData.getTables();
          setGridPane(seatData.getCol(), seatData.getRow());
+         tablet_list.clear();
          for(int i=0; i<tables.size(); i++) {
             Tablet t = new Tablet(); 
             t.TableNo = tables.get(i).getTableId();
             t.om_list = tables.get(i).getOm_list();
-            System.out.println(tables.get(i).getOm_list());
             tablet_list.add(t);
          }
       }else {
@@ -150,7 +150,7 @@ public class PosController implements Initializable{
             }
          }
          save();
-//         System.out.println(tablet_list.size());
+         tablet_list.clear();
          for(int i=0; i<tables.size(); i++) {
             Tablet t = new Tablet(); 
             t.TableNo = tables.get(i).getTableId();
@@ -235,7 +235,7 @@ public class PosController implements Initializable{
                //번호,구매리스트 보내기
                   for(Tablet t : tablet_list) {
                      if(t.TableNo.equals(v.getId())) {
-                        tpc.show(t.TableNo, t);         
+                        tpc.show(t.TableNo, t);      
                      }
                   }
          }   
@@ -432,13 +432,12 @@ public class PosController implements Initializable{
                List<String> no_list = new ArrayList<>();
                for(TableData td : tables) {
                   String tmp = td.getTableId();
-                  if(!tmp.equals("기본"))
+                  if(tmp.indexOf("기본") == -1)
                      no_list.add(tmp);
                }
                data.setNo_list(no_list);
                oos = new ObjectOutputStream(s.getOutputStream());
                send(data);
-               tablet_list.add(this);
                listen();
             }else {
                return;
@@ -501,14 +500,17 @@ public class PosController implements Initializable{
                      boolean f = false;
                      for(Tablet t : tablet_list) {
                         if(t.TableNo.equals(this.TableNo)){
-                           t = this;
+                           int idx = tablet_list.indexOf(t);
+                           tablet_list.remove(t);
+                           tablet_list.add(idx, this);
                            f = true;
                            break;
                         }
                      }
                      if(!f) {
                         Tablet t = tablet_list.get(Integer.parseInt(this.TableNo));
-                        t = this;
+                        tablet_list.remove(t);
+                        tablet_list.add(Integer.parseInt(this.TableNo), this);
                      }
 //                     //태블릿 리스트에 자신추가
 //                     tablet_list.add(this);
@@ -524,7 +526,7 @@ public class PosController implements Initializable{
          }else if(data.getStatus().equals("주문")) {
             if(this.om_list.size() == 0) {
                this.om_list = data.getOm_list();
-               System.out.println("요기??");
+   
             }else {
                boolean flag = false;
                for(MenuData om1 : data.getOm_list()) {
@@ -544,6 +546,7 @@ public class PosController implements Initializable{
                }
             }
             makeNode(data.getTableNo());
+            
          }
          save();
       }
@@ -617,9 +620,14 @@ public class PosController implements Initializable{
          }
          for(Tablet t : tablet_list) {
             if(t.TableNo.equals(TableNo)) {
+               int idx = tablet_list.indexOf(t);
+               Tablet t1 = new Tablet();
+               t1 = t;
                tablet_list.remove(t);
+               tablet_list.add(idx, t1);
                break;
             }
+               
          }
       }
    }

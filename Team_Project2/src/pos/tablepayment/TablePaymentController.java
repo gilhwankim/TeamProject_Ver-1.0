@@ -191,7 +191,6 @@ public class TablePaymentController  {
    public void priceUpdate() {
      Platform.runLater( () -> {
        this.tableView.refresh();
-        int total = 0;
         if(this.t != null) {
             for(MenuData om : this.t.om_list) {
                total += om.getTotal();

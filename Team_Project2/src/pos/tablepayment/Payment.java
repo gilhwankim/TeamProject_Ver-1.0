@@ -45,7 +45,7 @@ public class Payment {
           cashExitBtn.setOnMouseClicked(e-> dialog.close());
           
           //청구금액
-          amountOfPayment = (TextField)cashPayment.lookup("#billingAmount");
+          amountOfPayment = (TextField)cashPayment.lookup("#amountOfPayment");
           amountOfPayment.setText(df.format(total) + "원");
             
        } catch (IOException e) { e.printStackTrace(); }

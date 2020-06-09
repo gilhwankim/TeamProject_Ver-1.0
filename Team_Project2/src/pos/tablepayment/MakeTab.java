@@ -130,11 +130,11 @@ public class MakeTab {
                //클라이언트의 오더메뉴리스트가 비었을 때는 새로운 오더메뉴를 만들어서 리스트에 추가한다.
                if(tablet.om_list.size() == 0) {
             	   System.out.println("@@@@@@메뉴 비었을 때");
-                  MenuData orderMenu = m;
-                  orderMenu.setCnt(1);
-                  tablet.om_list.add(orderMenu);
-                  ol.add(orderMenu);
-                  addOrderBoardList(orderMenu);
+                  MenuData orderMenu1 = m;
+                  orderMenu1.setCnt(1);
+                  tablet.om_list.add(orderMenu1);
+                  ol.add(orderMenu1);
+//                  addOrderBoardList(orderMenu);
                   
                   flag = true;
                   return;
@@ -144,8 +144,7 @@ public class MakeTab {
                   for(MenuData om : tablet.om_list) {
                      //있으면 그 오더메뉴의 개수 +1
                      if(Name.equals(om.getName())) {
-                       addOrderBoardList(om);
-                       System.out.println(om.getCnt());
+//                       addOrderBoardList(om);
                         om.setCnt(om.getCnt() + 1);
                         for(MenuData omm : ol) {
                            if(omm.getName().equals(om.getName())) {
@@ -165,7 +164,7 @@ public class MakeTab {
                     orderMenu.setCnt(1);
                      tablet.om_list.add(orderMenu);
                      ol.add(orderMenu);
-                     addOrderBoardList(orderMenu);
+//                     addOrderBoardList(orderMenu);
                   }
                   flag = false;
                   return;
