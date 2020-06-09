@@ -406,7 +406,7 @@ public class PosController implements Initializable{
    }
    
    public class Tablet{
-      private String TableNo;
+      public String TableNo;
       private Socket s;
       private ObjectInputStream ois;
       private ObjectOutputStream oos;
@@ -551,7 +551,7 @@ public class PosController implements Initializable{
          save();
       }
       
-      private void makeNode(String no) {
+      public void makeNode(String no) {
          System.out.println("메이크노드");
          try {
             int total = 0;

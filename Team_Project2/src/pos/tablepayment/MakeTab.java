@@ -117,10 +117,6 @@ public class MakeTab {
       
       private void nodeAction(ActionEvent event, String Name) {
          flag = false;
-         for(MenuData m : menuList) {
-            System.out.println("@@메뉴리스트 메뉴: "+m.getName() + ", " + m.getCnt());
-         }
-         
          //총 메뉴 리스트에서
          for(MenuData m : menuList) {
             //내가 클릭한 버튼의 이름과 같은 메뉴가 있는지 찾는다.(유효성 검사)
@@ -128,49 +124,32 @@ public class MakeTab {
             	System.out.println("####이름: " + m.getName()+",,," + m.getCnt());
             	
                //클라이언트의 오더메뉴리스트가 비었을 때는 새로운 오더메뉴를 만들어서 리스트에 추가한다.
-               if(tablet.om_list.size() == 0) {
-            	   System.out.println("@@@@@@메뉴 비었을 때");
-                  MenuData orderMenu1 = m;
-                  orderMenu1.setCnt(1);
-                  tablet.om_list.add(orderMenu1);
-                  ol.add(orderMenu1);
-//                  addOrderBoardList(orderMenu);
-                  
-                  flag = true;
-                  return;
-               }else {
-                  System.out.println("@@@@@메뉴 안비었을 때");
-                  //비어있지 않을 때는 내가 클릭한 버튼의 이름과 같은게 있는지 찾는다.
-                  for(MenuData om : tablet.om_list) {
-                     //있으면 그 오더메뉴의 개수 +1
-                     if(Name.equals(om.getName())) {
-//                       addOrderBoardList(om);
-                        om.setCnt(om.getCnt() + 1);
-                        for(MenuData omm : ol) {
-                           if(omm.getName().equals(om.getName())) {
-                              omm = om;
-                              tv.refresh();
-                              break;
-                           }
-                        }
-                        flag = true;
-                        return;
-                     }
-                  }
-                  //다 찾아봤는데 없을 때는 새로운 오더메뉴를 만들어 넣는다.
-                  if(flag == false) {
-                	  System.out.println("@@@@@@안비었긴 한데 새로 넣을 때");
-                    MenuData orderMenu = m;
-                    orderMenu.setCnt(1);
-                     tablet.om_list.add(orderMenu);
-                     ol.add(orderMenu);
-//                     addOrderBoardList(orderMenu);
-                  }
-                  flag = false;
-                  return;
-               }
+            	if(Name.equals(m.getName())) {
+                    for(MenuData om : ol) {
+                       if(m.getName().equals(om.getName())) {
+                          om.setCnt(om.getCnt() + 1);
+                          flag = true;
+                          tv.refresh();
+                          tablet.makeNode(tablet.TableNo);
+                          break;
+                       }
+                    }
+                    if(!flag) {
+                       MenuData md = new MenuData();
+                       md.setCategory(m.getCategory());
+                       md.setName(m.getName());
+                       md.setImage(m.getImage());
+                       md.setNo(m.getNo());
+                       md.setPrice(m.getPrice());
+                       md.setCnt(1);
+                       ol.add(md);
+                       tv.refresh();
+                       tablet.makeNode(tablet.TableNo);
+                    }
+                    break;
+            	}
             }
-         }
+         }            
       }
       //주방으로 보낼 리스트에 메뉴 추가
       public void addOrderBoardList(MenuData orderMenu) {
