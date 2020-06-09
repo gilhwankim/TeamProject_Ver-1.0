@@ -4,9 +4,9 @@ import java.util.Iterator;
 import java.util.List;
 
 import data.MenuData;
-import data.OrderMenuData;
 import javafx.application.Platform;
 import javafx.beans.property.SimpleIntegerProperty;
+import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -27,11 +27,12 @@ public class TablePaymentController  {
    private Stage stage;            //TablePayment 창 스테이지 
    private List<MenuData> menu_list;   //서버에서 넘어오는 전체 메뉴 리스트
    
-   private TableView<OrderMenuData> tableView;   //TablePayment 창의 테이블 뷰
+   private ObservableList<MenuData> obb = FXCollections.observableArrayList();
+   private TableView<MenuData> tableView;   //TablePayment 창의 테이블 뷰
    private Label payTotal;               //합계 금액
    private Label tNo; //해당 테이블 번호
    
-   private Tablet c;                  //각 테이블에서 넘어오는 클라이언트
+   private Tablet t;                  //각 테이블에서 넘어오는 클라이언트
    
    private TabPane tp;
    
@@ -49,7 +50,7 @@ public class TablePaymentController  {
       try {
          stage = new Stage();
          hbox = FXMLLoader.load(getClass().getResource("TablePayment.fxml"));
-         tableView = (TableView<OrderMenuData>)hbox.lookup("#tableView");
+         tableView = (TableView<MenuData>)hbox.lookup("#tableView");
          tp = (TabPane)hbox.lookup("#tp");
          Button plus = (Button)hbox.lookup("#plus");
          Button minus = (Button)hbox.lookup("#minus");
@@ -60,18 +61,18 @@ public class TablePaymentController  {
          payTotal = (Label)hbox.lookup("#payTotal");
 
          //테이블뷰 칼럼 매칭
-         TableColumn<OrderMenuData, ?> a = tableView.getColumns().get(0);
+         TableColumn<MenuData, ?> a = tableView.getColumns().get(0);
          a.setCellValueFactory(new PropertyValueFactory<>("name"));
          
-         TableColumn<OrderMenuData, ?> b = tableView.getColumns().get(1);
+         TableColumn<MenuData, ?> b = tableView.getColumns().get(1);
          b.setCellValueFactory(new PropertyValueFactory<>("price"));
          
-         TableColumn<OrderMenuData, ?> c = tableView.getColumns().get(2);
+         TableColumn<MenuData, ?> c = tableView.getColumns().get(2);
          c.setCellValueFactory(new PropertyValueFactory<>("cnt"));
          
          //OrderMenuData.java 가보면 getTotal() 은 getPrice * getCnt 되있어서
          //total 금액 부를 때 마다 단가 * 개수 계산하여서 받는다.
-         TableColumn<OrderMenuData, ?> d = tableView.getColumns().get(3);
+         TableColumn<MenuData, ?> d = tableView.getColumns().get(3);
          d.setCellValueFactory(new PropertyValueFactory<>("total"));
          
          //버튼들의 동작
@@ -88,12 +89,12 @@ public class TablePaymentController  {
          
          //주문하기 누르면 주방으로 새로 주문한 오더 전송
          order.setOnAction(e->{
-        	 //포스기기(TablePayment 화면)에서 주문한 메뉴 리스트
-        	 List<OrderMenuData> list = mt.getOrderBoardList(e);
-        	 if(list.size()!=0) {
-        		 //@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@주방에 OrderMenuData 객체 던져@@@@@@@@@@@@@@@
-        		 mt.listClearplz();
-        	 }
+            //포스기기(TablePayment 화면)에서 주문한 메뉴 리스트
+            List<MenuData> list = mt.getOrderBoardList(e);
+            if(list.size()!=0) {
+               //@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@주방에 OrderMenuData 객체 던져@@@@@@@@@@@@@@@
+               mt.listClearplz();
+            }
          });
          tp = mt.make(menu_list, tp);
          
@@ -106,24 +107,24 @@ public class TablePaymentController  {
       }
    }
    //서버 클라이언트 단에서 show(...)를 부르면 태블릿와 태블릿의 테이블뷰를 받는다.
-   public void show(int tableNo, Tablet tablet) {
-	   this.c = tablet;
-	   ObservableList<OrderMenuData> obb = FXCollections.observableArrayList();
-	   for(OrderMenuData omd : c.om_list) {
-		   obb.add(omd);
-	   }
+   public void show(String tableNo, Tablet tablet) {
+      this.t = tablet;
+      obb.clear();
+      for(MenuData omd : t.om_list) {
+         obb.add(omd);
+      }
       //TablePayment 창의 테이블 뷰에 클라리언트의 테이블뷰를 입력시킨다.
       this.tableView.setItems(obb);
       //TablePayment 창의 총 합계금액 업데이트
       this.priceUpdate();
       
       //TablePayment에 해당 테이블 번호를 불러온다.
-      tNo.textProperty().bind(new SimpleIntegerProperty(tableNo).asString());
+      tNo.textProperty().bind(new SimpleStringProperty(tableNo));
       System.out.println("테이블" + tableNo);
       
       //stage.show()
       Platform.runLater( () -> stage.show());
-      mt.setOrderListAndTable(c);
+      mt.setOrderListAndTable(tableView, obb, t);
    }
    
    private void plusAction(ActionEvent event) {
@@ -138,7 +139,7 @@ public class TablePaymentController  {
       String name = tableView.getSelectionModel().getSelectedItem().getName();
       
       //오더메뉴 리스트에서 선택된 메뉴를 찾는다.
-      for(OrderMenuData om : c.om_list) {
+      for(MenuData om : t.om_list) {
          if(om.getName().equals(name)) {
             //찾아서 개수 +1
             om.setCnt(om.getCnt() + 1);
@@ -162,16 +163,16 @@ public class TablePaymentController  {
       
       //메뉴 개수가 1일때 '-' 버튼을 누르면 0이되고 삭제해야하므로
       //예외발생을 대비해 Iterator를 쓴다. 
-      Iterator<OrderMenuData> it = c.om_list.iterator();
+      Iterator<MenuData> it = t.om_list.iterator();
       while(it.hasNext()) {
-         OrderMenuData om = it.next();
+         MenuData om = it.next();
          if(om.getName().equals(name)) {
             if(om.getCnt() > 1) {
                //개수가 2 이상일 때는 개수 -1
                om.setCnt(om.getCnt() - 1);
             }else {
                //1 이하일 때는 삭제한다.
-               c.om_list.remove(om);
+               t.om_list.remove(om);
             }
             System.out.println(om.getCnt());
             
@@ -190,8 +191,8 @@ public class TablePaymentController  {
      Platform.runLater( () -> {
        this.tableView.refresh();
         int total = 0;
-        if(this.c != null) {
-            for(OrderMenuData om : this.c.om_list) {
+        if(this.t != null) {
+            for(MenuData om : this.t.om_list) {
                total += om.getTotal();
             }
              payTotal.setText("총금액 : " + total + "원");

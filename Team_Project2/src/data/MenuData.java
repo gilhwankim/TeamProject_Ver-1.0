@@ -10,6 +10,9 @@ public class MenuData implements Serializable{
 	String name;
 	int price;
 	byte[] image;
+	int cnt;
+	int total;
+	
 	
 	public int getNo() {
 		return No;
@@ -41,7 +44,16 @@ public class MenuData implements Serializable{
 	public void setImage(byte[] image) {
 		this.image = image;
 	}
-	
+	public int getCnt() {
+		return cnt;
+	}
+	public void setCnt(int cnt) {
+		this.cnt = cnt;
+	}
+	public int getTotal() {
+		this.total = price*cnt;
+		return total;
+	}
 	
 	
 }

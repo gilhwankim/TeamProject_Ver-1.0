@@ -11,7 +11,7 @@ public class Data implements Serializable{
 	List<String> no_list;
 	MenuData md;
 	List<MenuData> m_list;
-	List<OrderMenuData> om_list;
+	List<MenuData> om_list;
 	
 	
 	public String getStatus() {
@@ -44,10 +44,10 @@ public class Data implements Serializable{
 	public void setM_list(List<MenuData> m_list) {
 		this.m_list = m_list;
 	}
-	public List<OrderMenuData> getOm_list() {
+	public List<MenuData> getOm_list() {
 		return om_list;
 	}
-	public void setOm_list(List<OrderMenuData> om_list) {
+	public void setOm_list(List<MenuData> om_list) {
 		this.om_list = om_list;
 	}
 	

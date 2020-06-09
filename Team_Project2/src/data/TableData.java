@@ -12,7 +12,7 @@ public class TableData implements Serializable{
 	String tableNo;
 	String color;
 	boolean disable;
-	List<OrderMenuData> om_list;
+	List<MenuData> om_list;
 	String total;
 	
 	//Color.web(레드 or 그린)
@@ -48,10 +48,10 @@ public class TableData implements Serializable{
 	public void setDisable(boolean disable) {
 		this.disable = disable;
 	}
-	public List<OrderMenuData> getOm_list() {
+	public List<MenuData> getOm_list() {
 		return om_list;
 	}
-	public void setOm_list(List<OrderMenuData> om_list) {
+	public void setOm_list(List<MenuData> om_list) {
 		this.om_list = om_list;
 	}
 	public String getTotal() {
