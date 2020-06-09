@@ -127,14 +127,14 @@ public class MakeTab {
             if(m.getName().equals(Name)) {
                //클라이언트의 오더메뉴리스트가 비었을 때는 새로운 오더메뉴를 만들어서 리스트에 추가한다.
                if(tablet.om_list.size() == 0) {
-                  //@@@@@@@@@@@@@@@@@@@@@
                   MenuData orderMenu = m;
                   orderMenu.setCnt(1);
+                  System.out.println("@@@@오더메뉴 겟 카운트: " + orderMenu.getCnt());
                   tablet.om_list.add(orderMenu);
                   ol.add(orderMenu);
                   addOrderBoardList(orderMenu);
                   System.out.println("요기요기");
-                 
+                  flag = true;
                   return;
                }else {
                   System.out.println("여기여기");
