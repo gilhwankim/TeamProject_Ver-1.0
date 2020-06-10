@@ -148,21 +148,31 @@ public class DAO {
 	}
 	
 	private void menuUpdate(MenuData md) {
-		String sql = "update menutbl set category = ?, mname = ?, mprice = ?, mimage = ? where menuNum = ?;";
-		PreparedStatement pstmt = null;
-		try {
-			pstmt = conn.prepareStatement(sql);
-			pstmt.setString(1, md.getCategory());
-			pstmt.setString(2, md.getName());
-			pstmt.setInt(3, md.getPrice());
-			pstmt.setBytes(4, md.getImage());
-			pstmt.setInt(5, md.getNo());
-			pstmt.executeUpdate();
-			System.out.println("데이터 수정 성공");
-		} catch (Exception e) {
-			e.printStackTrace();
-			System.out.println("데이터 수정 실패");
-		}
-	}
+	      System.out.println(md.getImage());
+	      String sql = "";
+	      if(md.getImage() != null) {
+	         sql = "update menutbl set category = ?, mname = ?, mprice = ?, mimage = ? where menuNum = ?;";
+	      }else {
+	         sql = "update menutbl set category = ?, mname = ?, mprice = ? where menuNum = ?;";
+	      }
+	      PreparedStatement pstmt = null;
+	      try {
+	         pstmt = conn.prepareStatement(sql);
+	         pstmt.setString(1, md.getCategory());
+	         pstmt.setString(2, md.getName());
+	         pstmt.setInt(3, md.getPrice());
+	         if(md.getImage() != null) {
+	            pstmt.setBytes(4, md.getImage());
+	            pstmt.setInt(5, md.getNo());
+	         }else {
+	            pstmt.setInt(4, md.getNo());
+	         }
+	         pstmt.executeUpdate();
+	         System.out.println("데이터 수정 성공");
+	      } catch (Exception e) {
+	         e.printStackTrace();
+	         System.out.println("데이터 수정 실패");
+	      }
+	   }
 	
 }

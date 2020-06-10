@@ -129,8 +129,6 @@ public class MakeTab {
                        if(m.getName().equals(om.getName())) {
                           om.setCnt(om.getCnt() + 1);
                           flag = true;
-                          tv.refresh();
-                          tablet.makeNode(tablet.TableNo);
                           break;
                        }
                     }
@@ -142,14 +140,14 @@ public class MakeTab {
                        md.setNo(m.getNo());
                        md.setPrice(m.getPrice());
                        md.setCnt(1);
+                       tablet.om_list.add(md);
                        ol.add(md);
-                       tv.refresh();
-                       tablet.makeNode(tablet.TableNo);
                     }
                     break;
             	}
             }
          }            
+         tablet.makeNode(tablet.TableNo);
       }
       //주방으로 보낼 리스트에 메뉴 추가
       public void addOrderBoardList(MenuData orderMenu) {

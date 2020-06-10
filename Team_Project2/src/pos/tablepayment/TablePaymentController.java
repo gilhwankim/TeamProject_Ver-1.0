@@ -145,50 +145,46 @@ public class TablePaymentController  {
             //찾아서 개수 +1
             om.setCnt(om.getCnt() + 1);
             System.out.println(om.getCnt());
-            //각 테이블뷰를 업데이트한다.
-            tableView.refresh();
             //pos기 각 테이블의 합계금액 업데이트
-//            c.priceUpdate();@@@@@@@@@@@@@@@@@@@@@
+            t.makeNode(t.TableNo);
             break;
          }
       }
    }
    
    private void minusAction(ActionEvent event) {
-      if(tableView.getItems().size() == 0)
-         return;
-      if(tableView.getSelectionModel().getSelectedItem() == null)
-         return;
-      
-      String name = tableView.getSelectionModel().getSelectedItem().getName();
-      
-      //메뉴 개수가 1일때 '-' 버튼을 누르면 0이되고 삭제해야하므로
-      //예외발생을 대비해 Iterator를 쓴다. 
-      Iterator<MenuData> it = t.om_list.iterator();
-      while(it.hasNext()) {
-         MenuData om = it.next();
-         if(om.getName().equals(name)) {
-            if(om.getCnt() > 1) {
-               //개수가 2 이상일 때는 개수 -1
-               om.setCnt(om.getCnt() - 1);
-            }else {
-               //1 이하일 때는 삭제한다.
-               t.om_list.remove(om);
-            }
-            System.out.println(om.getCnt());
-            
-            //각 테이블뷰를 업데이트한다.
-            tableView.refresh();
-            //pos기 각 테이블의 합계금액 업데이트
-//            c.priceUpdate();@@@@@@@@@@@@@@@@@
-            
-            break;
-         }
-      }
-   }
+	      if(tableView.getItems().size() == 0)
+	         return;
+	      if(tableView.getSelectionModel().getSelectedItem() == null)
+	         return;
+	      
+	      String name = tableView.getSelectionModel().getSelectedItem().getName();
+	      
+	      //메뉴 개수가 1일때 '-' 버튼을 누르면 0이되고 삭제해야하므로
+	      //예외발생을 대비해 Iterator를 쓴다. 
+	      Iterator<MenuData> it = t.om_list.iterator();
+	      while(it.hasNext()) {
+	       MenuData om = it.next();
+	         if(om.getName().equals(name)) {
+	            if(om.getCnt() > 1) {
+	               //개수가 2 이상일 때는 개수 -1
+	               om.setCnt(om.getCnt() - 1);
+	            }else {
+	               //1 이하일 때는 삭제한다.
+	               t.om_list.remove(om);
+	               obb.remove(om);
+	            }
+	            //pos기 각 테이블의 합계금액 업데이트
+	            t.makeNode(t.TableNo);
+	            break;
+	         }   
+	         
+	      }
+	   }
    
    //합계금액을 다시 계산해서 업데이트한다.
    public void priceUpdate() {
+	   total=0;
      Platform.runLater( () -> {
        this.tableView.refresh();
         if(this.t != null) {

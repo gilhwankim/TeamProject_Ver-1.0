@@ -233,6 +233,7 @@ public class MenuController  {
 			try {
 				file = fc.showOpenDialog(serverStage);
 				imageView.setImage(new Image(new FileInputStream(file)));
+				fc.setInitialDirectory(file.getParentFile());
 				System.out.println(file.toString());
 			} catch (Exception e) {
 				return;
@@ -260,7 +261,13 @@ public class MenuController  {
 				file = new File(".");
 				String projectPath = file.getAbsolutePath().substring(0, file.getAbsolutePath().length()-1);
 				file = new File(projectPath + "src\\pos\\images\\noImage.jpg");
-			}
+			}else {
+	            if(file == null) {
+	                menuSave(num, category, name, price, null);
+	                clear();
+	                return;
+	             }
+	          }
 			fis = new FileInputStream(file);
 			b = new byte[fis.available()]; 
 			fis.read(b);
@@ -290,7 +297,6 @@ public class MenuController  {
 		tfPrice.clear();
 		imageView.setImage(null);
 		file = null;
-		comboBox.getSelectionModel().selectFirst();
 	}
 	
 	//DB에 카테고리 정보 저장
@@ -326,6 +332,4 @@ public class MenuController  {
 			m_ol.add(mc);
 		}
 	}
-	
-	
 }

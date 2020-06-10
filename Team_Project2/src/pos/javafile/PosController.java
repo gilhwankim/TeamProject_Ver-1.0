@@ -25,6 +25,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.SelectionMode;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.MouseButton;
@@ -567,10 +568,14 @@ public class PosController implements Initializable{
                   
                   for(MenuData om : om_list) {
                      HBox hbox = makeNode.menuMake(om.getName(), om.getCnt());
-                     Platform.runLater( () -> lv_ol.add(hbox));
+                     //¿Ü n°³
+                     Platform.runLater( () -> {lv_ol.add(hbox);
+                    		 System.out.println("@@@@@"+lv_ol.size());
+                    		 });
+                     
+                     
                      total += om.getTotal();
                   }
-                  lv.refresh();
                   int t = total;
                   Platform.runLater( () -> price.setText(t + ""));
                   break;
@@ -588,6 +593,7 @@ public class PosController implements Initializable{
          }catch (Exception e) {
             e.printStackTrace();
          }
+         tpc.priceUpdate();
       }
       
       private void sinho() {

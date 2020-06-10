@@ -142,13 +142,10 @@ public class TabletController implements Initializable{
             tableSet(data.getNo_list());
          }
          
-         
       } catch (Exception e) {
          System.out.println("서버가 안열렸다~~");
          e.printStackTrace();
       }
-      
-      
    }
    
    private void showTablet() {
@@ -161,7 +158,6 @@ public class TabletController implements Initializable{
        tp = mt.make(m_list, tp);
        addMenu();
        orderTableSetting();
-      
    }
    
    private void addMenu(){
@@ -338,5 +334,4 @@ public class TabletController implements Initializable{
          e.printStackTrace();
       }
    }
-   
 }
