@@ -175,4 +175,50 @@ public class DAO {
 	      }
 	   }
 	
+	public void inTmpSave(int total) {
+		
+		  String sql = "insert into tmpSave values(?);";
+	      PreparedStatement pstmt = null;
+	      try {
+	         pstmt = conn.prepareStatement(sql);
+	         pstmt.setInt(1, total);
+	         pstmt.executeUpdate();
+	         System.out.println("데이터 수정 성공");
+	      } catch (Exception e) {
+	         e.printStackTrace();
+	         System.out.println("데이터 수정 실패");
+	      }
+	}
+	
+	public void delTmpSave() {
+		
+		  String sql = "delete from tmpSave;";
+	      PreparedStatement pstmt = null;
+	      try {
+	         pstmt = conn.prepareStatement(sql);
+	         pstmt.executeUpdate();
+	         System.out.println("데이터 수정 성공");
+	      } catch (Exception e) {
+	         e.printStackTrace();
+	         System.out.println("데이터 수정 실패");
+	      }
+	}
+	
+	public int selTmpSave() {
+		String sql = "select * from tmpSave;";
+		PreparedStatement pstmt = null;
+		int tmp = 0;
+		try {
+    		pstmt = conn.prepareStatement(sql);
+            ResultSet rs = pstmt.executeQuery();
+            while(rs.next()) {
+            	tmp=(rs.getInt(1));
+            }
+            System.out.println("데이터 로드 성공!");
+        } catch (Exception e) {            
+           System.out.println("데이터 로드 실패!");
+        }
+		return tmp; 
+	}
+	
 }
