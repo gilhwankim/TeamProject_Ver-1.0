@@ -11,6 +11,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -19,7 +20,9 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.HBox;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 import pos.javafile.PosController.Tablet;
 
 public class TablePaymentController  {
@@ -32,11 +35,8 @@ public class TablePaymentController  {
    private Label payTotal;               //합계 금액
    private Label tNo; //해당 테이블 번호
    private int total = 0; //총금액
-   
    private Tablet t;                  //각 테이블에서 넘어오는 클라이언트
-   
    private TabPane tp;
-   
    private  MakeTab mt;
    private Payment p; //결제화면
    
@@ -82,8 +82,8 @@ public class TablePaymentController  {
          
          //버튼 동작시 결제화면
          p = new Payment();
-         payCash.setOnAction((event)-> p.cashShow(total)); //현금결제 화면 버튼
-         payCard.setOnAction((event)-> p.cardShow(total)); //카드결제 화면 버튼
+         payCash.setOnAction((event)->p.cashShow(total)); //현금결제 화면 버튼
+//       payCard.setOnAction((event)-> p.cardShow(total)); //카드결제 화면 버튼
          
          //TabPane 셋팅
          mt = new MakeTab();

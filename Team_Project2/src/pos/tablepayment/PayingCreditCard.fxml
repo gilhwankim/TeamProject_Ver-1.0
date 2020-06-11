@@ -40,7 +40,7 @@
             <HBox alignment="CENTER_LEFT" prefHeight="30.0" spacing="5.0">
                <children>
                   <Label prefWidth="70.0" text="결제금액" />
-                  <TextField id="amountOfPayment" alignment="CENTER_RIGHT" prefHeight="175.0" />
+                  <TextField fx:id="amountOfPayment2" alignment="CENTER_RIGHT" prefHeight="175.0" />
                </children>
             </HBox>
             <HBox alignment="CENTER_LEFT" prefHeight="30.0" spacing="5.0">

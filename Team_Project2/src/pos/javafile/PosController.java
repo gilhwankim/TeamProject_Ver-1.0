@@ -25,7 +25,6 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.control.SelectionMode;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.MouseButton;
@@ -392,12 +391,6 @@ public class PosController implements Initializable{
             if(threadPool != null && !threadPool.isShutdown()) {
                threadPool.shutdown();
             }
-//            for(Client c : client_list) {
-//               c.socket.close();
-//            }
-//            if(kitchen != null && !kitchen.socket.isClosed()) {
-//               kitchen.socket.close();
-//            }
             Platform.exit();
             System.exit(0);
          }catch (Exception e) {
@@ -426,23 +419,8 @@ public class PosController implements Initializable{
       private void welcome() {
          try {
             ois = new ObjectInputStream(s.getInputStream());
-            data = (Data)ois.readObject();   //안녕
-            System.out.println(data.getStatus());
-            if(data.getStatus().equals("안녕")) {
-               //현재 설정한 좌석 번호들을 넘겨주기
-               List<String> no_list = new ArrayList<>();
-               for(TableData td : tables) {
-                  String tmp = td.getTableId();
-                  if(tmp.indexOf("기본") == -1)
-                     no_list.add(tmp);
-               }
-               data.setNo_list(no_list);
-               oos = new ObjectOutputStream(s.getOutputStream());
-               send(data);
-               listen();
-            }else {
-               return;
-            }
+            oos = new ObjectOutputStream(s.getOutputStream());
+            listen();
          } catch (Exception e) {
             e.printStackTrace();
             
@@ -459,7 +437,10 @@ public class PosController implements Initializable{
          } catch (Exception e) {
             e.printStackTrace();
          }
+         
       }
+      
+      
       
       private void listen() {
          Runnable runnable = new Runnable() {
@@ -482,7 +463,20 @@ public class PosController implements Initializable{
       private void msgProcess(Data data) {
          System.out.println(data.getStatus());
          
-         if(data.getStatus().equals("번호정했다")) {
+         if(data.getStatus().equals("안녕") || data.getStatus().equals("좌석새로고침")) {
+            //현재 설정한 좌석 번호들을 넘겨주기
+            List<String> no_list = new ArrayList<>();
+            for(TableData td : tables) {
+              if(!td.isDisable() && td.getColor().equals("0xff0000ff")) {
+                 String tmp = td.getTableId();
+                 if(tmp.indexOf("기본") == -1)
+                    no_list.add(tmp);
+              }
+            }
+            data.setNo_list(no_list);
+            send(data);
+            return;
+         }else if(data.getStatus().equals("번호정했다")) {
             for(TableData td : tables) {
                if(td.getTableId().equals(data.getTableNo())) {
                   //빨간불, 초록불 체크
@@ -553,7 +547,7 @@ public class PosController implements Initializable{
       }
       
       public void makeNode(String no) {
-         System.out.println("메이크노드");
+    	 tpc.priceUpdate();
          try {
             int total = 0;
             for(int i=0; i<gp.getChildren().size(); i++) {
@@ -567,15 +561,13 @@ public class PosController implements Initializable{
                   Platform.runLater( () -> lv_ol.clear());
                   
                   for(MenuData om : om_list) {
+                     System.out.println("여기");
+                     System.out.println(om.getName());
                      HBox hbox = makeNode.menuMake(om.getName(), om.getCnt());
-                     //외 n개
-                     Platform.runLater( () -> {lv_ol.add(hbox);
-                    		 System.out.println("@@@@@"+lv_ol.size());
-                    		 });
-                     
-                     
+                     Platform.runLater( () -> lv_ol.add(hbox));
                      total += om.getTotal();
                   }
+                  lv.refresh();
                   int t = total;
                   Platform.runLater( () -> price.setText(t + ""));
                   break;
@@ -593,7 +585,6 @@ public class PosController implements Initializable{
          }catch (Exception e) {
             e.printStackTrace();
          }
-         tpc.priceUpdate();
       }
       
       private void sinho() {

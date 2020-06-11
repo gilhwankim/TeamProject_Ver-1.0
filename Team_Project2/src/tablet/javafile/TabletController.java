@@ -7,6 +7,7 @@ import java.net.InetSocketAddress;
 import java.net.Socket;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.ResourceBundle;
 
@@ -19,9 +20,9 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
-import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.Tab;
@@ -31,7 +32,7 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
@@ -45,7 +46,9 @@ public class TabletController implements Initializable{
    private ObjectInputStream ois;
    private ObjectOutputStream oos;
    private Data data;
-   
+
+   private Stage stage;
+   private FlowPane fp;
    private @FXML Button orderBtn;
    private @FXML Label total; 
    private @FXML Label tableNo; //태플릿에 테이블번호 표시 라벨
@@ -63,67 +66,85 @@ public class TabletController implements Initializable{
    public void initialize(URL location, ResourceBundle resources) {
       startTablet();
       orderTable.setItems(orderTableOl);
-      
       plusBtn.setOnAction( e -> plusBtnAction(e));
       subtractBtn.setOnAction( e -> subtractBtnAction(e));
       orderBtn.setOnAction(e -> orderBtnAction(e));
+      
+      tabletStage.setOnCloseRequest( e -> stopTablet());
    }
    
    //처음 뜨는 창
    private void tableSet(List<String> list) {
-     AnchorPane settableNo = null;
+    stage = new Stage();
+     VBox settableNo = null;
       try {
          settableNo = FXMLLoader.load(getClass().getResource("../fxml/selectTablenum.fxml")); 
       } catch (Exception e) {
          e.printStackTrace();
       }
       Button btn = (Button)settableNo.lookup("#btn");
+      fp = (FlowPane)settableNo.lookup("#fp");
       
-      @SuppressWarnings("unchecked")
-      ComboBox<String> cb = (ComboBox<String>)settableNo.lookup("#cb");
-      ObservableList<String> cb_ol = cb.getItems();
-      for(String str : list) {
-         cb_ol.add(str);
-      }
-      //오름차순으로 테이블 번호 정렬
-      cb_ol.sort((a, b) -> Integer.compare(Integer.parseInt(a), Integer.parseInt(b)));
-      cb.getSelectionModel().selectFirst();
-      
-      Scene scene = new Scene(settableNo);
-      Stage stage = new Stage();
+      Scene scene = new Scene(settableNo); 
       stage.setScene(scene);
       stage.setTitle("좌석 번호 선택");
       stage.show();
       
+      makeBtn(list);
+      
       btn.setOnAction( e -> {
-         String str = cb.getSelectionModel().getSelectedItem();
-         if(str != null)
-            this.no = str;
-         
-         if(Integer.parseInt(this.no) < 10)
-            this.tableNo.setText("0" + no);
-         else
-            this.tableNo.setText(no);
-         
-         data = new Data();
-         data.setStatus("번호정했다");
-         data.setTableNo(no);
-         send(data);
-         
-         try {
-           data = (Data)ois.readObject();
-         if(data.getStatus().equals("들어와")) {
-            //들어오면서 메뉴리스트를 받아온다.
-            this.m_list = data.getM_list();
-            stage.close();
-            showTablet();
-         }
-         
-      } catch (Exception e2) {
-         e2.printStackTrace();
-      }
-         
+          data.setStatus("좌석새로고침");
+          send(data);
       });
+      
+      Thread t = new Thread(new Runnable() {
+      @Override
+      public void run() {
+         while(stage.isShowing()) {
+            Data data = new Data();
+            data.setStatus("좌석새로고침");
+            send(data);
+            try {
+               Thread.sleep(1000);
+               
+            } catch (Exception e) {
+               e.printStackTrace();
+               break;
+            }
+         }
+      }
+      });
+      t.start();
+   }
+   
+   private void makeBtn(List<String> list) {
+    //오름차순으로 정렬
+      list.sort((a, b) -> Integer.compare(Integer.parseInt(a), Integer.parseInt(b)));
+
+      ObservableList<Node> ol = fp.getChildren();
+      ol.clear();
+      
+      for(String str : list) {
+         Button b = new Button(str);
+         b.setPrefSize(100D, 50D);
+         fp.getChildren().add(b);
+         
+         b.setOnAction( e -> {
+            if(b.getText() != null) {
+               this.no = b.getText();
+            }
+            if(Integer.parseInt(this.no) < 10)
+                this.tableNo.setText("0" + no);
+             else
+                this.tableNo.setText(no);
+             
+             data = new Data();
+             data.setStatus("번호정했다");
+             data.setTableNo(no);
+             send(data);
+             
+         });
+      }
    }
    
    
@@ -135,17 +156,59 @@ public class TabletController implements Initializable{
          data = new Data();
          data.setStatus("안녕");
          send(data);
-         
          ois = new ObjectInputStream(s.getInputStream());
-         data = (Data)ois.readObject();
-         if(data.getStatus().equals("안녕")) {
-            tableSet(data.getNo_list());
+         
+         Thread t = new Thread(new Runnable() {
+         @Override
+         public void run() {
+            while(true) {
+               try {
+                  data = (Data)ois.readObject();
+                  msgProcess(data);
+               } catch (Exception e) {
+                  e.printStackTrace();
+                  stopTablet();
+               }
+            }
          }
+      });
+        t.start();
          
       } catch (Exception e) {
          System.out.println("서버가 안열렸다~~");
          e.printStackTrace();
       }
+   }
+   
+   private void stopTablet() {
+      try {
+         oos.close();
+         ois.close();
+         if(!this.s.isClosed()) {
+            s.close();
+         }
+         System.out.println("왜");
+      } catch (Exception e) {
+         e.printStackTrace();
+      }finally {
+      System.exit(0);
+   }
+   }
+   
+   private void msgProcess(Data data) {
+      System.out.println(data.getStatus());
+      if(data.getStatus().equals("안녕")) {
+           Platform.runLater( () -> tableSet(data.getNo_list()));
+       }else if(data.getStatus().equals("좌석새로고침")) {
+          Platform.runLater( () -> makeBtn(data.getNo_list()));
+       }else if(data.getStatus().equals("들어와")) {
+           //들어오면서 메뉴리스트를 받아온다.
+           this.m_list = data.getM_list();
+           Platform.runLater( () -> {
+              stage.close();
+              showTablet();
+           });
+       }
    }
    
    private void showTablet() {
@@ -158,6 +221,7 @@ public class TabletController implements Initializable{
        tp = mt.make(m_list, tp);
        addMenu();
        orderTableSetting();
+      
    }
    
    private void addMenu(){
@@ -334,4 +398,5 @@ public class TabletController implements Initializable{
          e.printStackTrace();
       }
    }
+   
 }
