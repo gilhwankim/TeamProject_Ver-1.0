@@ -6,7 +6,7 @@
 <?import java.lang.*?>
 <?import javafx.scene.layout.*?>
 
-<BorderPane prefHeight="450.0" prefWidth="630.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="pos.tablepayment.Payment">
+<BorderPane prefHeight="450.0" prefWidth="630.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
 	<top>
       <BorderPane prefHeight="30.0" BorderPane.alignment="CENTER">
          <right>
@@ -40,7 +40,7 @@
                   <HBox alignment="CENTER_LEFT" spacing="5.0">
                      <children>
                         <Label prefWidth="70.0" text="받은금액" />
-                        <TextField fx:id="amountReceived" alignment="CENTER_RIGHT" prefHeight="30.0" prefWidth="175.0" />
+                        <TextField id="amountReceived" alignment="CENTER_RIGHT" prefHeight="30.0" prefWidth="175.0" />
                         <Label text="원" />
                      </children>
                   </HBox>
@@ -54,7 +54,7 @@
                   <HBox alignment="CENTER_LEFT" spacing="5.0">
                      <children>
                         <Label prefWidth="70.0" text="거스름돈" />
-                        <TextField fx:id="change" alignment="CENTER_RIGHT" prefHeight="30.0" prefWidth="175.0" />
+                        <TextField id="change" alignment="CENTER_RIGHT" prefHeight="30.0" prefWidth="175.0" />
                         <Label text="원" />
                      </children>
                   </HBox>
@@ -79,16 +79,16 @@
                   <HBox alignment="CENTER_LEFT" spacing="5.0">
                      <children>
                         <Label prefWidth="70.0" text="금액" />
-                        <TextField alignment="CENTER_RIGHT" prefHeight="30.0" prefWidth="175.0" />
+                        <TextField id="price" alignment="CENTER_RIGHT" prefHeight="30.0" prefWidth="175.0" />
                      </children>
                   </HBox>
                   <HBox alignment="CENTER_LEFT" spacing="5.0">
                      <children>
                         <Label prefWidth="70.0" text="고객정보" />
-                        <TextField alignment="CENTER_RIGHT" prefHeight="30.0" prefWidth="175.0" />
+                        <TextField id="customerInfo" alignment="CENTER_RIGHT" prefHeight="30.0" prefWidth="175.0" />
                      </children>
                   </HBox>
-                  <Button alignment="CENTER" prefHeight="35.0" prefWidth="250.0" text="승인요청">
+                  <Button  alignment="CENTER" prefHeight="35.0" prefWidth="250.0" text="승인요청">
                      <VBox.margin>
                         <Insets />
                      </VBox.margin>
@@ -116,18 +116,18 @@
                         <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
                     </rowConstraints>
                      <children>
-                        <Button alignment="CENTER" minHeight="75.0" onAction="#numberProcess" prefWidth="75.0" text="7" />
-                        <Button alignment="CENTER" contentDisplay="CENTER" minHeight="75.0" onAction="#numberProcess" prefWidth="75.0" text="8" GridPane.columnIndex="1" />
-                        <Button alignment="CENTER" minHeight="75.0" onAction="#numberProcess" prefWidth="75.0" text="9" GridPane.columnIndex="2" />
-                        <Button alignment="CENTER" minHeight="75.0" onAction="#numberProcess" prefWidth="75.0" text="4" GridPane.rowIndex="1" />
-                        <Button alignment="CENTER" minHeight="75.0" onAction="#numberProcess" prefWidth="75.0" text="5" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-                        <Button alignment="CENTER" minHeight="75.0" onAction="#numberProcess" prefWidth="75.0" text="6" GridPane.columnIndex="2" GridPane.rowIndex="1" />
-                        <Button alignment="CENTER" minHeight="75.0" onAction="#numberProcess" prefWidth="75.0" text="1" GridPane.rowIndex="2" />
-                        <Button alignment="CENTER" minHeight="75.0" onAction="#numberProcess" prefWidth="75.0" text="2" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-                        <Button alignment="CENTER" minHeight="75.0" onAction="#numberProcess" prefWidth="75.0" text="3" GridPane.columnIndex="2" GridPane.rowIndex="2" />
-                        <Button alignment="CENTER" minHeight="75.0" onAction="#numberProcess" prefWidth="75.0" text="0" GridPane.rowIndex="3" />
-                        <Button alignment="CENTER" minHeight="75.0" onAction="#numberProcess" prefWidth="75.0" text="00" GridPane.columnIndex="1" GridPane.rowIndex="3" />
-                        <Button alignment="CENTER" minHeight="75.0" onAction="#clearNumberProcess" prefWidth="75.0" text="C" GridPane.columnIndex="2" GridPane.rowIndex="3" />
+                        <Button id="Num7" alignment="CENTER" minHeight="75.0" prefWidth="75.0" text="7" />
+                        <Button id="Num8" alignment="CENTER" minHeight="75.0" prefWidth="75.0" text="8" GridPane.columnIndex="1" />
+                        <Button id="Num9" alignment="CENTER" minHeight="75.0" prefWidth="75.0" text="9" GridPane.columnIndex="2" />
+                        <Button id="Num4" alignment="CENTER" minHeight="75.0" prefWidth="75.0" text="4" GridPane.rowIndex="1" />
+                        <Button id="Num5" alignment="CENTER" minHeight="75.0" prefWidth="75.0" text="5" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                        <Button id="Num6" alignment="CENTER" minHeight="75.0" prefWidth="75.0" text="6" GridPane.columnIndex="2" GridPane.rowIndex="1" />
+                        <Button id="Num1" alignment="CENTER" minHeight="75.0" prefWidth="75.0" text="1" GridPane.rowIndex="2" />
+                        <Button id="Num2" alignment="CENTER" minHeight="75.0" prefWidth="75.0" text="2" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                        <Button id="Num3" alignment="CENTER" minHeight="75.0" prefWidth="75.0" text="3" GridPane.columnIndex="2" GridPane.rowIndex="2" />
+                        <Button id="Num0" alignment="CENTER" minHeight="75.0" prefWidth="75.0" text="0" GridPane.rowIndex="3" />
+                        <Button id="Num10" alignment="CENTER" minHeight="75.0" prefWidth="75.0" text="00" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                        <Button id="clear" alignment="CENTER" minHeight="75.0" prefWidth="75.0" text="C" GridPane.columnIndex="2" GridPane.rowIndex="3" />
                      </children>
                   </GridPane>
                   <GridPane vgap="5.0">
@@ -141,15 +141,15 @@
                         <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
                     </rowConstraints>
                      <children>
-                        <Button alignment="CENTER" onAction="#addNumberProcess" prefHeight="75.0" prefWidth="90.0" text="1,000" />
-                        <Button alignment="CENTER" onAction="#addNumberProcess" prefHeight="75.0" prefWidth="90.0" text="5,000" GridPane.rowIndex="1" />
-                        <Button alignment="CENTER" onAction="#addNumberProcess" prefHeight="75.0" prefWidth="90.0" text="10,000" GridPane.rowIndex="2" />
-                        <Button alignment="CENTER" onAction="#addNumberProcess" prefHeight="75.0" prefWidth="90.0" text="50,000" GridPane.rowIndex="3" />
+                        <Button id="Num11" alignment="CENTER" prefHeight="75.0" prefWidth="90.0" text="1,000" />
+                        <Button id="Num12" alignment="CENTER" prefHeight="75.0" prefWidth="90.0" text="5,000" GridPane.rowIndex="1" />
+                        <Button id="Num13" alignment="CENTER" prefHeight="75.0" prefWidth="90.0" text="10,000" GridPane.rowIndex="2" />
+                        <Button id="Num14" alignment="CENTER" prefHeight="75.0" prefWidth="90.0" text="50,000" GridPane.rowIndex="3" />
                      </children>
                   </GridPane>
                </children>
             </HBox>
-            <Button alignment="CENTER" prefHeight="60.0" prefWidth="332.0" text="결제" />
+            <Button id="Payment" alignment="CENTER" prefHeight="60.0" prefWidth="332.0" text="결제" />
          </children>
       </VBox>
    </right>

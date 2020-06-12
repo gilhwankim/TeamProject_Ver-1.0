@@ -6,10 +6,12 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
 import data.MenuData;
+import pos.management.PaymentInfo;
 
 public class DAO {
 	
@@ -220,5 +222,98 @@ public class DAO {
         }
 		return tmp; 
 	}
+	
+    //영수증 관리
+    //조건에 맞는 행을 DB에서 1개 행만 가져오는 메서드
+    @SuppressWarnings("unchecked")
+   public PaymentInfo selectOne(String paymentMethod) {
+        String sql = "select * from paymentinfotbl where cardNum = ? or cash = ?;";
+        PreparedStatement pstmt = null;
+        PaymentInfo re = new PaymentInfo();
+        try {
+            pstmt = conn.prepareStatement(sql);
+            pstmt.setString(1, paymentMethod);              
+            ResultSet rs = pstmt.executeQuery();
+            //select한 결과는 ResultSet에 담겨 리턴된다.
+            if (rs.next()) {  //가져올 행이 있으면 true, 없으면 false               
+                re.setDate(rs.getString("date"));
+                re.setAllMenu((List<MenuData>)rs.getObject("allMenu"));
+                re.setTotalPrice(rs.getString("totalPrice"));
+                re.setCardNum(rs.getString("cardNum"));
+                re.setCash(rs.getString("cash"));
+                re.setPayMethod(rs.getString("payMethod"));    
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (pstmt != null && !pstmt.isClosed())
+                    pstmt.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+        return re;
+    }
+    //해당 날짜의 거래내역을 받아줌
+    @SuppressWarnings("unchecked")
+   public List<PaymentInfo> selectDate(String date) {
+       String sql = null;
+       if(date == null)
+          sql = "select * from paymentinfotbl;";
+       else
+          sql = "select * from paymentinfotbl where date = \"" + date + "\";";
+        PreparedStatement pstmt = null; 
+        List<PaymentInfo> list = new ArrayList<PaymentInfo>();
+        try {
+            pstmt = conn.prepareStatement(sql);
+            ResultSet re = pstmt.executeQuery();
+ 
+            while (re.next()) {   
+               PaymentInfo s = new PaymentInfo();        
+                s.setDate(re.getString("date"));
+                s.setAllMenu((List<MenuData>)re.getObject("allMenu"));
+                s.setTotalPrice(re.getString("totalPrice"));
+                s.setCardNum(re.getString("cardNum"));                
+                s.setCash(re.getString("cash"));
+                s.setPayMethod(re.getString("payMethod"));
+                list.add(s); 
+            } 
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (pstmt != null && !pstmt.isClosed())
+                    pstmt.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+        return list;
+    }
+    //날짜, 메뉴 리스트, 가격, 카드/현금 종류
+    public void PaymentInfo(String date, List<MenuData> list, String totalPrice, boolean cardCash,String num) {
+		 String sql = "insert into paymentinfotbl values(?, ?, ?, ?, ?, ?);";
+		 String payMethod = cardCash ? "카드":"현금";
+		 String cardNum = "";
+		 String cashNum = "";
+		 if(payMethod.equals("카드")) {
+			 cardNum = num;
+		 } else if(payMethod.equals("현금")) {
+			 cashNum = num;
+		 }
+	       PreparedStatement pstmt = null;
+	        try {
+	            pstmt = conn.prepareStatement(sql);
+	            pstmt.setString(1, date);  
+	            pstmt.setObject(2, list);
+	            pstmt.setString(3, totalPrice);
+	            pstmt.setString(4, cardNum);
+	            pstmt.setString(5, cashNum);
+	            pstmt.setString(6, payMethod);
+	            pstmt.executeUpdate();
+	            System.out.println("데이터 삽입 성공!");
+	        } catch (Exception e) {       }
+    }
 	
 }

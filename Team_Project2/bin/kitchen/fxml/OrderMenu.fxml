@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.text.*?>
+<?import javafx.scene.control.*?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="220.0" prefWidth="210.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <Label id="time" layoutX="5.0" layoutY="5.0" prefHeight="30.0" prefWidth="146.0" text="time" />
+      <TableView id="kitchenTableview" layoutX="5.0" layoutY="40.0" prefHeight="175.0" prefWidth="200.0">
+        <columns>
+          <TableColumn prefWidth="150.0" text="테이블 번호 :" />
+          <TableColumn prefWidth="59.0" text="01" />
+        </columns>
+      </TableView>
+      <Button id="orderCom" layoutX="146.0" layoutY="5.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="59.0" text="완료" />
+   </children>
+</AnchorPane>

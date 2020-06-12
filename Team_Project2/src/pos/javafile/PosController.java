@@ -6,7 +6,9 @@ import java.net.InetSocketAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.URL;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.ResourceBundle;
 import java.util.concurrent.ExecutorService;
@@ -44,6 +46,7 @@ import pos.tablepayment.TablePaymentController;
 public class PosController implements Initializable{
    
    private Stage posStage;
+   private Tablet kitchen = null; //주방 클라이언트
    
    private ServerSocket ss;
    private Socket s;
@@ -157,12 +160,10 @@ public class PosController implements Initializable{
             t.om_list = tables.get(i).getOm_list();
             tablet_list.add(t);
          }
-         
          for(MenuData m : mc.m_list) {
             m.setCnt(0);
          }
       });
-      
       //서버 열기
       startPos();
    }
@@ -463,6 +464,10 @@ public class PosController implements Initializable{
       private void msgProcess(Data data) {
          System.out.println(data.getStatus());
          
+         if (data.getStatus().equals("주방")) {
+         kitchen = this;
+         send(data);
+      }
          if(data.getStatus().equals("안녕") || data.getStatus().equals("좌석새로고침")) {
             //현재 설정한 좌석 번호들을 넘겨주기
             List<String> no_list = new ArrayList<>();
@@ -523,6 +528,9 @@ public class PosController implements Initializable{
                this.om_list = data.getOm_list();
    
             }else {
+               if(kitchen != null) {
+                  sendOrderInfo(data);
+               }
                boolean flag = false;
                for(MenuData om1 : data.getOm_list()) {
                   for(MenuData om2 : this.om_list) {
@@ -542,12 +550,16 @@ public class PosController implements Initializable{
             }
             makeNode(data.getTableNo());
             
-         }
+         }else if(data.getStatus().equals("계산서요청")) {
+             data.setOm_list(this.om_list);  
+             data.setStatus("계산서확인");
+              send(data);
+          }
          save();
       }
       
       public void makeNode(String no) {
-    	 tpc.priceUpdate();
+        tpc.priceUpdate();
          try {
             int total = 0;
             for(int i=0; i<gp.getChildren().size(); i++) {
@@ -625,6 +637,21 @@ public class PosController implements Initializable{
                break;
             }
                
+         }
+      }
+
+      //테이블 번호, 주문내역전송
+      public void sendOrderInfo(Data data) {
+         Date time = new Date();
+         SimpleDateFormat format = new SimpleDateFormat("hh시mm분ss초");
+         String nowTime = format.format(time);
+         //주방으로 메뉴 보냄
+         try {
+            data.setTime(nowTime);
+            kitchen.oos.writeObject(data);
+            kitchen.oos.flush();
+         } catch (Exception e) {
+            e.printStackTrace();
          }
       }
    }

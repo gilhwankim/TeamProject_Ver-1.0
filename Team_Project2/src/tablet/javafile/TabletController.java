@@ -69,7 +69,7 @@ public class TabletController implements Initializable{
       plusBtn.setOnAction( e -> plusBtnAction(e));
       subtractBtn.setOnAction( e -> subtractBtnAction(e));
       orderBtn.setOnAction(e -> orderBtnAction(e));
-      
+      billBtn.setOnAction(e -> callBill(e));
       tabletStage.setOnCloseRequest( e -> stopTablet());
    }
    
@@ -208,7 +208,15 @@ public class TabletController implements Initializable{
               stage.close();
               showTablet();
            });
-       }
+       }else if(data.getStatus().equals("계산서확인")) {
+          Bill bill = new Bill();          
+           for(MenuData m : data.getOm_list()) {
+              System.out.println(m.getName());
+           }
+           Platform.runLater(()->{
+              bill.show(data.getOm_list());         
+           });       
+       } 
    }
    
    private void showTablet() {
@@ -388,6 +396,14 @@ public class TabletController implements Initializable{
       }
       total.setText(i + "원");
    }
+   
+   //계산서 서버에 요청
+   private void callBill(ActionEvent event) {      
+	      Data tmp = new Data();
+	      tmp.setStatus("계산서요청");
+	      tmp.setTableNo(no);
+	      send(tmp);     
+	   }
    
    private void send(Data data) {
       try {
