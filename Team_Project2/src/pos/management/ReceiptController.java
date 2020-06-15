@@ -43,22 +43,22 @@ public class ReceiptController implements Initializable{
       showDb(currentDateSetting());
       //선택한 날짜에 맞는 거래내역 가져옴
       dateChoice.valueProperty().addListener((ov, oldDate, newDate)->{
-    	  //날짜를 다지워서 null값이 되면 전체 내역 출력
-    	  if(newDate == null) {
-    		  showDb(null);
-    		  obOmList.clear();
-    	  }else {
-    		  DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");  
-    		  showDb(newDate.format(formatter));        
-    		  obOmList.clear();
-    	  }
+         //날짜를 다지워서 null값이 되면 전체 내역 출력
+         if(newDate == null) {
+            showDb(null);
+            obOmList.clear();
+         }else {
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");  
+            showDb(newDate.format(formatter));        
+            obOmList.clear();
+         }
       });    
       dateChoice.setOnKeyReleased( e -> {
-    	  if(dateChoice.isFocused()) {
-    		  if(e.getCode() == KeyCode.ESCAPE) {
-    			  dateChoice.setValue(null);
-    		  }
-    	  }
+         if(dateChoice.isFocused()) {
+            if(e.getCode() == KeyCode.ESCAPE) {
+               dateChoice.setValue(null);
+            }
+         }
       });
       
       //큰 테이블에서 선택하면 세부테이블에 내용이 출력되게 함
@@ -72,7 +72,7 @@ public class ReceiptController implements Initializable{
    }
    //오늘 날짜 나타내는 메서드
    public String currentDateSetting() {
-     SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+     SimpleDateFormat sdf = new SimpleDateFormat("yyyy년MM월dd일");
       String today = sdf.format(new Date());
       dateChoice.setValue(LocalDate.now());
       return today;
@@ -103,9 +103,7 @@ public class ReceiptController implements Initializable{
    }      
    //테이블에 클릭된 결제내역을 받아와서 세부테이블에 보여주는 메서드
    public int showDetailDB(PaymentInfo paymentInfo) {
-	   System.out.println(paymentInfo.getAllMenu());
       //PaymentInfo의 정보를 정제해서 넣기
-	   MenuData omTmp;
       //총 결제액 담을 변수
       int totalTmp = 0;      
       //메뉴별로 나눔
@@ -134,10 +132,10 @@ public class ReceiptController implements Initializable{
       menuCountTc.setCellValueFactory(new PropertyValueFactory<>("cnt"));
       TableColumn<MenuData, ?> totalPriceTc = receiptDetailTable.getColumns().get(3);
       totalPriceTc.setCellValueFactory(new PropertyValueFactory<>("total"));
-      obOmList = FXCollections.observableArrayList(omList);
-      receiptDetailTable.setItems(obOmList);  
+      ObservableList<MenuData> obOmList2 = FXCollections.observableArrayList(paymentInfo.getAllMenu());
+      receiptDetailTable.setItems(obOmList2);  
       
-      for(MenuData om : omList) {
+      for(MenuData om : obOmList2) {
          totalTmp += om.getTotal();
       }
       return totalTmp; //총결제 금액 리턴      
