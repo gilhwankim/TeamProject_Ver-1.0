@@ -5,6 +5,7 @@
 <?import javafx.geometry.*?>
 <?import java.lang.*?>
 <?import javafx.scene.layout.*?>
+<?import javafx.collections.*?>
 
 <VBox prefHeight="320.0" prefWidth="300.0" spacing="10.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
    <padding>
@@ -34,19 +35,29 @@
             <HBox alignment="CENTER_LEFT" prefHeight="30.0" spacing="5.0">
                <children>
                   <Label prefWidth="70.0" text="카드번호" />
-                  <TextField alignment="CENTER_RIGHT" prefHeight="175.0" />
+                  <TextField alignment="CENTER_RIGHT" id="cardNum" prefHeight="175.0" />
                </children>
             </HBox>
             <HBox alignment="CENTER_LEFT" prefHeight="30.0" spacing="5.0">
                <children>
                   <Label prefWidth="70.0" text="결제금액" />
-                  <TextField fx:id="amountOfPayment2" alignment="CENTER_RIGHT" prefHeight="175.0" />
+                  <TextField id="cardAmountOfPayment" alignment="CENTER_RIGHT" prefHeight="175.0" />
                </children>
             </HBox>
             <HBox alignment="CENTER_LEFT" prefHeight="30.0" spacing="5.0">
                <children>
                   <Label prefWidth="70.0" text="할부개월" />
-                  <ChoiceBox prefHeight="30.0" prefWidth="175.0" />
+                  <ChoiceBox prefHeight="30.0" id="installment" prefWidth="175.0">
+                  	<items>
+						<FXCollections fx:factory="observableArrayList">
+							<String fx:value="일시불" />
+							<String fx:value="3개월" />
+							<String fx:value="6개월" />
+							<String fx:value="9개월" />
+							<String fx:value="12개월" />
+						</FXCollections>
+				  </items>      
+                  </ChoiceBox>
                </children>
             </HBox>
          </children>
@@ -54,7 +65,7 @@
             <Insets bottom="10.0" top="10.0" />
          </padding>
       </VBox>
-      <Button prefHeight="40.0" prefWidth="300.0" text="결제">
+      <Button prefHeight="40.0" id="payment" prefWidth="300.0" text="결제">
          <VBox.margin>
             <Insets top="30.0" />
          </VBox.margin>

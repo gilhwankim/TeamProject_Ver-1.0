@@ -15,6 +15,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.TextField;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
@@ -32,7 +33,11 @@ public class Payment {
    private TextField price; //현금영수증 결제 금액
    private TextField change; //거스름돈
    private TextField customerInfo; //현금영수증 번호
-   private Button Payment; //결제 버튼
+   private TextField cardNum; //현금영수증 번호
+   private Button cashPaymentbtn; //현금 결제 버튼
+   private Button cardPaymentbtn; //카드 결제 버튼
+   private Button approval; //승인요청 버튼
+   private ChoiceBox<String> installment; //할부개월 초이스 박스
    private DecimalFormat df = new DecimalFormat("###,###"); //단위마다 쉼표
    private Tablet t;
    DAO dao = DAO.getinstance();
@@ -55,7 +60,7 @@ public class Payment {
           dialog.show();
             
           //결제금액
-          amountOfPayment = (TextField)cashPayment.lookup("#amountOfPayment");
+          amountOfPayment = (TextField)cashPayment.lookup("#cashAmountOfPayment");
           amountOfPayment.setText(df.format(total));
           //받은금액
           amountReceived = (TextField)cashPayment.lookup("#amountReceived");
@@ -64,20 +69,24 @@ public class Payment {
           //현금결제 화면 닫기
           Button cashExitBtn = (Button)cashPayment.lookup("#exit");
           //결제 버튼
-          Payment = (Button)cashPayment.lookup("#Payment");
-          Payment.setOnAction(e->paymentConfirm());
+          cashPaymentbtn = (Button)cashPayment.lookup("#Payment");
+          cashPaymentbtn.setOnAction(e->cashPaymentConfirm());
           //현금영수증 금액
           price = (TextField)cashPayment.lookup("#price");
           price.setText(df.format(total));
           //현금영수증 번호
           customerInfo = (TextField)cashPayment.lookup("#customerInfo");
           keyLocked(customerInfo, 10);
+          //현금영수증 승인요청 버튼
+          approval = (Button)cashPayment.lookup("#approval");
+          //승인완료 알림 팝업창
+          approval.setOnAction(e->JOptionPane.showMessageDialog(null, "결제금액: " + amountOfPayment.getText() +"\n요청번호: " + customerInfo.getText() + "\n승인이 완료되었습니다."));
           
           cashExitBtn.setOnMouseClicked(e-> dialog.close());
           Button clear = (Button)cashPayment.lookup("#clear");
           clear.setOnAction(e->clearNumberProcess(e));
           Button[] btns = new Button[15];
-          //버튼 이름 설정
+          //계산기 버튼 이름 설정
           for(int i=0; i<15; i++) {
         	  btns[i] = (Button)cashPayment.lookup("#Num"+i);
         	  if(i<11) {
@@ -87,8 +96,6 @@ public class Payment {
         	  }
           }
           
-          
-          
        } catch (IOException e) { e.printStackTrace(); }
    }
    
@@ -96,7 +103,6 @@ public class Payment {
    public void numberProcess(ActionEvent event) {
    //눌러진 버튼 값
    String number = ((Button)event.getSource()).getText();
-   System.out.println("number@@@@" + number);
    //받은 금액 텍스트 필드 검증
    amountReceived.textProperty().addListener((ob,olds,news)->{
 	   news = news.replaceAll(",", "");
@@ -170,19 +176,19 @@ public class Payment {
 	}
    
 	//현금결제 완료 버튼
-	public void paymentConfirm() {
+	public void cashPaymentConfirm() {
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy년MM월dd일");
 		String date = sdf.format(new Date());
 		dao.PaymentInfo(date,t.om_list,amountOfPayment.getText(), false, customerInfo.getText());
 	}
 	
    //카드결제
-   public void cardShow(int total) {
+   public void cardShow(int total, Tablet t) {
       System.out.println("카드결제");
        Stage dialog = new Stage(StageStyle.UNDECORATED);
        dialog.initModality(Modality.WINDOW_MODAL); //dialog를 모달(소유자 윈도우 사용불가)로 설정
        dialog.initOwner(tablePaymentStage);
-         
+         this.t = t;
        try {
           Parent cardPayment = FXMLLoader.load(getClass().getResource("PayingCreditCard.fxml"));
           Scene scene = new Scene(cardPayment);
@@ -192,12 +198,33 @@ public class Payment {
           //카드결제 화면 닫기
           Button cardExitBtn = (Button)cardPayment.lookup("#exit");
           cardExitBtn.setOnMouseClicked(e-> dialog.close());
-          
           //결제금액                                                                                                
-          amountOfPayment = (TextField)cardPayment.lookup("#amountOfPayment");
-          amountOfPayment.setText(df.format(total) + "원");
-            
+          amountOfPayment = (TextField)cardPayment.lookup("#cardAmountOfPayment");
+          amountOfPayment.setText(df.format(total));
+          //결제버튼
+          cardPaymentbtn = (Button)cardPayment.lookup("#payment");
+          cardPaymentbtn.setOnAction(e->cardPaymentConfirm());
+          //카드번호
+          cardNum = (TextField)cardPayment.lookup("#cardNum");
+          keyLocked(cardNum, 16);
+          
+          //초이스박스
+          installment = (ChoiceBox<String>)cardPayment.lookup("#installment");
+          
        } catch (IOException e) { e.printStackTrace(); }
    }
+   
+	public void cardPaymentConfirm() {
+		if(cardNum.getText().equals("")) {
+			System.out.println("카드 번호를 입력해주세요");
+			return;
+		}else if(installment.getSelectionModel().getSelectedItem()==null) {
+			System.out.println("할부개월을 선택해주세요");
+			return;
+		}
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy년MM월dd일");
+		String date = sdf.format(new Date());
+		dao.PaymentInfo(date,t.om_list,amountOfPayment.getText(), true, cardNum.getText());
+	}
    
 }

@@ -30,7 +30,7 @@
             <Button fx:id="home" focusTraversable="false" mnemonicParsing="false" text="홈" />
             <Button fx:id="menuSetting" focusTraversable="false" mnemonicParsing="false" text="메뉴관리" />
             <Button fx:id="reset" focusTraversable="false" mnemonicParsing="false" text="초기화" />
-            <Button focusTraversable="false" mnemonicParsing="false" text="Button" />
+            <Button fx:id="receipt" focusTraversable="false" mnemonicParsing="false" text="영수증 관리" />
             <Button focusTraversable="false" mnemonicParsing="false" text="Button" />
             <Button focusTraversable="false" mnemonicParsing="false" text="Button" />
             <Button focusTraversable="false" mnemonicParsing="false" text="Button" />

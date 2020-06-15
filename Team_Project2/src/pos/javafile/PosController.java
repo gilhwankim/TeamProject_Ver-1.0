@@ -1,5 +1,6 @@
 package pos.javafile;
 
+import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.InetSocketAddress;
@@ -24,7 +25,9 @@ import data.TableData;
 import javafx.application.Platform;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Parent;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
@@ -61,6 +64,7 @@ public class PosController implements Initializable{
    private @FXML Button home;
    private @FXML Button menuSetting;
    private @FXML Button reset;
+   private @FXML Button receipt;
    
    private DAO dao = DAO.getinstance();
    private SeatData seatData;
@@ -131,6 +135,12 @@ public class PosController implements Initializable{
       //pos 화면 전환 여기
       menuSetting.setOnAction( e -> bp.setCenter(mc.get()));
       home.setOnAction( e -> bp.setCenter(gp));
+      receipt.setOnAction(e ->{
+    	 try {
+			Parent p =  FXMLLoader.load(getClass().getResource("../management/Receipt.fxml"));
+			bp.setCenter(p);
+		} catch (IOException e1) {}
+      });
       
       //초기화버튼 (완성하고 지울것)
       reset.setOnAction( e -> {

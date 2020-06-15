@@ -177,51 +177,6 @@ public class DAO {
 	      }
 	   }
 	
-	public void inTmpSave(int total) {
-		
-		  String sql = "insert into tmpSave values(?);";
-	      PreparedStatement pstmt = null;
-	      try {
-	         pstmt = conn.prepareStatement(sql);
-	         pstmt.setInt(1, total);
-	         pstmt.executeUpdate();
-	         System.out.println("데이터 수정 성공");
-	      } catch (Exception e) {
-	         e.printStackTrace();
-	         System.out.println("데이터 수정 실패");
-	      }
-	}
-	
-	public void delTmpSave() {
-		
-		  String sql = "delete from tmpSave;";
-	      PreparedStatement pstmt = null;
-	      try {
-	         pstmt = conn.prepareStatement(sql);
-	         pstmt.executeUpdate();
-	         System.out.println("데이터 수정 성공");
-	      } catch (Exception e) {
-	         e.printStackTrace();
-	         System.out.println("데이터 수정 실패");
-	      }
-	}
-	
-	public int selTmpSave() {
-		String sql = "select * from tmpSave;";
-		PreparedStatement pstmt = null;
-		int tmp = 0;
-		try {
-    		pstmt = conn.prepareStatement(sql);
-            ResultSet rs = pstmt.executeQuery();
-            while(rs.next()) {
-            	tmp=(rs.getInt(1));
-            }
-            System.out.println("데이터 로드 성공!");
-        } catch (Exception e) {            
-           System.out.println("데이터 로드 실패!");
-        }
-		return tmp; 
-	}
 	
     //영수증 관리
     //조건에 맞는 행을 DB에서 1개 행만 가져오는 메서드
@@ -260,9 +215,9 @@ public class DAO {
    public List<PaymentInfo> selectDate(String date) {
        String sql = null;
        if(date == null)
-          sql = "select * from paymentinfotbl;";
+          sql = "select * from paymentInfotbl;";
        else
-          sql = "select * from paymentinfotbl where date = \"" + date + "\";";
+          sql = "select * from paymentInfotbl where saledate = \"" + date + "\";";
         PreparedStatement pstmt = null; 
         List<PaymentInfo> list = new ArrayList<PaymentInfo>();
         try {
@@ -271,8 +226,10 @@ public class DAO {
  
             while (re.next()) {   
                PaymentInfo s = new PaymentInfo();        
-                s.setDate(re.getString("date"));
-                s.setAllMenu((List<MenuData>)re.getObject("allMenu"));
+                s.setDate(re.getString("saledate"));
+                s.setAllMenu((List<MenuData>)re.getObject("allmenu"));
+//                this.list2=Arrays.asList((byte[])in.readObject());
+                System.out.println(s.getAllMenu());
                 s.setTotalPrice(re.getString("totalPrice"));
                 s.setCardNum(re.getString("cardNum"));                
                 s.setCash(re.getString("cash"));
