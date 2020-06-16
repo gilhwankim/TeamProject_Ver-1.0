@@ -191,7 +191,7 @@ public class DAO {
             ResultSet rs = pstmt.executeQuery();
             //select한 결과는 ResultSet에 담겨 리턴된다.
             if (rs.next()) {  //가져올 행이 있으면 true, 없으면 false               
-                re.setDate(rs.getString("saledate"));
+                re.setDate(rs.getString("paydate"));
                 //바이트 배열로 읽어와 다시 오브젝트인 list<MenuData> 형태로 바꿔주는 개같은
                 ObjectInputStream ois = new ObjectInputStream(new ByteArrayInputStream(rs.getBytes("allmenu")));
                 re.setAllMenu((List<MenuData>) ois.readObject());
@@ -219,7 +219,7 @@ public class DAO {
        if(date == null)
           sql = "select * from paymentinfotbl;";
        else
-          sql = "select * from paymentinfotbl where saledate = \"" + date + "\";";
+          sql = "select * from paymentinfotbl where paydate = \"" + date + "\";";
        
         PreparedStatement pstmt = null; 
         List<PaymentInfo> list = new ArrayList<PaymentInfo>();
@@ -229,7 +229,7 @@ public class DAO {
  
             while (re.next()) {   
                PaymentInfo s = new PaymentInfo();        
-                s.setDate(re.getString("saledate"));
+                s.setDate(re.getString("paydate"));
                 //바이트 배열로 읽어와 다시 오브젝트인 list<MenuData> 형태로 바꿔주는 개같은
                 ObjectInputStream ois = new ObjectInputStream(new ByteArrayInputStream(re.getBytes("allmenu")));
                 s.setAllMenu((List<MenuData>) ois.readObject());

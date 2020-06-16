@@ -48,7 +48,7 @@ public class ReceiptController implements Initializable{
             showDb(null);
             obOmList.clear();
          }else {
-            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");  
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy≥‚MMø˘dd¿œ");  
             showDb(newDate.format(formatter));        
             obOmList.clear();
          }

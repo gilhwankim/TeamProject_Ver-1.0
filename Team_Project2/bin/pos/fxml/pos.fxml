@@ -6,7 +6,7 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<BorderPane fx:id="bp" prefHeight="500.0" prefWidth="500.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="pos.javafile.PosController">
+<BorderPane fx:id="bp" maxHeight="720.0" maxWidth="1000.0" minHeight="720.0" minWidth="800.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="pos.javafile.PosController">
    <center>
       <GridPane fx:id="gp" BorderPane.alignment="CENTER">
          <columnConstraints>
@@ -22,18 +22,17 @@
       </GridPane>
    </center>
    <right>
-      <VBox BorderPane.alignment="CENTER">
+      <VBox alignment="TOP_RIGHT" prefWidth="100.0" BorderPane.alignment="CENTER">
          <children>
             <TextField fx:id="cal" maxWidth="40.0" text="5" />
             <TextField fx:id="row" maxWidth="40.0" text="5" />
-            <Button fx:id="apply" focusTraversable="false" mnemonicParsing="false" text="적용" />
-            <Button fx:id="home" focusTraversable="false" mnemonicParsing="false" text="홈" />
-            <Button fx:id="menuSetting" focusTraversable="false" mnemonicParsing="false" text="메뉴관리" />
-            <Button fx:id="reset" focusTraversable="false" mnemonicParsing="false" text="초기화" />
-            <Button fx:id="receipt" focusTraversable="false" mnemonicParsing="false" text="영수증 관리" />
-            <Button focusTraversable="false" mnemonicParsing="false" text="Button" />
-            <Button focusTraversable="false" mnemonicParsing="false" text="Button" />
-            <Button focusTraversable="false" mnemonicParsing="false" text="Button" />
+            <Button fx:id="apply" focusTraversable="false" mnemonicParsing="false" prefWidth="100.0" text="적용" />
+            <Button fx:id="home" focusTraversable="false" mnemonicParsing="false" prefWidth="100.0" text="홈" />
+            <Button fx:id="menuSetting" focusTraversable="false" mnemonicParsing="false" prefWidth="100.0" text="메뉴관리" />
+            <Button fx:id="reset" focusTraversable="false" mnemonicParsing="false" prefWidth="100.0" text="초기화" />
+            <Button fx:id="receipt" focusTraversable="false" mnemonicParsing="false" prefWidth="100.0" text="영수증관리" />
+            <Button focusTraversable="false" mnemonicParsing="false" prefWidth="100.0" text="테이블관리" />
+            <Button focusTraversable="false" mnemonicParsing="false" prefWidth="100.0" text="판매내역" />
          </children>
       </VBox>
    </right>

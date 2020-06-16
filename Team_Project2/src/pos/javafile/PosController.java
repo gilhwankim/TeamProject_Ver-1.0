@@ -116,6 +116,23 @@ public class PosController implements Initializable{
          if(oC == c && oR == r) {
             return;
          }else {
+        	 //새로 설정한 가로,세로 길이 만큼 다시 테이블 정보 설정
+            for(int i=0; i<c; i++) {
+                for(int j=0; j<r; j++) {
+                   VBox v = tableNode("기본", false, new ArrayList<MenuData>(), "0");
+                   gp.add(v, j, i);
+                   int idx = gp.getChildren().indexOf(v);
+                   v.setId("기본" + idx);
+                   TableData td = new TableData();
+                   td.setTableId(v.getId());
+                   td.setTableNo(null);
+                   td.setOm_list(new ArrayList<MenuData>());
+                   td.setDisable(false);
+                   td.setColor("0xff0000ff");
+                   td.setTotal("0");
+                   tables.add(td);
+                }
+             }
             setGridPane(c, r);
             save();
          }
@@ -259,7 +276,6 @@ public class PosController implements Initializable{
             //빨간불일때만 비활성화 가능
             if(c.getFill().equals(Color.web("0xff0000ff"))) {
                int idx = gp.getChildren().indexOf(v);
-               
                if(!vb.isDisable()) {
                   vb.setDisable(true);
                   tables.get(idx).setDisable(true);
@@ -536,7 +552,10 @@ public class PosController implements Initializable{
          }else if(data.getStatus().equals("주문")) {
             if(this.om_list.size() == 0) {
                this.om_list = data.getOm_list();
-   
+               
+               if(kitchen != null) {
+                   sendOrderInfo(data);
+                }
             }else {
                if(kitchen != null) {
                   sendOrderInfo(data);
