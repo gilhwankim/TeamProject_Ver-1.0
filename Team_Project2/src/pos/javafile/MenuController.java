@@ -260,7 +260,7 @@ public class MenuController  {
 				//현재 프로젝트의 경로를 가진다.
 				file = new File(".");
 				String projectPath = file.getAbsolutePath().substring(0, file.getAbsolutePath().length()-1);
-				file = new File(projectPath + "src\\pos\\images\\noImage.jpg");
+				file = new File(projectPath + "src\\images\\noImage.jpg");
 			}else {
 	            if(file == null) {
 	                menuSave(num, category, name, price, null);

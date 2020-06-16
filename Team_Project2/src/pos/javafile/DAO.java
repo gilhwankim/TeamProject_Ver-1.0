@@ -153,7 +153,7 @@ public class DAO {
          System.out.println(md.getImage());
          String sql = "";
          if(md.getImage() != null) {
-            sql = "update menutbl set category = ?, mname = ?, mprice = ?, mimage = ? where menuNum = ?;";
+            sql = "update menutbl set category = ?, mname = ?, mprice = ?, image = ? where menuNum = ?;";
          }else {
             sql = "update menutbl set category = ?, mname = ?, mprice = ? where menuNum = ?;";
          }
