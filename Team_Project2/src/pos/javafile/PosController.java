@@ -135,6 +135,16 @@ public class PosController implements Initializable{
              }
             setGridPane(c, r);
             save();
+            tablet_list.clear();
+            for(int i=0; i<tables.size(); i++) {
+               Tablet t = new Tablet(); 
+               t.TableNo = tables.get(i).getTableId();
+               t.om_list = tables.get(i).getOm_list();
+               tablet_list.add(t);
+            }
+            for(MenuData m : mc.m_list) {
+               m.setCnt(0);
+            }
          }
       });
       //행,열 텍스트 감시(10이 최대)
