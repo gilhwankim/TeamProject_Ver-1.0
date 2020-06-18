@@ -32,14 +32,14 @@
                <children>
                   <HBox alignment="TOP_RIGHT" HBox.hgrow="ALWAYS">
                      <children>
-                        <Label id="price" alignment="CENTER" prefHeight="18.0" prefWidth="112.0" text="가격">
+                        <Label id="price" alignment="TOP_RIGHT" contentDisplay="RIGHT" prefHeight="18.0" prefWidth="112.0" text="가격">
                            <font>
                               <Font size="14.0" />
                            </font>
                         </Label>
                      </children>
                      <padding>
-                        <Insets right="10.0" />
+                        <Insets right="5.0" />
                      </padding>
                   </HBox>
                </children>

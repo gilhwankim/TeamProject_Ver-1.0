@@ -56,6 +56,7 @@ public class TabletController implements Initializable{
    private @FXML Button subtractBtn; // - 버튼
    private @FXML Button plusBtn; // + 버튼
    private @FXML TabPane tp;
+   private @FXML Button callBtn;
    
    private String no;
    private List<MenuData> m_list;   //메뉴 리스트
@@ -71,6 +72,7 @@ public class TabletController implements Initializable{
       orderBtn.setOnAction(e -> orderBtnAction(e));
       billBtn.setOnAction(e -> callBill(e));
       tabletStage.setOnCloseRequest( e -> stopTablet());
+      callBtn.setOnAction(e -> callEmployee(e));
    }
    
    //처음 뜨는 창
@@ -166,6 +168,7 @@ public class TabletController implements Initializable{
                   data = (Data)ois.readObject();
                   msgProcess(data);
                } catch (Exception e) {
+            	   System.out.println("오류 뜬다");
                   e.printStackTrace();
                   stopTablet();
                }
@@ -181,6 +184,7 @@ public class TabletController implements Initializable{
    }
    
    private void stopTablet() {
+	   System.out.println("stopTablet() 실행");
       try {
          oos.close();
          ois.close();
@@ -405,6 +409,13 @@ public class TabletController implements Initializable{
 	      send(tmp);     
 	   }
    
+   
+   private void callEmployee(ActionEvent event) {      
+       Data tmp = new Data();
+       tmp.setStatus("직원호출");
+       tmp.setTableNo(no);
+       send(tmp);     
+    }
    private void send(Data data) {
       try {
          oos.writeObject(data);

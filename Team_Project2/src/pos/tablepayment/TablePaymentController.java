@@ -3,6 +3,7 @@ package pos.tablepayment;
 import java.util.Iterator;
 import java.util.List;
 
+import data.Data;
 import data.MenuData;
 import javafx.application.Platform;
 import javafx.beans.property.SimpleIntegerProperty;
@@ -39,6 +40,7 @@ public class TablePaymentController  {
    private TabPane tp;
    private  MakeTab mt;
    private Payment p; //결제화면
+   private Tablet kitchen = null;
    
    //서버 최초 실행시 TablePaymentController생성자 호출하고 초기화한다.
    @SuppressWarnings("unchecked")
@@ -71,7 +73,7 @@ public class TablePaymentController  {
          TableColumn<MenuData, ?> c = tableView.getColumns().get(2);
          c.setCellValueFactory(new PropertyValueFactory<>("cnt"));
          
-         //OrderMenuData.java 가보면 getTotal() 은 getPrice * getCnt 되있어서
+         //MenuData.java 가보면 getTotal() 은 getPrice * getCnt 되있어서
          //total 금액 부를 때 마다 단가 * 개수 계산하여서 받는다.
          TableColumn<MenuData, ?> d = tableView.getColumns().get(3);
          d.setCellValueFactory(new PropertyValueFactory<>("total"));
@@ -92,11 +94,17 @@ public class TablePaymentController  {
          order.setOnAction(e->{
             //포스기기(TablePayment 화면)에서 주문한 메뉴 리스트
             List<MenuData> list = mt.getOrderBoardList(e);
-            if(list.size()!=0) {
-               //@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@주방에 OrderMenuData 객체 던져@@@@@@@@@@@@@@@
-               mt.listClearplz();
-            }
+            
+//            if(list.size()!=0) {
+                Data data = new Data();
+                data.setStatus("주문");
+                data.setTableNo(this.tNo.getText());
+                data.setOm_list(list);
+                t.sendOrderInfo(data);
+               mt.listClear();
+//            }
          });
+         
          tp = mt.make(menu_list, tp);
          
          Scene scene = new Scene(hbox);
@@ -114,7 +122,7 @@ public class TablePaymentController  {
       for(MenuData omd : t.om_list) {
          obb.add(omd);
       }
-      //TablePayment 창의 테이블 뷰에 클라리언트의 테이블뷰를 입력시킨다.
+      //TablePayment 창의 테이블 뷰에 클라이언트의 테이블뷰를 입력시킨다.
       this.tableView.setItems(obb);
       //TablePayment 창의 총 합계금액 업데이트
       this.priceUpdate();

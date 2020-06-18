@@ -70,7 +70,15 @@ public class Payment {
           Button cashExitBtn = (Button)cashPayment.lookup("#exit");
           //결제 버튼
           cashPaymentbtn = (Button)cashPayment.lookup("#Payment");
-          cashPaymentbtn.setOnAction(e->cashPaymentConfirm());
+          cashPaymentbtn.setOnAction(e->{
+             SimpleDateFormat sdf = new SimpleDateFormat("yyyy년MM월dd일");
+             String date = sdf.format(new Date());
+             dao.PaymentInfo(date,t.om_list,amountOfPayment.getText(), false, customerInfo.getText());
+             //결제완료 후 Stage닫음
+             JOptionPane.showMessageDialog(null,"결제가 완료되었습니다.");
+             dialog.close();
+             //cashPaymentConfirm();
+          });
           //현금영수증 금액
           price = (TextField)cashPayment.lookup("#price");
           price.setText(df.format(total));
@@ -88,12 +96,12 @@ public class Payment {
           Button[] btns = new Button[15];
           //계산기 버튼 이름 설정
           for(int i=0; i<15; i++) {
-        	  btns[i] = (Button)cashPayment.lookup("#Num"+i);
-        	  if(i<11) {
-            	  btns[i].setOnAction((e)->numberProcess(e));  
-        	  } else {
-        		  btns[i].setOnAction((e)->addNumberProcess(e));  
-        	  }
+             btns[i] = (Button)cashPayment.lookup("#Num"+i);
+             if(i<11) {
+                 btns[i].setOnAction((e)->numberProcess(e));  
+             } else {
+                btns[i].setOnAction((e)->addNumberProcess(e));  
+             }
           }
           
        } catch (IOException e) { e.printStackTrace(); }
@@ -105,15 +113,15 @@ public class Payment {
    String number = ((Button)event.getSource()).getText();
    //받은 금액 텍스트 필드 검증
    amountReceived.textProperty().addListener((ob,olds,news)->{
-	   news = news.replaceAll(",", "");
-	   if(news.equals("")) {
-		   amountReceived.setText("0");
-	   }
-	   //int 한계 값을 초과하는 값을 입력하면(news) 금액을 추가할 수 없다는 알림창을 띄우고 이전 값(olds)로 되돌린다.
-	   else if(Long.valueOf(news)>=2147483647) {
-		   JOptionPane.showMessageDialog(null, "더 이상 금액을 추가할 수 없습니다.");
-		   amountReceived.setText(olds);
-	   }
+      news = news.replaceAll(",", "");
+      if(news.equals("")) {
+         amountReceived.setText("0");
+      }
+      //int 한계 값을 초과하는 값을 입력하면(news) 금액을 추가할 수 없다는 알림창을 띄우고 이전 값(olds)로 되돌린다.
+      else if(Long.valueOf(news)>=2147483647) {
+         JOptionPane.showMessageDialog(null, "더 이상 금액을 추가할 수 없습니다.");
+         amountReceived.setText(olds);
+      }
    });
    //값을 입력받으면 1000단위 구분,를 한번 제거했다가 다시 현재 입력된 값에 맞게 1000단위 구분을 해서 입력한다.
    amountReceived.appendText(number);
@@ -125,63 +133,64 @@ public class Payment {
    
    //1000,5000,10000,50000단위 숫자 입력 버튼
    public void addNumberProcess(ActionEvent event) {
-	   String addNumber = ((Button)event.getSource()).getText();
-	   addNumber = addNumber.replaceAll(",", "");
-	   if(amountReceived.getText().equals("")) {
-		   amountReceived.setText("0");
-	   }
-	   //단위 구분
-	   amountReceived.setText(amountReceived.getText().replaceAll(",", ""));
-	   int Num = Integer.parseInt(amountReceived.getText());
-	   int addNum = Integer.parseInt(addNumber);
-	   amountReceived.setText(df.format(Num+addNum));
-	   calChange();
+      String addNumber = ((Button)event.getSource()).getText();
+      addNumber = addNumber.replaceAll(",", "");
+      if(amountReceived.getText().equals("")) {
+         amountReceived.setText("0");
+      }
+      //단위 구분
+      amountReceived.setText(amountReceived.getText().replaceAll(",", ""));
+      int Num = Integer.parseInt(amountReceived.getText());
+      int addNum = Integer.parseInt(addNumber);
+      amountReceived.setText(df.format(Num+addNum));
+      calChange();
    }
    
    //거스름돈 
    public void calChange() {
-	   //받은금액
-	   String receivedStr = amountReceived.getText();
-	   //결제금액
-	   String paymentStr = amountOfPayment.getText();
-	   //결제금액
-	   receivedStr = receivedStr.replaceAll(",", "");
-	   paymentStr = paymentStr.replaceAll(",", "");
-	   if((Integer.parseInt(receivedStr)-Integer.parseInt(paymentStr))<=0) {
-		   change.setText("0");
-		   return;
-	   }
-	   change.setText(df.format(Integer.parseInt(receivedStr)-Integer.parseInt(paymentStr)));
+      //받은금액
+      String receivedStr = amountReceived.getText();
+      //결제금액
+      String paymentStr = amountOfPayment.getText();
+      //결제금액
+      receivedStr = receivedStr.replaceAll(",", "");
+      paymentStr = paymentStr.replaceAll(",", "");
+      if((Integer.parseInt(receivedStr)-Integer.parseInt(paymentStr))<=0) {
+         change.setText("0");
+         return;
+      }
+      change.setText(df.format(Integer.parseInt(receivedStr)-Integer.parseInt(paymentStr)));
    }
    
    //받은금액 텍스트 초기화
    public void clearNumberProcess(ActionEvent event) {
-	   amountReceived.setText("0");
-	   change.setText("0");
+      amountReceived.setText("0");
+      change.setText("0");
    }
    
    //키 입력 제한
-	public void keyLocked(TextField textField,int length) {
-		textField.textProperty().addListener((observable, oldValue, newValue) -> {
-			
-			//텍스트 필드 길이 제한
-			if(newValue.length()>length) {
-				textField.setText(newValue.substring(0,length));
-			}
-			//텍스트필드 숫자만 입력가능하도록 제한.
-			if (!newValue.matches("\\d*")) {
-	        	textField.setText(newValue.replaceAll("[^\\d]", ""));
-	        }
-	    });
-	}
+   public void keyLocked(TextField textField,int length) {
+      textField.textProperty().addListener((observable, oldValue, newValue) -> {
+         
+         //텍스트 필드 길이 제한
+         if(newValue.length()>length) {
+            textField.setText(newValue.substring(0,length));
+         }
+         //텍스트필드 숫자만 입력가능하도록 제한.
+         if (!newValue.matches("\\d*")) {
+              textField.setText(newValue.replaceAll("[^\\d]", ""));
+           }
+       });
+   }
    
-	//현금결제 완료 버튼
-	public void cashPaymentConfirm() {
-		SimpleDateFormat sdf = new SimpleDateFormat("yyyy년MM월dd일");
-		String date = sdf.format(new Date());
-		dao.PaymentInfo(date,t.om_list,amountOfPayment.getText(), false, customerInfo.getText());
-	}
-	
+   //현금결제 완료 버튼
+//   public void cashPaymentConfirm() {
+//      SimpleDateFormat sdf = new SimpleDateFormat("yyyy년MM월dd일");
+//      String date = sdf.format(new Date());
+//      dao.PaymentInfo(date,t.om_list,amountOfPayment.getText(), false, customerInfo.getText());
+//      JOptionPane.showMessageDialog(null,"결제가 완료되었습니다.");
+//   }
+   
    //카드결제
    public void cardShow(int total, Tablet t) {
       System.out.println("카드결제");
@@ -203,7 +212,25 @@ public class Payment {
           amountOfPayment.setText(df.format(total));
           //결제버튼
           cardPaymentbtn = (Button)cardPayment.lookup("#payment");
-          cardPaymentbtn.setOnAction(e->cardPaymentConfirm());
+          cardPaymentbtn.setOnAction(e->{
+             if(cardNum.getText().equals("")) {
+                System.out.println("카드 번호를 입력해주세요");
+                JOptionPane.showMessageDialog(null,"카드 번호를 입력해주세요.");
+                return;
+             }else if(installment.getSelectionModel().getSelectedItem()==null) {
+                System.out.println("할부개월을 선택해주세요");
+                JOptionPane.showMessageDialog(null,"할부개월을 선택해주세요.");
+                return;
+             }
+             SimpleDateFormat sdf = new SimpleDateFormat("yyyy년MM월dd일");
+             String date = sdf.format(new Date());
+             dao.PaymentInfo(date,t.om_list,amountOfPayment.getText(), true, cardNum.getText());
+             
+             //결제완료 후 Stage닫음
+             JOptionPane.showMessageDialog(null,"결제가 완료되었습니다.");
+             dialog.close();
+             //cardPaymentConfirm();
+          });
           //카드번호
           cardNum = (TextField)cardPayment.lookup("#cardNum");
           keyLocked(cardNum, 16);
@@ -214,17 +241,19 @@ public class Payment {
        } catch (IOException e) { e.printStackTrace(); }
    }
    
-	public void cardPaymentConfirm() {
-		if(cardNum.getText().equals("")) {
-			System.out.println("카드 번호를 입력해주세요");
-			return;
-		}else if(installment.getSelectionModel().getSelectedItem()==null) {
-			System.out.println("할부개월을 선택해주세요");
-			return;
-		}
-		SimpleDateFormat sdf = new SimpleDateFormat("yyyy년MM월dd일");
-		String date = sdf.format(new Date());
-		dao.PaymentInfo(date,t.om_list,amountOfPayment.getText(), true, cardNum.getText());
-	}
+   //카드결제 완료 버튼
+//   public void cardPaymentConfirm() {
+//      if(cardNum.getText().equals("")) {
+//         System.out.println("카드 번호를 입력해주세요");
+//         return;
+//      }else if(installment.getSelectionModel().getSelectedItem()==null) {
+//         System.out.println("할부개월을 선택해주세요");
+//         return;
+//      }
+//      SimpleDateFormat sdf = new SimpleDateFormat("yyyy년MM월dd일");
+//      String date = sdf.format(new Date());
+//      dao.PaymentInfo(date,t.om_list,amountOfPayment.getText(), true, cardNum.getText());
+//      JOptionPane.showMessageDialog(null,"결제가 완료되었습니다.");
+//   }
    
 }

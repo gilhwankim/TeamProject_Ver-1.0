@@ -4,7 +4,6 @@ import java.io.Serializable;
 
 //메뉴정보
 public class MenuData implements Serializable{
-
 	int No;
 	String category;
 	String name;
@@ -12,7 +11,6 @@ public class MenuData implements Serializable{
 	byte[] image;
 	int cnt;
 	int total;
-	
 	
 	public int getNo() {
 		return No;

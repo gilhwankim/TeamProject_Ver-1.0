@@ -26,7 +26,7 @@ public class MakeTab {
    private boolean flag = false;
    
    private List<MenuData> menuList;
-   private List<MenuData> toOrderBoard = new ArrayList<MenuData>();
+   public List<MenuData> toOrderBoard = new ArrayList<MenuData>();
    private Tablet tablet;
    private ObservableList<MenuData> ol;
    private TableView<MenuData> tv;
@@ -128,6 +128,7 @@ public class MakeTab {
                     for(MenuData om : ol) {
                        if(m.getName().equals(om.getName())) {
                           om.setCnt(om.getCnt() + 1);
+                          addOrderBoardList(om);
                           flag = true;
                           break;
                        }
@@ -142,6 +143,7 @@ public class MakeTab {
                        md.setCnt(1);
                        tablet.om_list.add(md);
                        ol.add(md);
+                       addOrderBoardList(md);
                     }
                     break;
             	}
@@ -157,9 +159,6 @@ public class MakeTab {
             //이미 주문한 메뉴인 경우
             if(om.getName().equals(orderMenu.getName())) {
                om.setCnt(om.getCnt()+1);
-//               for(MenuData dd : toOrderBoard) {
-//                  System.out.println(dd.getName()+","+ dd.getCnt());
-//               }
                kitchenFlag = true;
                return;
             }
@@ -174,9 +173,6 @@ public class MakeTab {
                   toOrderBoard.add(omm);
                }
             }
-//            for(MenuData dd : toOrderBoard) {
-//               System.out.println(dd.getName()+","+ dd.getCnt());
-//            }
          }
          kitchenFlag=false;
          return;
@@ -186,7 +182,7 @@ public class MakeTab {
          return toOrderBoard;
       }
       
-      public void listClearplz() {
+      public void listClear() {
          toOrderBoard.clear(); 
       }
       

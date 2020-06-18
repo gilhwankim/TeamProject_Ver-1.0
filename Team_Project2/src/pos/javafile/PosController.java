@@ -469,6 +469,7 @@ public class PosController implements Initializable{
          if(data == null)
             return;
          try {
+        	oos.reset();
             oos.writeObject(data);
             oos.flush();
          } catch (Exception e) {
@@ -476,9 +477,6 @@ public class PosController implements Initializable{
          }
          
       }
-      
-      
-      
       private void listen() {
          Runnable runnable = new Runnable() {
             @Override
@@ -529,7 +527,6 @@ public class PosController implements Initializable{
                      //메뉴리스트 보내주기
                      data.setM_list(mc.m_list);
                      send(data);
-                     
                   
                      //초록불 만들기
                      td.setColor("0x00ff00ff");
@@ -593,7 +590,16 @@ public class PosController implements Initializable{
              data.setOm_list(this.om_list);  
              data.setStatus("계산서확인");
               send(data);
-          }
+          }//테블릿에서 직원호출을 할 때
+         else if(data.getStatus().equals("직원호출")) { 
+             for(int i=0; i<tables.size(); i++) {
+                //해당하는 테이블 찾음
+                VBox vbox = (VBox) gp.getChildren().get(i);
+                if(vbox.getId().equals(data.getTableNo())) {
+                   vbox.setStyle("-fx-border-color:red");
+                	}
+                }
+             }
          save();
       }
       
@@ -675,7 +681,6 @@ public class PosController implements Initializable{
                tablet_list.add(idx, t1);
                break;
             }
-               
          }
       }
 
@@ -687,6 +692,10 @@ public class PosController implements Initializable{
          //주방으로 메뉴 보냄
          try {
             data.setTime(nowTime);
+            for(MenuData mmm : data.getOm_list()) {
+            	System.out.println("@@@@@@@주방 보내기 전 메뉴: " + mmm.getName());
+            }
+            kitchen.oos.reset();
             kitchen.oos.writeObject(data);
             kitchen.oos.flush();
          } catch (Exception e) {
@@ -694,6 +703,4 @@ public class PosController implements Initializable{
          }
       }
    }
-   
-         
 }
