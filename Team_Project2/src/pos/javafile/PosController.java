@@ -686,21 +686,54 @@ public class PosController implements Initializable{
 
       //테이블 번호, 주문내역전송
       public void sendOrderInfo(Data data) {
+    	  if(data.getOm_list().size()==0) {
+    		  System.out.println("주문하실 메뉴를 선택해주세요");
+    		  return;
+    	  }
          Date time = new Date();
          SimpleDateFormat format = new SimpleDateFormat("hh시mm분ss초");
          String nowTime = format.format(time);
          //주방으로 메뉴 보냄
          try {
             data.setTime(nowTime);
-            for(MenuData mmm : data.getOm_list()) {
-            	System.out.println("@@@@@@@주방 보내기 전 메뉴: " + mmm.getName());
-            }
+            //reset을 하고 보내줘야 바뀐 값으로 넘겨받는다.
+            //그냥 보내면 처음에 저장된 값으로만 받는다.
             kitchen.oos.reset();
             kitchen.oos.writeObject(data);
             kitchen.oos.flush();
          } catch (Exception e) {
             e.printStackTrace();
          }
+      }
+      //결제 버튼 누르면 결제 승인 후 테이블 주문 목록 초기화
+      public void deleteTableinfo() {
+    	  tpc.close();
+    	  //DB에 올라가는 테이블 주문 정보
+    	  for(TableData td : tables) {
+    		  if(this.TableNo.equals(td.getTableNo())) {
+    			  td.setOm_list(new ArrayList<MenuData>());
+    			  td.setTotal("0");
+    			  break;
+    		  }
+    	  }
+    	  //포스기 테이블 화면 설정(초기화)
+    	  for(int i=0; i<gp.getChildren().size(); i++) {
+    		  VBox v = (VBox) gp.getChildren().get(i);
+    		  if(v.getId().equals(this.TableNo)) {
+    			  JFXListView<HBox> lv = (JFXListView<HBox>)v.lookup("#lv");
+        	      ObservableList<HBox> lv_ol = lv.getItems();
+        	      Label price = (Label)v.lookup("#price");
+        	      lv_ol.clear();
+        	      price.setText("0");
+        	      break;
+    		  }
+    		  
+    	  }
+    	  //포스기가 가지고 있는 주문 목록
+    	  this.om_list = new ArrayList<MenuData>();
+    	  System.out.println("@@@@@@@@@@결제완료"+this.TableNo+"번");
+    	  //DB에 초기화된 데이터 연동
+    	  save();
       }
    }
 }

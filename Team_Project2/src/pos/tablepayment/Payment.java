@@ -71,13 +71,15 @@ public class Payment {
           //결제 버튼
           cashPaymentbtn = (Button)cashPayment.lookup("#Payment");
           cashPaymentbtn.setOnAction(e->{
-             SimpleDateFormat sdf = new SimpleDateFormat("yyyy년MM월dd일");
+             SimpleDateFormat sdf = new SimpleDateFormat("yyyy년MM월dd일 hh:mm:ss a");
              String date = sdf.format(new Date());
              dao.PaymentInfo(date,t.om_list,amountOfPayment.getText(), false, customerInfo.getText());
              //결제완료 후 Stage닫음
              JOptionPane.showMessageDialog(null,"결제가 완료되었습니다.");
              dialog.close();
              //cashPaymentConfirm();
+             t.deleteTableinfo();
+             
           });
           //현금영수증 금액
           price = (TextField)cashPayment.lookup("#price");

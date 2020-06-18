@@ -203,4 +203,8 @@ public class TablePaymentController  {
         }
       });
    }
+   //Ã¢ ´Ý±â
+   public void close() {
+	   stage.close();
+   }
 }
