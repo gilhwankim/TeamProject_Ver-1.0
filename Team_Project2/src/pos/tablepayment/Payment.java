@@ -215,7 +215,7 @@ public class Payment {
                 JOptionPane.showMessageDialog(null,"할부개월을 선택해주세요.");
                 return;
              }
-             SimpleDateFormat sdf = new SimpleDateFormat("yyyy년MM월dd일");
+             SimpleDateFormat sdf = new SimpleDateFormat("yyyy년MM월dd일 hh:mm:ss a");
              String date = sdf.format(new Date());
              dao.PaymentInfo(date,t.om_list,amountOfPayment.getText(), true, cardNum.getText());
              

@@ -169,7 +169,6 @@ public class TabletController implements Initializable{
                   msgProcess(data);
                } catch (Exception e) {
             	   System.out.println("오류 뜬다");
-                  e.printStackTrace();
                   stopTablet();
                }
             }
@@ -184,14 +183,12 @@ public class TabletController implements Initializable{
    }
    
    private void stopTablet() {
-	   System.out.println("stopTablet() 실행");
       try {
          oos.close();
          ois.close();
          if(!this.s.isClosed()) {
             s.close();
          }
-         System.out.println("왜");
       } catch (Exception e) {
          e.printStackTrace();
       }finally {

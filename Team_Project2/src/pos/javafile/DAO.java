@@ -275,7 +275,7 @@ public class DAO {
                pstmt.setString(6, payMethod);
                pstmt.executeUpdate();
                System.out.println("데이터 삽입 성공!");
-           } catch (Exception e) {      
+           } catch (Exception e) {
         	   e.printStackTrace();
            }
     }
