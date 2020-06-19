@@ -48,7 +48,7 @@ public class ReceiptController implements Initializable{
             showDb(null);
             obOmList.clear();
          }else {
-            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy년MM월dd일 hh:mm:ss a");  
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy년MM월dd일");  
             showDb(newDate.format(formatter));        
             obOmList.clear();
          }
@@ -78,7 +78,8 @@ public class ReceiptController implements Initializable{
       return today;
    } 
    //거래내역 가져오는 메서드
-   public void showDb(String date) {    
+   public void showDb(String date) { 
+	   System.out.println("@@@@@@@@@@@@@DB부르는 날짜: " + date);
       payList = dao.selectDate(date); //DB에서 가져옴           
       //테이블에 내용 세팅
       TableColumn<PaymentInfo, ?> dateTc = receiptTable.getColumns().get(0);

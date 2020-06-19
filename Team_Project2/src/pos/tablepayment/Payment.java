@@ -77,7 +77,6 @@ public class Payment {
              //결제완료 후 Stage닫음
              JOptionPane.showMessageDialog(null,"결제가 완료되었습니다.");
              dialog.close();
-             //cashPaymentConfirm();
              t.deleteTableinfo();
              
           });
@@ -185,14 +184,6 @@ public class Payment {
        });
    }
    
-   //현금결제 완료 버튼
-//   public void cashPaymentConfirm() {
-//      SimpleDateFormat sdf = new SimpleDateFormat("yyyy년MM월dd일");
-//      String date = sdf.format(new Date());
-//      dao.PaymentInfo(date,t.om_list,amountOfPayment.getText(), false, customerInfo.getText());
-//      JOptionPane.showMessageDialog(null,"결제가 완료되었습니다.");
-//   }
-   
    //카드결제
    public void cardShow(int total, Tablet t) {
       System.out.println("카드결제");
@@ -231,7 +222,7 @@ public class Payment {
              //결제완료 후 Stage닫음
              JOptionPane.showMessageDialog(null,"결제가 완료되었습니다.");
              dialog.close();
-             //cardPaymentConfirm();
+             t.deleteTableinfo();
           });
           //카드번호
           cardNum = (TextField)cardPayment.lookup("#cardNum");
@@ -242,20 +233,4 @@ public class Payment {
           
        } catch (IOException e) { e.printStackTrace(); }
    }
-   
-   //카드결제 완료 버튼
-//   public void cardPaymentConfirm() {
-//      if(cardNum.getText().equals("")) {
-//         System.out.println("카드 번호를 입력해주세요");
-//         return;
-//      }else if(installment.getSelectionModel().getSelectedItem()==null) {
-//         System.out.println("할부개월을 선택해주세요");
-//         return;
-//      }
-//      SimpleDateFormat sdf = new SimpleDateFormat("yyyy년MM월dd일");
-//      String date = sdf.format(new Date());
-//      dao.PaymentInfo(date,t.om_list,amountOfPayment.getText(), true, cardNum.getText());
-//      JOptionPane.showMessageDialog(null,"결제가 완료되었습니다.");
-//   }
-   
 }

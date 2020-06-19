@@ -215,11 +215,12 @@ public class DAO {
     //해당 날짜의 거래내역을 받아줌
     @SuppressWarnings("unchecked")
    public List<PaymentInfo> selectDate(String date) {
+    	
        String sql = null;
        if(date == null)
           sql = "select * from paymentinfotbl;";
        else
-          sql = "select * from paymentinfotbl where saledate = \"" + date + "\";";
+          sql = "select * from paymentinfotbl where saledate like \"" + date +"%\";";
        
         PreparedStatement pstmt = null; 
         List<PaymentInfo> list = new ArrayList<PaymentInfo>();
