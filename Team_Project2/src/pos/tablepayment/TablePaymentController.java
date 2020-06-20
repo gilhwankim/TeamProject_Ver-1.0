@@ -84,8 +84,9 @@ public class TablePaymentController  {
          
          //버튼 동작시 결제화면
          p = new Payment();
-         payCash.setOnAction((event)-> p.cashShow(total,t)); //현금결제 화면 버튼
-         payCard.setOnAction((event)-> p.cardShow(total,t)); //카드결제 화면 버튼
+        	 payCash.setOnAction((event)-> p.cashShow(total,t)); //현금결제 화면 버튼
+             payCard.setOnAction((event)-> p.cardShow(total,t)); //카드결제 화면 버튼	
+        
          
          //TabPane 셋팅
          mt = new MakeTab();

@@ -1,13 +1,18 @@
 package pos.tablepayment;
 
+import java.awt.Window;
+import java.awt.event.KeyEvent;
 import java.io.IOException;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Scanner;
 
 import javax.swing.JOptionPane;
 
 import data.MenuData;
+import javafx.animation.KeyValue;
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -17,6 +22,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.TextField;
+import javafx.scene.input.KeyCode;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
@@ -43,7 +49,7 @@ public class Payment {
    DAO dao = DAO.getinstance();
    
    //생성자
-   public Payment() {}
+   public Payment() {   }
    
    //현금결제
    public void cashShow(int total,Tablet t) {
@@ -58,19 +64,31 @@ public class Payment {
           dialog.setScene(scene);
           dialog.setResizable(false); //사용자가 크기를 조절하지 못하게 함
           dialog.show();
-            
           //결제금액
           amountOfPayment = (TextField)cashPayment.lookup("#cashAmountOfPayment");
           amountOfPayment.setText(df.format(total));
           //받은금액
           amountReceived = (TextField)cashPayment.lookup("#amountReceived");
+          amountReceived.setText("0");
+          cashFieldListener(amountReceived);
           //거스름돈
           change = (TextField)cashPayment.lookup("#change");
+          change.setText("0");
           //현금결제 화면 닫기
           Button cashExitBtn = (Button)cashPayment.lookup("#exit");
           //결제 버튼
           cashPaymentbtn = (Button)cashPayment.lookup("#Payment");
           cashPaymentbtn.setOnAction(e->{
+        	  String received = amountReceived.getText().replaceAll(",", "");
+        	  String price =  amountOfPayment.getText().replaceAll(",", "");
+        	  if(received.equals("0")) {
+        		  System.out.println("받은 금액이 없습니다.");
+        		  return;
+        	  }else if(Integer.parseInt(received)<Integer.parseInt(price)) {
+        		  System.out.println("금액이 부족합니다!");
+        		  return;
+        	  }
+        	  
              SimpleDateFormat sdf = new SimpleDateFormat("yyyy년MM월dd일 hh:mm:ss a");
              String date = sdf.format(new Date());
              dao.PaymentInfo(date,t.om_list,amountOfPayment.getText(), false, customerInfo.getText());
@@ -104,47 +122,65 @@ public class Payment {
                 btns[i].setOnAction((e)->addNumberProcess(e));  
              }
           }
-          
-       } catch (IOException e) { e.printStackTrace(); }
+//          
+       } catch (IOException e) {e.printStackTrace(); }
    }
    
+   
+   //받은 금액 텍스트 필드 검증
+   public void cashFieldListener(TextField tf) {
+	   
+	   //텍스트 필드 검증
+	   tf.textProperty().addListener((ob,olds,news)->{
+		   try {
+          news = news.replaceAll(",", "");
+          if(news.equals("")) {
+        	  tf.setText("0");
+          }
+          //int 한계 값을 초과하는 값을 입력하면(news) 금액을 추가할 수 없다는 알림창을 띄우고 이전 값(olds)로 되돌린다.
+          else if(Long.valueOf(news)>=2147483647) {
+             JOptionPane.showMessageDialog(null, "더 이상 금액을 추가할 수 없습니다.");
+             tf.setText(olds);
+             
+          } else {
+          //입력받은 값을 더한 현재 금액을 천단위 구분 다시 해서 TextField에 입력.
+          String received = df.format(Long.valueOf(news));
+          //백스페이스키를 사용할 경우 ","찍어주는 작업 떄문에 1000단위 지점에서 지우게되면 the start must be <= the end 라는 오류가 나기때문에
+          //Platform.runLater로 setText를 해줘야한다. (","찍어주는 작업이 없다면 그냥 setText로 써도 상관없다.)
+          Platform.runLater(()->{
+        	  tf.setText(received);
+        	  //Platform.runLater()로 setText하게되면 텍스트필드 값 변경 후 
+        	  //기본적으로 커서가 제일 앞(0 번째)에 위치하게 되기때문에 텍스트필드의 끝에다 위치를 다시 잡아준다.
+        	  tf.positionCaret(tf.getLength());
+          }); 
+          //거스름돈 계산
+          calChange();
+          }
+		   } catch (Exception e) {
+			   //잘못된 값을 받은금액칸에 입력하면 이전 값으로 되돌린다.(숫자가 아닌 값)
+			   System.out.println("잘못된 값을 입력하셨습니다.");
+			   tf.setText(olds);
+		}
+       	});
+	   
+   }
+   
+
    //숫자입력 버튼
    public void numberProcess(ActionEvent event) {
    //눌러진 버튼 값
    String number = ((Button)event.getSource()).getText();
-   //받은 금액 텍스트 필드 검증
-   amountReceived.textProperty().addListener((ob,olds,news)->{
-      news = news.replaceAll(",", "");
-      if(news.equals("")) {
-         amountReceived.setText("0");
-      }
-      //int 한계 값을 초과하는 값을 입력하면(news) 금액을 추가할 수 없다는 알림창을 띄우고 이전 값(olds)로 되돌린다.
-      else if(Long.valueOf(news)>=2147483647) {
-         JOptionPane.showMessageDialog(null, "더 이상 금액을 추가할 수 없습니다.");
-         amountReceived.setText(olds);
-      }
-   });
-   //값을 입력받으면 1000단위 구분,를 한번 제거했다가 다시 현재 입력된 값에 맞게 1000단위 구분을 해서 입력한다.
+   //TextField에 append
    amountReceived.appendText(number);
-   String tmp = amountReceived.getText();
-   tmp = tmp.replaceAll(",", "");
-   amountReceived.setText(df.format(Long.valueOf(tmp)));
-   calChange();
    }
    
    //1000,5000,10000,50000단위 숫자 입력 버튼
    public void addNumberProcess(ActionEvent event) {
       String addNumber = ((Button)event.getSource()).getText();
       addNumber = addNumber.replaceAll(",", "");
-      if(amountReceived.getText().equals("")) {
-         amountReceived.setText("0");
-      }
-      //단위 구분
-      amountReceived.setText(amountReceived.getText().replaceAll(",", ""));
-      int Num = Integer.parseInt(amountReceived.getText());
+      int Num = Integer.parseInt(amountReceived.getText().replaceAll(",", ""));
       int addNum = Integer.parseInt(addNumber);
       amountReceived.setText(df.format(Num+addNum));
-      calChange();
    }
    
    //거스름돈 
@@ -177,10 +213,10 @@ public class Payment {
          if(newValue.length()>length) {
             textField.setText(newValue.substring(0,length));
          }
-         //텍스트필드 숫자만 입력가능하도록 제한.
+//         텍스트필드 숫자만 입력가능하도록 제한.
          if (!newValue.matches("\\d*")) {
-              textField.setText(newValue.replaceAll("[^\\d]", ""));
-           }
+        	 textField.setText(newValue.replaceAll("[^\\d]", ""));
+         }
        });
    }
    
