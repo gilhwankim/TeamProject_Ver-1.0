@@ -24,14 +24,10 @@
    <right>
       <VBox alignment="TOP_RIGHT" prefWidth="100.0" BorderPane.alignment="CENTER">
          <children>
-            <TextField fx:id="cal" maxWidth="40.0" text="5" />
-            <TextField fx:id="row" maxWidth="40.0" text="5" />
-            <Button fx:id="apply" focusTraversable="false" mnemonicParsing="false" prefWidth="100.0" text="적용" />
             <Button fx:id="home" focusTraversable="false" mnemonicParsing="false" prefWidth="100.0" text="홈" />
             <Button fx:id="menuSetting" focusTraversable="false" mnemonicParsing="false" prefWidth="100.0" text="메뉴관리" />
-            <Button fx:id="reset" focusTraversable="false" mnemonicParsing="false" prefWidth="100.0" text="초기화" />
             <Button fx:id="receipt" focusTraversable="false" mnemonicParsing="false" prefWidth="100.0" text="영수증관리" />
-            <Button focusTraversable="false" mnemonicParsing="false" prefWidth="100.0" text="테이블관리" />
+            <Button fx:id="posSetting" focusTraversable="false" mnemonicParsing="false" prefWidth="100.0" text="테이블관리" />
             <Button focusTraversable="false" mnemonicParsing="false" prefWidth="100.0" text="판매내역" />
          </children>
       </VBox>

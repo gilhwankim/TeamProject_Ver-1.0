@@ -6,8 +6,8 @@ import java.io.ObjectOutputStream;
 import java.net.InetSocketAddress;
 import java.net.Socket;
 import java.net.URL;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 import java.util.ResourceBundle;
 
@@ -27,6 +27,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
+import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
@@ -46,6 +47,7 @@ public class TabletController implements Initializable{
    private ObjectInputStream ois;
    private ObjectOutputStream oos;
    private Data data;
+   private DecimalFormat df = new DecimalFormat("###,###");
 
    private Stage stage;
    private FlowPane fp;
@@ -245,7 +247,7 @@ public class TabletController implements Initializable{
                
                imageMenu.setImage(new Image(new ByteArrayInputStream(md.getImage())));
                labelName.setText(md.getName());
-               labelPrice.setText(md.getPrice() + "원");            
+               labelPrice.setText(df.format(md.getPrice())+ "원");            
                
                node.setOnMouseClicked(e -> {
                   if(e.getClickCount() == 2) {
@@ -342,8 +344,21 @@ public class TabletController implements Initializable{
        b.setCellValueFactory(new PropertyValueFactory<>("cnt"));
        b.setText("수량");
        
-       TableColumn<MenuData, ?> c = orderTable.getColumns().get(2);
+       //컬럼 아이템의 형식을 지정해서 넣는다. 
+       TableColumn<MenuData, Integer> c = (TableColumn<MenuData, Integer>) orderTable.getColumns().get(2);
        c.setCellValueFactory(new PropertyValueFactory<>("total"));
+       c.setCellFactory(tc -> new TableCell<MenuData, Integer>(){
+    	  @Override
+          protected void updateItem(Integer item, boolean empty) {
+             super.updateItem(item, empty);
+             if(empty) {
+                setText(null);
+             }else {
+            	 //1000단위 구분해서 컬럼에 넣는다.
+                setText(df.format(item));
+             }
+          };
+       });
        c.setText("가격");
        
    }
@@ -371,8 +386,8 @@ public class TabletController implements Initializable{
             break;
          }
       }
-      
    }
+   
    //'+' 버튼 동작
    private void plusBtnAction(ActionEvent event) {
       if(orderTableOl.size() == 0)
@@ -395,7 +410,7 @@ public class TabletController implements Initializable{
       for(MenuData om : orderTableOl) {
          i += om.getTotal();
       }
-      total.setText(i + "원");
+      total.setText(df.format(i) + "원");
    }
    
    //계산서 서버에 요청

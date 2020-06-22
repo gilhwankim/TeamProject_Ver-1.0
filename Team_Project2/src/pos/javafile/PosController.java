@@ -17,6 +17,8 @@ import java.util.concurrent.Executors;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import javax.swing.JOptionPane;
+
 import com.jfoenix.controls.JFXListView;
 
 import data.Data;
@@ -58,13 +60,12 @@ public class PosController implements Initializable{
    private List<TableData> tables = new ArrayList<TableData>();
    private @FXML BorderPane bp;
    private @FXML GridPane gp;
-   private @FXML TextField cal;
-   private @FXML TextField row;
-   private @FXML Button apply;
    private @FXML Button home;
    private @FXML Button menuSetting;
-   private @FXML Button reset;
    private @FXML Button receipt;
+   private @FXML Button posSetting;
+   
+   private boolean posSet;
    
    private DAO dao = DAO.getinstance();
    private SeatData seatData;
@@ -106,101 +107,25 @@ public class PosController implements Initializable{
          stopPos();
       });
       
-      //적용 버튼
-      apply.setOnAction( e -> {
-         int c =  Integer.parseInt(cal.getText());
-         int r = Integer.parseInt(row.getText());
-         int oC = gp.getColumnConstraints().size();
-         int oR = gp.getRowConstraints().size();
-         //현재 가로세로와 입력 가로세로가 같을때는 리턴
-         if(oC == c && oR == r) {
-            return;
-         }else {
-        	 //새로 설정한 가로,세로 길이 만큼 다시 테이블 정보 설정
-            for(int i=0; i<c; i++) {
-                for(int j=0; j<r; j++) {
-                   VBox v = tableNode("기본", false, new ArrayList<MenuData>(), "0");
-                   gp.add(v, j, i);
-                   int idx = gp.getChildren().indexOf(v);
-                   v.setId("기본" + idx);
-                   TableData td = new TableData();
-                   td.setTableId(v.getId());
-                   td.setTableNo(null);
-                   td.setOm_list(new ArrayList<MenuData>());
-                   td.setDisable(false);
-                   td.setColor("0xff0000ff");
-                   td.setTotal("0");
-                   tables.add(td);
-                }
-             }
-            setGridPane(c, r);
-            save();
-            tablet_list.clear();
-            for(int i=0; i<tables.size(); i++) {
-               Tablet t = new Tablet(); 
-               t.TableNo = tables.get(i).getTableId();
-               t.om_list = tables.get(i).getOm_list();
-               tablet_list.add(t);
-            }
-            for(MenuData m : mc.m_list) {
-               m.setCnt(0);
-            }
-         }
-      });
-      //행,열 텍스트 감시(10이 최대)
-      cal.textProperty().addListener( (ob, oldS, newS) -> {
-         if(Integer.parseInt(newS) > 10) {            
-            cal.setText(oldS);
-         }
-      });
-      row.textProperty().addListener( (ob, oldS, newS) -> {
-         if(Integer.parseInt(newS) > 10) {            
-            row.setText(oldS);
-         }
-      });
-      
       //pos 화면 전환 여기
       menuSetting.setOnAction( e -> bp.setCenter(mc.get()));
-      home.setOnAction( e -> bp.setCenter(gp));
+      home.setOnAction( e -> {
+         bp.setCenter(gp);
+         posSet = false;
+      });
       receipt.setOnAction(e ->{
-    	 try {
-			Parent p =  FXMLLoader.load(getClass().getResource("../management/Receipt.fxml"));
-			bp.setCenter(p);
-		} catch (IOException e1) {}
+        try {
+         Parent p =  FXMLLoader.load(getClass().getResource("../management/Receipt.fxml"));
+         bp.setCenter(p);
+      } catch (IOException e1) {}
       });
       
-      //초기화버튼 (완성하고 지울것)
-      reset.setOnAction( e -> {
-         tables.clear();
-         colAndRow(4, 4);
-         for(int i=0; i<4; i++) {
-            for(int j=0; j<4; j++) {
-               VBox v = tableNode("기본", false, new ArrayList<MenuData>(), "0");
-               gp.add(v, j, i);
-               int idx = gp.getChildren().indexOf(v);
-               v.setId("기본" + idx);
-               TableData td = new TableData();
-               td.setTableId(v.getId());
-               td.setTableNo(null);
-               td.setOm_list(new ArrayList<MenuData>());
-               td.setDisable(false);
-               td.setColor("0xff0000ff");
-               td.setTotal("0");
-               tables.add(td);
-            }
-         }
-         save();
-         tablet_list.clear();
-         for(int i=0; i<tables.size(); i++) {
-            Tablet t = new Tablet(); 
-            t.TableNo = tables.get(i).getTableId();
-            t.om_list = tables.get(i).getOm_list();
-            tablet_list.add(t);
-         }
-         for(MenuData m : mc.m_list) {
-            m.setCnt(0);
-         }
+      //포스기 테이블 관리 클릭
+      posSetting.setOnAction(e-> {
+         bp.setCenter(posSetting());
+         posSet = true;
       });
+    
       //서버 열기
       startPos();
    }
@@ -282,6 +207,10 @@ public class PosController implements Initializable{
       
       //우클릭으로 활성화/비활성화
       v.setOnMouseClicked( e -> {
+         //홈화면이면 변경 불가능
+         if(posSet == false) {
+            return;
+         }
          if(e.getClickCount() == 1 && e.getButton() == MouseButton.SECONDARY) {
             //빨간불일때만 비활성화 가능
             if(c.getFill().equals(Color.web("0xff0000ff"))) {
@@ -302,8 +231,12 @@ public class PosController implements Initializable{
          }
        });
       
-      //테이블번호는 테이블이 빨간불일때만 변경할 수 있다.
+      //더블클릭 시 테이블번호 설정(테이블번호는 테이블이 빨간불일때만 변경할 수 있다.)
       tf.setOnMouseClicked( e -> {
+       //홈화면이면 변경 불가능
+         if(posSet == false) {
+            return;
+         }
          if(e.getClickCount() == 2) {
             if(c.getFill().equals(Color.web("0xff0000ff"))) {
                tf.setEditable(true);
@@ -353,6 +286,107 @@ public class PosController implements Initializable{
       seatData.setCol(oR);
       seatData.setTables(tables);
       dao.save("좌석", seatData);
+   }
+   
+   //포스기 테이블 설정
+   private BorderPane posSetting() {
+      try {
+      BorderPane bp = FXMLLoader.load(getClass().getResource("../fxml/posSetting.fxml"));
+      TextField row = (TextField)bp.lookup("#row");
+      TextField col = (TextField)bp.lookup("#col");
+      Button apply = (Button)bp.lookup("#apply");
+      Button reset = (Button)bp.lookup("#reset");
+      bp.setCenter(gp);
+      
+       //적용 버튼
+      apply.setOnAction( e -> {
+         int c =  Integer.parseInt(col.getText());
+         int r = Integer.parseInt(row.getText());
+         int oC = gp.getColumnConstraints().size();
+         int oR = gp.getRowConstraints().size();
+         //현재 가로세로와 입력 가로세로가 같을때는 리턴
+         if(oC == c && oR == r) {
+            return;
+         }else {
+            //새로 설정한 가로,세로 길이 만큼 다시 테이블 정보 설정
+            for(int i=0; i<c; i++) {
+                for(int j=0; j<r; j++) {
+                   VBox v = tableNode("기본", false, new ArrayList<MenuData>(), "0");
+                   gp.add(v, j, i);
+                   int idx = gp.getChildren().indexOf(v);
+                   v.setId("기본" + idx);
+                   TableData td = new TableData();
+                   td.setTableId(v.getId());
+                   td.setTableNo(null);
+                   td.setOm_list(new ArrayList<MenuData>());
+                   td.setDisable(false);
+                   td.setColor("0xff0000ff");
+                   td.setTotal("0");
+                   tables.add(td);
+                }
+             }
+            setGridPane(c, r);
+            save();
+            tablet_list.clear();
+            for(int i=0; i<tables.size(); i++) {
+               Tablet t = new Tablet(); 
+               t.TableNo = tables.get(i).getTableId();
+               t.om_list = tables.get(i).getOm_list();
+               tablet_list.add(t);
+            }
+            for(MenuData m : mc.m_list) {
+               m.setCnt(0);
+            }
+         }
+      });
+      //행,열 텍스트 감시(10이 최대)
+      col.textProperty().addListener( (ob, oldS, newS) -> {
+         if(Integer.parseInt(newS) > 10) {            
+            col.setText(oldS);
+         }
+      });
+      row.textProperty().addListener( (ob, oldS, newS) -> {
+         if(Integer.parseInt(newS) > 10) {            
+            row.setText(oldS);
+         }
+      });
+      
+      //초기화버튼 (완성하고 지울것)
+      reset.setOnAction( e -> {
+         tables.clear();
+         colAndRow(4, 4);
+         for(int i=0; i<4; i++) {
+            for(int j=0; j<4; j++) {
+               VBox v = tableNode("기본", false, new ArrayList<MenuData>(), "0");
+               gp.add(v, j, i);
+               int idx = gp.getChildren().indexOf(v);
+               v.setId("기본" + idx);
+               TableData td = new TableData();
+               td.setTableId(v.getId());
+               td.setTableNo(null);
+               td.setOm_list(new ArrayList<MenuData>());
+               td.setDisable(false);
+               td.setColor("0xff0000ff");
+               td.setTotal("0");
+               tables.add(td);
+            }
+         }
+         save();
+         tablet_list.clear();
+         for(int i=0; i<tables.size(); i++) {
+            Tablet t = new Tablet(); 
+            t.TableNo = tables.get(i).getTableId();
+            t.om_list = tables.get(i).getOm_list();
+            tablet_list.add(t);
+         }
+         for(MenuData m : mc.m_list) {
+            m.setCnt(0);
+         }
+      });
+      
+      return bp;
+   } catch (Exception e) { e.printStackTrace(); }
+   return bp;
    }
    
    //가로세로 비교해서 입력된 행,열에 맞게 만들기
@@ -469,7 +503,7 @@ public class PosController implements Initializable{
          if(data == null)
             return;
          try {
-        	oos.reset();
+           oos.reset();
             oos.writeObject(data);
             oos.flush();
          } catch (Exception e) {
@@ -597,9 +631,10 @@ public class PosController implements Initializable{
                 VBox vbox = (VBox) gp.getChildren().get(i);
                 if(vbox.getId().equals(data.getTableNo())) {
                    vbox.setStyle("-fx-border-color:red");
-                	}
                 }
              }
+             JOptionPane.showMessageDialog(null,"호출.");
+         }
          save();
       }
       
@@ -686,10 +721,10 @@ public class PosController implements Initializable{
 
       //테이블 번호, 주문내역전송
       public void sendOrderInfo(Data data) {
-    	  if(data.getOm_list().size()==0) {
-    		  System.out.println("주문하실 메뉴를 선택해주세요");
-    		  return;
-    	  }
+         if(data.getOm_list().size()==0) {
+            System.out.println("주문하실 메뉴를 선택해주세요");
+            return;
+         }
          Date time = new Date();
          SimpleDateFormat format = new SimpleDateFormat("hh시mm분ss초");
          String nowTime = format.format(time);
@@ -707,33 +742,33 @@ public class PosController implements Initializable{
       }
       //결제 버튼 누르면 결제 승인 후 테이블 주문 목록 초기화
       public void deleteTableinfo() {
-    	  tpc.close();
-    	  //DB에 올라가는 테이블 주문 정보
-    	  for(TableData td : tables) {
-    		  if(this.TableNo.equals(td.getTableNo())) {
-    			  td.setOm_list(new ArrayList<MenuData>());
-    			  td.setTotal("0");
-    			  break;
-    		  }
-    	  }
-    	  //포스기 테이블 화면 설정(초기화)
-    	  for(int i=0; i<gp.getChildren().size(); i++) {
-    		  VBox v = (VBox) gp.getChildren().get(i);
-    		  if(v.getId().equals(this.TableNo)) {
-    			  JFXListView<HBox> lv = (JFXListView<HBox>)v.lookup("#lv");
-        	      ObservableList<HBox> lv_ol = lv.getItems();
-        	      Label price = (Label)v.lookup("#price");
-        	      lv_ol.clear();
-        	      price.setText("0");
-        	      break;
-    		  }
-    		  
-    	  }
-    	  //포스기가 가지고 있는 주문 목록
-    	  this.om_list = new ArrayList<MenuData>();
-    	  System.out.println("@@@@@@@@@@결제완료"+this.TableNo+"번");
-    	  //DB에 초기화된 데이터 연동
-    	  save();
+         tpc.close();
+         //DB에 올라가는 테이블 주문 정보
+         for(TableData td : tables) {
+            if(this.TableNo.equals(td.getTableNo())) {
+               td.setOm_list(new ArrayList<MenuData>());
+               td.setTotal("0");
+               break;
+            }
+         }
+         //포스기 테이블 화면 설정(초기화)
+         for(int i=0; i<gp.getChildren().size(); i++) {
+            VBox v = (VBox) gp.getChildren().get(i);
+            if(v.getId().equals(this.TableNo)) {
+               JFXListView<HBox> lv = (JFXListView<HBox>)v.lookup("#lv");
+                 ObservableList<HBox> lv_ol = lv.getItems();
+                 Label price = (Label)v.lookup("#price");
+                 lv_ol.clear();
+                 price.setText("0");
+                 break;
+            }
+            
+         }
+         //포스기가 가지고 있는 주문 목록
+         this.om_list = new ArrayList<MenuData>();
+         System.out.println("@@@@@@@@@@결제완료"+this.TableNo+"번");
+         //DB에 초기화된 데이터 연동
+         save();
       }
    }
 }

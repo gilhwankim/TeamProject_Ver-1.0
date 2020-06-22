@@ -253,6 +253,30 @@ public class DAO {
         }
         return list;
     }
+    
+    //환불 하기
+    public boolean refund(String date) {
+        String sql = "update paymentinfotbl set payMethod = '환불' where saledate = ?;";
+         PreparedStatement pstmt = null;
+         try {
+             pstmt = conn.prepareStatement(sql);
+             pstmt.setString(1, date);              
+             pstmt.executeUpdate();
+        
+             return true;
+         } catch (Exception e) {
+             e.printStackTrace();
+         } finally {
+             try {
+                 if (pstmt != null && !pstmt.isClosed())
+                     pstmt.close();
+             } catch (Exception e) {
+                 e.printStackTrace();
+             }
+         }
+         return false;
+    }
+    
     //날짜, 메뉴 리스트, 가격, 카드/현금 종류
     public void PaymentInfo(String date, List<MenuData> list, String totalPrice, boolean cardCash,String num) {
        String sql = "insert into paymentinfotbl values(?, ?, ?, ?, ?, ?);";

@@ -36,15 +36,21 @@
          </padding>
          <children>
             <BorderPane prefHeight="30.0">
-               <left>
-                  <Label text="거래일자" BorderPane.alignment="CENTER" />
-               </left>
                <padding>
                   <Insets left="5.0" right="5.0" />
                </padding>
                <right>
                   <DatePicker fx:id="dateChoice" BorderPane.alignment="CENTER" />
                </right>
+               <center>
+                  <Label text="거래일자" BorderPane.alignment="CENTER_RIGHT">
+                     <BorderPane.margin>
+                        <Insets right="10.0" />
+                     </BorderPane.margin></Label>
+               </center>
+               <left>
+                  <Button fx:id="refund" text="환불 하기" BorderPane.alignment="CENTER" />
+               </left>
             </BorderPane>
             <TableView fx:id="receiptDetailTable" prefHeight="560.0">
               <columns>

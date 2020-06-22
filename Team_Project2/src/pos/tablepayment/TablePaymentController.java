@@ -1,5 +1,6 @@
 package pos.tablepayment;
 
+import java.text.DecimalFormat;
 import java.util.Iterator;
 import java.util.List;
 
@@ -41,6 +42,7 @@ public class TablePaymentController  {
    private  MakeTab mt;
    private Payment p; //결제화면
    private Tablet kitchen = null;
+   private DecimalFormat df = new DecimalFormat("###,###");
    
    //서버 최초 실행시 TablePaymentController생성자 호출하고 초기화한다.
    @SuppressWarnings("unchecked")
@@ -200,7 +202,7 @@ public class TablePaymentController  {
             for(MenuData om : this.t.om_list) {
                total += om.getTotal();
             }
-             payTotal.setText("총금액 : " + total + "원");
+             payTotal.setText("총금액 : " + df.format(total) + "원");
         }
       });
    }

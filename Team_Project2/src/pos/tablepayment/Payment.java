@@ -1,17 +1,13 @@
 package pos.tablepayment;
 
-import java.awt.Window;
-import java.awt.event.KeyEvent;
 import java.io.IOException;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.Scanner;
 
 import javax.swing.JOptionPane;
 
 import data.MenuData;
-import javafx.animation.KeyValue;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -22,17 +18,18 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.TextField;
-import javafx.scene.input.KeyCode;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import pos.javafile.DAO;
+import pos.javafile.Popup;
 import pos.javafile.PosController.Tablet;
 
 public class Payment {
    
    private Stage tablePaymentStage;
    public ObservableList<MenuData> orderMenu_list = FXCollections.observableArrayList();
+   public Popup pop = new Popup();
    
    private TextField amountOfPayment; //현금, 카드결제 화면 청구금액
    private TextField amountReceived; //받은 금액
@@ -46,6 +43,8 @@ public class Payment {
    private ChoiceBox<String> installment; //할부개월 초이스 박스
    private DecimalFormat df = new DecimalFormat("###,###"); //단위마다 쉼표
    private Tablet t;
+   
+   
    DAO dao = DAO.getinstance();
    
    //생성자
@@ -93,7 +92,7 @@ public class Payment {
              String date = sdf.format(new Date());
              dao.PaymentInfo(date,t.om_list,amountOfPayment.getText(), false, customerInfo.getText());
              //결제완료 후 Stage닫음
-             JOptionPane.showMessageDialog(null,"결제가 완료되었습니다.");
+             pop.popupMsg("받은 금액: " + amountReceived.getText()+"원\n\n결제 금액: "+ amountOfPayment.getText() + "원\n\n결제가 완료되었습니다.");
              dialog.close();
              t.deleteTableinfo();
              
@@ -106,8 +105,18 @@ public class Payment {
           keyLocked(customerInfo, 10);
           //현금영수증 승인요청 버튼
           approval = (Button)cashPayment.lookup("#approval");
+          
           //승인완료 알림 팝업창
-          approval.setOnAction(e->JOptionPane.showMessageDialog(null, "결제금액: " + amountOfPayment.getText() +"\n요청번호: " + customerInfo.getText() + "\n승인이 완료되었습니다."));
+          approval.setOnAction(e->{
+        	  if(amountOfPayment.getText().equals("0")) {
+        		  pop.popupMsg("결제 금액이 없습니다.");
+        		  return;
+        	  }else if(customerInfo.getText().equals("")) {
+        		  pop.popupMsg("번호를 입력해주세요.");
+        		  return;
+        	  }
+        	  pop.popupMsg("결제 금액: " + amountOfPayment.getText() +"\n\n요청 번호: " + customerInfo.getText() + "\n\n승인이 완료되었습니다.");
+          });
           
           cashExitBtn.setOnMouseClicked(e-> dialog.close());
           Button clear = (Button)cashPayment.lookup("#clear");
@@ -129,7 +138,6 @@ public class Payment {
    
    //받은 금액 텍스트 필드 검증
    public void cashFieldListener(TextField tf) {
-	   
 	   //텍스트 필드 검증
 	   tf.textProperty().addListener((ob,olds,news)->{
 		   try {
@@ -145,7 +153,7 @@ public class Payment {
           } else {
           //입력받은 값을 더한 현재 금액을 천단위 구분 다시 해서 TextField에 입력.
           String received = df.format(Long.valueOf(news));
-          //백스페이스키를 사용할 경우 ","찍어주는 작업 떄문에 1000단위 지점에서 지우게되면 the start must be <= the end 라는 오류가 나기때문에
+          //백스페이스키를 사용할 경우 ","찍어주는 작업 떄문에 1000단위 지점에서 지우게되면 the start must be <= the end 라는 오류가 나서
           //Platform.runLater로 setText를 해줘야한다. (","찍어주는 작업이 없다면 그냥 setText로 써도 상관없다.)
           Platform.runLater(()->{
         	  tf.setText(received);
@@ -162,9 +170,7 @@ public class Payment {
 			   tf.setText(olds);
 		}
        	});
-	   
    }
-   
 
    //숫자입력 버튼
    public void numberProcess(ActionEvent event) {
@@ -236,6 +242,11 @@ public class Payment {
           //카드결제 화면 닫기
           Button cardExitBtn = (Button)cardPayment.lookup("#exit");
           cardExitBtn.setOnMouseClicked(e-> dialog.close());
+          
+          cardNum = (TextField)cardPayment.lookup("#cardNum");
+          keyLocked(cardNum, 16);
+          //초이스박스
+          installment = (ChoiceBox<String>)cardPayment.lookup("#installment");
           //결제금액                                                                                                
           amountOfPayment = (TextField)cardPayment.lookup("#cardAmountOfPayment");
           amountOfPayment.setText(df.format(total));
@@ -244,11 +255,11 @@ public class Payment {
           cardPaymentbtn.setOnAction(e->{
              if(cardNum.getText().equals("")) {
                 System.out.println("카드 번호를 입력해주세요");
-                JOptionPane.showMessageDialog(null,"카드 번호를 입력해주세요.");
+                pop.popupMsg("카드 번호를 입력해주세요.");
                 return;
              }else if(installment.getSelectionModel().getSelectedItem()==null) {
                 System.out.println("할부개월을 선택해주세요");
-                JOptionPane.showMessageDialog(null,"할부개월을 선택해주세요.");
+                pop.popupMsg("할부개월을 선택해주세요.");
                 return;
              }
              SimpleDateFormat sdf = new SimpleDateFormat("yyyy년MM월dd일 hh:mm:ss a");
@@ -256,16 +267,12 @@ public class Payment {
              dao.PaymentInfo(date,t.om_list,amountOfPayment.getText(), true, cardNum.getText());
              
              //결제완료 후 Stage닫음
-             JOptionPane.showMessageDialog(null,"결제가 완료되었습니다.");
+             pop.popupMsg("결제 금액: "+ amountOfPayment.getText() + "원\n\n할부 개월: "+installment.getSelectionModel().getSelectedItem()+"\n\n결제가 완료되었습니다.");
              dialog.close();
              t.deleteTableinfo();
           });
           //카드번호
-          cardNum = (TextField)cardPayment.lookup("#cardNum");
-          keyLocked(cardNum, 16);
-          
-          //초이스박스
-          installment = (ChoiceBox<String>)cardPayment.lookup("#installment");
+
           
        } catch (IOException e) { e.printStackTrace(); }
    }

@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.control.*?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<BorderPane id="bp" maxHeight="720.0" maxWidth="900.0" minHeight="720.0" minWidth="800.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
+   <bottom>
+      <HBox alignment="CENTER_RIGHT" spacing="10.0" BorderPane.alignment="CENTER_RIGHT">
+         <children>
+            <TextField id="col" maxWidth="40.0" text="5" />
+            <TextField id="row" maxWidth="40.0" text="5" />
+            <Button id="apply" focusTraversable="false" mnemonicParsing="false" prefWidth="100.0" text="적용" />
+            <Button id="reset" focusTraversable="false" mnemonicParsing="false" prefWidth="100.0" text="초기화" />
+         </children>
+         <padding>
+            <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+         </padding>
+      </HBox>
+   </bottom>
+</BorderPane>

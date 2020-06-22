@@ -9,13 +9,13 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.ResourceBundle;
-import java.util.StringTokenizer;
 
 import data.MenuData;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Button;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
@@ -28,6 +28,7 @@ public class ReceiptController implements Initializable{
    //결제 금액 라벨
    @FXML private Label totalPrice; 
    @FXML private DatePicker dateChoice;
+   @FXML private Button refund;
    DecimalFormat df = new DecimalFormat("###,###"); //단위마다 쉼표
    private DAO dao = DAO.getinstance(); //거래내역 DB                        
    @FXML private TableView<PaymentInfo> receiptTable; //거래일자, 결제금액, 결제방법 테이블 
@@ -60,6 +61,19 @@ public class ReceiptController implements Initializable{
             }
          }
       });
+      
+      refund.setOnAction( e -> {
+          PaymentInfo pi = receiptTable.getSelectionModel().getSelectedItem();
+          String str = pi.getDate();
+          if(str != null && !str.equals("")) {
+             //여기 팝업창 띄워서 확인 취소 받아서
+             //확인이면 지우는걸로 ????
+             if(dao.refund(str)) {
+            	 pi.setPayMethod("환불");
+            	 receiptTable.refresh();
+             }
+          }
+       });
       
       //큰 테이블에서 선택하면 세부테이블에 내용이 출력되게 함
       receiptTable.getSelectionModel().selectedItemProperty().addListener((p, old, news) ->{
