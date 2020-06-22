@@ -64,6 +64,7 @@ public class PosController implements Initializable{
    private @FXML Button menuSetting;
    private @FXML Button receipt;
    private @FXML Button posSetting;
+   private @FXML Button salesHistory;
    
    private boolean posSet;
    
@@ -105,6 +106,17 @@ public class PosController implements Initializable{
       this.posStage.setOnCloseRequest(e -> {
          save();
          stopPos();
+      });
+      
+      //판매현황 
+      salesHistory.setOnAction(e->{
+    	  
+    	  try {
+			Parent parent = FXMLLoader.load(getClass().getResource("../fxml/SalesStatus.fxml"));
+			bp.setCenter(parent);
+		} catch (Exception e2) {
+			e2.printStackTrace();
+		}
       });
       
       //pos 화면 전환 여기

@@ -28,7 +28,7 @@
             <Button fx:id="menuSetting" focusTraversable="false" mnemonicParsing="false" prefWidth="100.0" text="메뉴관리" />
             <Button fx:id="receipt" focusTraversable="false" mnemonicParsing="false" prefWidth="100.0" text="영수증관리" />
             <Button fx:id="posSetting" focusTraversable="false" mnemonicParsing="false" prefWidth="100.0" text="테이블관리" />
-            <Button focusTraversable="false" mnemonicParsing="false" prefWidth="100.0" text="판매내역" />
+            <Button fx:id="salesHistory" focusTraversable="false" mnemonicParsing="false" prefWidth="100.0" text="판매내역" />
          </children>
       </VBox>
    </right>

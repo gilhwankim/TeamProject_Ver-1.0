@@ -8,12 +8,12 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.layout.VBox?>
 
-<VBox alignment="TOP_CENTER" prefHeight="720.0" prefWidth="900.0" spacing="20.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="pos.management.SalesStatusController">
+<VBox alignment="TOP_CENTER" prefHeight="720.0" prefWidth="900.0" spacing="20.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="pos.javafile.SalesStatusController">
    <padding>
       <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
    </padding>
    <children>
-      <Label prefHeight="30.0" text="판매현황">
+      <Label prefHeight="79.0" prefWidth="80.0" text="판매현황">
          <font>
             <Font size="20.0" />
          </font>
@@ -38,7 +38,7 @@
                         <Font size="20.0" />
                      </font>
                   </Label>
-                  <Label prefHeight="60.0" prefWidth="464.0" text="0원" />
+                  <Label fx:id="monthlyPay" prefHeight="60.0" prefWidth="464.0" text="0원" />
                </children>
             </VBox>
             <VBox GridPane.columnIndex="1">
@@ -48,17 +48,17 @@
                         <Font size="20.0" />
                      </font>
                   </Label>
-                  <Label prefHeight="60.0" prefWidth="464.0" text="0건" />
+                  <Label fx:id="monthlyPayCnt" prefHeight="60.0" prefWidth="464.0" text="0건" />
                </children>
             </VBox>
             <VBox GridPane.columnIndex="2">
                <children>
-                  <Label prefHeight="60.0" prefWidth="368.0" text="일일 평균 결제 금액(30일)">
+                  <Label prefHeight="60.0" prefWidth="368.0" text="최근 30일 평균 결제 금액">
                      <font>
                         <Font size="20.0" />
                      </font>
                   </Label>
-                  <Label prefHeight="60.0" prefWidth="464.0" text="0원" />
+                  <Label fx:id="lastThirtydayPay" prefHeight="60.0" prefWidth="464.0" text="0원" />
                </children>
             </VBox>
             <VBox GridPane.rowIndex="1">
@@ -68,7 +68,7 @@
                         <Font size="20.0" />
                      </font>
                   </Label>
-                  <Label prefHeight="60.0" prefWidth="464.0" text="0원" />
+                  <Label fx:id="dailyPay" prefHeight="60.0" prefWidth="464.0" text="0원" />
                </children>
             </VBox>
             <VBox GridPane.columnIndex="1" GridPane.rowIndex="1">
@@ -78,10 +78,10 @@
                         <Font size="20.0" />
                      </font>
                   </Label>
-                  <Label prefHeight="60.0" prefWidth="464.0" text="0원" />
+                  <Label fx:id="dailyPayCnt" prefHeight="60.0" prefWidth="464.0" text="0원" />
                </children>
             </VBox>
-            <DatePicker GridPane.columnIndex="2" GridPane.rowIndex="1" />
+            <DatePicker fx:id="dateSel" GridPane.columnIndex="2" GridPane.rowIndex="1" />
             <VBox prefHeight="200.0" prefWidth="100.0" GridPane.rowIndex="2" GridPane.rowSpan="2">
                <children>
                   <Label prefHeight="60.0" prefWidth="368.0" text="결제 수단 별 매출">
@@ -92,20 +92,20 @@
                   <HBox prefHeight="100.0" prefWidth="200.0">
                      <children>
                         <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="47.0" prefWidth="90.0" text="카드" />
-                        <Label alignment="CENTER_RIGHT" contentDisplay="CENTER" prefHeight="47.0" prefWidth="207.0" text="0원" />
+                        <Label fx:id="cardPay" alignment="CENTER_RIGHT" contentDisplay="CENTER" prefHeight="47.0" prefWidth="207.0" text="0원" />
                      </children>
                   </HBox>
                   <ProgressBar prefHeight="18.0" prefWidth="304.0" progress="0.0" />
                   <HBox prefHeight="100.0" prefWidth="200.0">
                      <children>
                         <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="47.0" prefWidth="90.0" text="현금" />
-                        <Label alignment="CENTER_RIGHT" contentDisplay="CENTER" prefHeight="47.0" prefWidth="207.0" text="0원" />
+                        <Label fx:id="cashPay" alignment="CENTER_RIGHT" contentDisplay="CENTER" prefHeight="47.0" prefWidth="207.0" text="0원" />
                      </children>
                   </HBox>
                   <ProgressBar prefHeight="18.0" prefWidth="304.0" progress="0.0" />
                </children>
             </VBox>
-            <PieChart prefHeight="214.0" prefWidth="109.0" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.rowIndex="2" GridPane.rowSpan="2" />
+            <PieChart fx:id="bestMenu" prefHeight="214.0" prefWidth="109.0" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.rowIndex="2" GridPane.rowSpan="2" />
          </children>
       </GridPane>
    </children>
