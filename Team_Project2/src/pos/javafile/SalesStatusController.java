@@ -6,6 +6,7 @@ import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
@@ -56,7 +57,6 @@ public class SalesStatusController implements Initializable{
 	private int cnt = 0; // 결제 건 수 count
 	private int cardCnt;
 	private int cashCnt;
-	
 	public SalesStatusController() {
 		
 	}
@@ -77,6 +77,7 @@ public class SalesStatusController implements Initializable{
 			pickerMonthlyPay(dateSel.getValue().format(DateTimeFormatter.ofPattern("yyyy년MM월")));
 			pickerDailyPay(dateSel.getValue().format(DateTimeFormatter.ofPattern("yyyy년MM월dd일")));
 			MonthlyPayMethod(dateSel.getValue().format(DateTimeFormatter.ofPattern("yyyy년MM월")));
+			pieChart(dateSel.getValue().format(DateTimeFormatter.ofPattern("yyyy년MM월")));
 		});
 		
 		//최근 30일 평균 결제 금액(오늘~29일전)
@@ -156,25 +157,31 @@ public class SalesStatusController implements Initializable{
 		cashBar.setProgress(cashRatio);
 	}
 	
+	//Best5 메뉴 파이 차트
 	public void pieChart(String date) {
-
+			//이전에 가지고 있던 데이터 제거
+			map.clear();
+			
 			monthlyList = dao.selectDate(date);
 			for(PaymentInfo mpi : monthlyList) {
 				if(!mpi.getPayMethod().equals("환불")) {
 					boolean flag = false;
+					//불러온 결제 목록의 메뉴를 담는다.
 					for(MenuData md : mpi.getAllMenu()) {
-						//메뉴 카운트
+						//제일 처음 비었을 때 해당 메뉴의 개수 만큼 입력.
 						if(map.size()==0) {
 							map.put(md, md.getCnt());
 							continue;
 						}else {
-							
+							//비어있지 않을 때
 							for(MenuData md2 : map.keySet()) {
+								//같은 메뉴가 이미 들어가 있다면(md.getName()) 지금 비교하는 메뉴(md2.getName())의 주문한 수량 값을 기존 값에다 더한다.
 								if(md.getName().equals(md2.getName())) {
 									map.put(md2, map.get(md2)+md.getCnt());
 									flag = true;
 									break;
 								}
+								//비어있지 않지만 새로운 메뉴일 때 해당 메뉴의 개수 만큼 입력.
 						}if(flag==false) {
 							map.put(md, md.getCnt());
 						}
@@ -183,30 +190,21 @@ public class SalesStatusController implements Initializable{
 				}
 			}
 		}
-//				
-//				List<Entry<MenuData, Integer>> list2 = new ArrayList<>(map.entrySet());
-//		        list2.sort(Entry.comparingByValue());
-//	
-//		        Map<MenuData, Integer> result = new LinkedHashMap<>();
-//		        for (Entry<MenuData, Integer> entry : list2) {
-//		            result.put(entry.getKey(), entry.getValue());
-//		        }
-//		        
 			   ObservableList<Data> list = FXCollections.observableArrayList(); 
+			   //map 데이터를 ObservableList에 담는다
 			   for(MenuData md : map.keySet()) {
 				   list.add(new Data(md.getName(), map.get(md)));
-				   
 			   }
+			   //기본 오름차순 정렬
 			   list.sort((a,b) -> Double.compare(a.getPieValue(), b.getPieValue()));
-			   Platform.runLater(()->{ for(int i=0; i<list.size(); i++) {
-				   if(i>4) {
-					   
-						   int tmp = i;
-					   list.remove(i);
-				   
-				   }
-			   }
+			   //내림차순 정렬(제일 많이 팔린 순)
+			   Collections.reverse(list);
+			   Platform.runLater(()->{
+				   //제일 많이 팔린 앞의 5개만 남기고 나머지 삭제
+				   list.remove(5, list.size());				   
 			   });
+			   //파이 차트에 데이터 입력
 		        bestMenu.setData(list); 
 	}
 }
+
