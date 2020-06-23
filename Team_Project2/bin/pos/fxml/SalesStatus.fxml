@@ -84,7 +84,7 @@
             <DatePicker fx:id="dateSel" GridPane.columnIndex="2" GridPane.rowIndex="1" />
             <VBox prefHeight="200.0" prefWidth="100.0" GridPane.rowIndex="2" GridPane.rowSpan="2">
                <children>
-                  <Label prefHeight="60.0" prefWidth="368.0" text="결제 수단 별 매출">
+                  <Label prefHeight="60.0" prefWidth="368.0" text="결제 수단 별 월 매출">
                      <font>
                         <Font size="20.0" />
                      </font>
@@ -95,14 +95,14 @@
                         <Label fx:id="cardPay" alignment="CENTER_RIGHT" contentDisplay="CENTER" prefHeight="47.0" prefWidth="207.0" text="0원" />
                      </children>
                   </HBox>
-                  <ProgressBar prefHeight="18.0" prefWidth="304.0" progress="0.0" />
+                  <ProgressBar fx:id="cardBar" prefHeight="18.0" prefWidth="304.0" progress="0.0" />
                   <HBox prefHeight="100.0" prefWidth="200.0">
                      <children>
                         <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="47.0" prefWidth="90.0" text="현금" />
                         <Label fx:id="cashPay" alignment="CENTER_RIGHT" contentDisplay="CENTER" prefHeight="47.0" prefWidth="207.0" text="0원" />
                      </children>
                   </HBox>
-                  <ProgressBar prefHeight="18.0" prefWidth="304.0" progress="0.0" />
+                  <ProgressBar fx:id="cashBar" prefHeight="18.0" prefWidth="304.0" progress="0.0" />
                </children>
             </VBox>
             <PieChart fx:id="bestMenu" prefHeight="214.0" prefWidth="109.0" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.rowIndex="2" GridPane.rowSpan="2" />

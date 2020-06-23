@@ -18,10 +18,12 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
+import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.KeyCode;
+import javafx.scene.paint.Color;
 import pos.javafile.DAO;
 
 public class ReceiptController implements Initializable{
@@ -100,8 +102,23 @@ public class ReceiptController implements Initializable{
       dateTc.setCellValueFactory(new PropertyValueFactory<>("date"));      
       TableColumn<PaymentInfo, ?> totalpayTc = receiptTable.getColumns().get(1);
       totalpayTc.setCellValueFactory(new PropertyValueFactory<>("totalPrice"));      
-      TableColumn<PaymentInfo, ?> paymethodTc = receiptTable.getColumns().get(2);
-      paymethodTc.setCellValueFactory(new PropertyValueFactory<>("payMethod"));     
+      TableColumn<PaymentInfo, String> paymethodTc = (TableColumn<PaymentInfo, String>)receiptTable.getColumns().get(2);
+      paymethodTc.setCellValueFactory(new PropertyValueFactory<>("payMethod"));
+      paymethodTc.setCellFactory(tc -> new TableCell<PaymentInfo, String>(){
+         @Override
+       protected void updateItem(String item, boolean empty) {
+          super.updateItem(item, empty);
+          if(!empty) {
+             if(item.equals("환불")) {
+                setText(item);
+                setTextFill(Color.RED);
+             }else {
+                setText(item);
+             }
+          }
+       }
+      
+      });
       obPayList = FXCollections.observableArrayList(payList);
       receiptTable.setItems(obPayList);
       //해당 날짜에 가져올 내역이 없으면 없다고 출력
@@ -118,26 +135,8 @@ public class ReceiptController implements Initializable{
    }      
    //테이블에 클릭된 결제내역을 받아와서 세부테이블에 보여주는 메서드
    public int showDetailDB(PaymentInfo paymentInfo) {
-      //PaymentInfo의 정보를 정제해서 넣기
       //총 결제액 담을 변수
       int totalTmp = 0;      
-      //메뉴별로 나눔
-//      StringTokenizer allSt = new StringTokenizer(paymentInfo.getAllMenu(), "@");
-//      int stSize = allSt.countTokens(); //메뉴수    
-      
-//      for(int i=0; i<stSize; i++) {
-//         String allMenu = allSt.nextToken();
-         //메뉴 세부내역 나눔
-//         StringTokenizer menuSt = new StringTokenizer(allMenu, "$");
-//         String name = menuSt.nextToken();
-//         int count = Integer.parseInt(menuSt.nextToken());
-//         int price = Integer.parseInt(menuSt.nextToken());
-//         omTmp =  new MenuData();
-//         omTmp.setName(name);
-//         omTmp.setPrice(price);
-//         omTmp.setCnt(count);
-//         omList.add(omTmp);
-//      }      
       //세부테이블에 세팅
       TableColumn<MenuData, ?> menuNameTc = receiptDetailTable.getColumns().get(0);
       menuNameTc.setCellValueFactory(new PropertyValueFactory<>("name"));      
