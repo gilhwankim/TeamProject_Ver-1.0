@@ -5,18 +5,16 @@ import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Map.Entry;
 import java.util.ResourceBundle;
 
 import data.MenuData;
 import javafx.application.Platform;
+import javafx.beans.binding.Bindings;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -69,7 +67,6 @@ public class SalesStatusController implements Initializable{
 		pickerDailyPay(sdfdaily.format(new Date()));
 		//결제 수단 별 월 매출 기본 값
 		MonthlyPayMethod(sdfMonth.format(new Date()));
-		
 		//날짜 선택시 매출 내역 변경
 		dateSel.setOnAction(e->{
 			//LocalDate 타입 날짜 형식 지정. (LocalDate -> String)
@@ -94,9 +91,6 @@ public class SalesStatusController implements Initializable{
 		}
 		int totalAvg = totalPrice/cnt;
 		lastThirtydayPay.setText(df.format(totalAvg)+"원");	
-		
- 
-		
 	}
 	
 	//날짜 선택 시 해당 날짜가 속하는 달을 기준으로 변경.
@@ -203,8 +197,13 @@ public class SalesStatusController implements Initializable{
 				   //제일 많이 팔린 앞의 5개만 남기고 나머지 삭제
 				   list.remove(5, list.size());				   
 			   });
+
 			   //파이 차트에 데이터 입력
-		        bestMenu.setData(list); 
+		        bestMenu.setData(list);
+				   for(Data d : bestMenu.getData()) {
+		                 d.nameProperty().bind(Bindings.concat(d.getName() + "\n(" + (int)d.getPieValue() + "개)"));
+		              }
+		        
 	}
 }
 
