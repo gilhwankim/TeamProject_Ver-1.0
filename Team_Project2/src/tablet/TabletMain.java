@@ -9,7 +9,6 @@ import javafx.stage.Stage;
 public class TabletMain extends Application{
 	
 	public static Stage tabletStage;
-	
 	@Override
 	public void start(Stage primaryStage) throws Exception {
 		tabletStage = primaryStage;

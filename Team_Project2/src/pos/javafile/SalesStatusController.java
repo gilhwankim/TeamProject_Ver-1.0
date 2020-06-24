@@ -5,6 +5,7 @@ import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
@@ -40,7 +41,6 @@ public class SalesStatusController implements Initializable{
 	private @FXML DatePicker dateSel;
 	private @FXML ProgressBar cardBar;
 	private @FXML ProgressBar cashBar;
-	private DAO dao = DAO.getinstance();
 	List<PaymentInfo> monthlyList;
 	List<PaymentInfo> dailyList;
 	List<PaymentInfo> thirtyDaysList;
@@ -55,31 +55,50 @@ public class SalesStatusController implements Initializable{
 	private int cnt = 0; // 결제 건 수 count
 	private int cardCnt;
 	private int cashCnt;
+	private LocalDate today;
 	public SalesStatusController() {
 		
 	}
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
-		pieChart(sdfMonth.format(new Date()));
 		//월 결제 내역 기본 값
 		pickerMonthlyPay(sdfMonth.format(new Date()));
 		//일 결제 내역 기본 값
 		pickerDailyPay(sdfdaily.format(new Date()));
 		//결제 수단 별 월 매출 기본 값
-		MonthlyPayMethod(sdfMonth.format(new Date()));
+		MonthlyPayMethod();
+		//파이차트
+		pieChart();
+		//날짜 선택 기본 값
+		
+		today = LocalDate.now();
+		System.out.println("@@@@@@"+today);
+		dateSel.setValue(today);
 		//날짜 선택시 매출 내역 변경
 		dateSel.setOnAction(e->{
 			//LocalDate 타입 날짜 형식 지정. (LocalDate -> String)
 //			dateSel.getValue().format(DateTimeFormatter.ofPattern("yyyy년MM월dd일"));
-			pickerMonthlyPay(dateSel.getValue().format(DateTimeFormatter.ofPattern("yyyy년MM월")));
-			pickerDailyPay(dateSel.getValue().format(DateTimeFormatter.ofPattern("yyyy년MM월dd일")));
-			MonthlyPayMethod(dateSel.getValue().format(DateTimeFormatter.ofPattern("yyyy년MM월")));
-			pieChart(dateSel.getValue().format(DateTimeFormatter.ofPattern("yyyy년MM월")));
+			if(today.format(DateTimeFormatter.ofPattern("yyyy년MM월")).equals(dateSel.getValue().format(DateTimeFormatter.ofPattern("yyyy년MM월")))) {
+				pickerDailyPay(dateSel.getValue().format(DateTimeFormatter.ofPattern("yyyy년MM월dd일")));
+			}else {
+				pickerMonthlyPay(dateSel.getValue().format(DateTimeFormatter.ofPattern("yyyy년MM월")));
+				pickerDailyPay(dateSel.getValue().format(DateTimeFormatter.ofPattern("yyyy년MM월dd일")));
+				MonthlyPayMethod();
+				pieChart();
+			}
+			today = dateSel.getValue();
 		});
 		
 		//최근 30일 평균 결제 금액(오늘~29일전)
-		for(int i=0; i<30; i++) {
-			thirtyDaysList =  dao.selectDate(LocalDate.now().minusDays(i).format(DateTimeFormatter.ofPattern("yyyy년MM월dd일")));
+		int size = AllPayment.payInfoList.size();
+		int size2 = 0;
+		if(size>30) {
+			size2= size-30;
+		}
+		thirtyDaysList = new ArrayList<PaymentInfo>();
+		for(int i=size-1; i>=size2; i--) {
+			thirtyDaysList.add(AllPayment.payInfoList.get(i));
+//			thirtyDaysList =  dao.selectDate(LocalDate.now().minusDays(i).format(DateTimeFormatter.ofPattern("yyyy년MM월dd일")));
 			for(PaymentInfo payAvg : thirtyDaysList) {
 				if(!payAvg.getPayMethod().equals("환불")) {
 					dayPrice += Integer.parseInt(payAvg.getTotalPrice().replaceAll(",", ""));
@@ -97,7 +116,13 @@ public class SalesStatusController implements Initializable{
 	public void pickerMonthlyPay(String date) {
 		cnt = 0;
 		totalPrice = 0;
-		monthlyList = dao.selectDate(date);
+		monthlyList = new ArrayList<PaymentInfo>();
+		for(PaymentInfo pi : AllPayment.payInfoList) {
+			if(pi.getDate().substring(0, 8).equals(date)) {
+				monthlyList.add(pi);
+			}
+		}
+//		monthlyList = dao.selectDate(date);
 		for(PaymentInfo mpi : monthlyList) {
 			//환불 건 수를 제외한 카드/현금 결제 금액 합계
 			if(!mpi.getPayMethod().equals("환불")) {
@@ -109,29 +134,30 @@ public class SalesStatusController implements Initializable{
 		monthlyPayCnt.setText(df.format(cnt)+"건");
 	}
 	
-	//날짜 선택 시 해당 날짜 기준으로 변경.
+//	//날짜 선택 시 해당 날짜 기준으로 변경.
 	public void pickerDailyPay(String date) {
 		cnt = 0;
 		totalPrice = 0;
-		monthlyList = dao.selectDate(date);
 		for(PaymentInfo mpi : monthlyList) {
-			//환불 건 수를 제외한 카드/현금 결제 금액 합계
-			if(!mpi.getPayMethod().equals("환불")) {
-			totalPrice += Integer.parseInt(mpi.getTotalPrice().replaceAll(",", ""));
-			cnt++;
+			System.out.println("@@@@@@@" + mpi.getDate().substring(0, 11));
+			if(mpi.getDate().substring(0, 11).equals(date)) {
+				//환불 건 수를 제외한 카드/현금 결제 금액 합계
+				if(!mpi.getPayMethod().equals("환불")) {
+				totalPrice += Integer.parseInt(mpi.getTotalPrice().replaceAll(",", ""));
+				cnt++;
+				}
 			}
 		}
 		dailyPay.setText(df.format(totalPrice)+"원");
 		dailyPayCnt.setText(df.format(cnt)+"건");
 	}
 	
-	//결제 수단 별 월 매출
-	public void MonthlyPayMethod(String date) {
+//	//결제 수단 별 월 매출
+	public void MonthlyPayMethod() {
 		cardPrice = 0;
 		cashPrice = 0;
 		cardCnt = 0;
 		cashCnt = 0;
-		monthlyList = dao.selectDate(date);
 		for(PaymentInfo mpi : monthlyList) {
 			if(!mpi.getPayMethod().equals("환불")) {
 				if(mpi.getPayMethod().equals("카드")) {
@@ -151,12 +177,11 @@ public class SalesStatusController implements Initializable{
 		cashBar.setProgress(cashRatio);
 	}
 	
-	//Best5 메뉴 파이 차트
-	public void pieChart(String date) {
+//	//Best5 메뉴 파이 차트
+	public void pieChart() {
 			//이전에 가지고 있던 데이터 제거
 			map.clear();
 			
-			monthlyList = dao.selectDate(date);
 			for(PaymentInfo mpi : monthlyList) {
 				if(!mpi.getPayMethod().equals("환불")) {
 					boolean flag = false;
@@ -203,7 +228,6 @@ public class SalesStatusController implements Initializable{
 				   for(Data d : bestMenu.getData()) {
 		                 d.nameProperty().bind(Bindings.concat(d.getName() + "\n(" + (int)d.getPieValue() + "개)"));
 		              }
-		        
-	}
-}
-
+					}
+				}
+				

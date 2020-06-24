@@ -278,25 +278,18 @@ public class DAO {
     }
     
     //날짜, 메뉴 리스트, 가격, 카드/현금 종류
-    public void PaymentInfo(String date, List<MenuData> list, String totalPrice, boolean cardCash,String num) {
+    public void PaymentInfo(PaymentInfo data) {
+//    	String date, List<MenuData> list, String totalPrice, boolean cardCash,String num
        String sql = "insert into paymentinfotbl values(?, ?, ?, ?, ?, ?);";
-       String payMethod = cardCash ? "카드":"현금";
-       String cardNum = "";
-       String cashNum = "";
-       if(payMethod.equals("카드")) {
-          cardNum = num;
-       } else if(payMethod.equals("현금")) {
-          cashNum = num;
-       }
           PreparedStatement pstmt = null;
            try {
                pstmt = conn.prepareStatement(sql);
-               pstmt.setString(1, date);  
-               pstmt.setObject(2, list);
-               pstmt.setString(3, totalPrice);
-               pstmt.setString(4, cardNum);
-               pstmt.setString(5, cashNum);
-               pstmt.setString(6, payMethod);
+               pstmt.setString(1, data.getDate());  
+               pstmt.setObject(2, data.allMenu);
+               pstmt.setString(3, data.getTotalPrice());
+               pstmt.setString(4, data.getCardNum());
+               pstmt.setString(5, data.getCash());
+               pstmt.setString(6, data.getPayMethod());
                pstmt.executeUpdate();
                System.out.println("데이터 삽입 성공!");
            } catch (Exception e) {

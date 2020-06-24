@@ -64,12 +64,10 @@ public class MenuController  {
 	//categoryDialog.fxml-----------
 	private Stage CD_stage;
 	private TextField tf;
-	
 	private File file;
 	private Pattern p = Pattern.compile("^[0-9]*$");	//¼ýÀÚ¸¸
 	private Matcher m;
 	private FileChooser fc = new FileChooser();
-	
 	
 	@SuppressWarnings("unchecked")
 	public MenuController(Stage serverStage) {
@@ -142,8 +140,6 @@ public class MenuController  {
 				btnMDelAction(new ActionEvent());
 			}
 		});
-		
-		
 		
 		TableColumn<MenuInMC, ?> toNum = table.getColumns().get(0);
 		toNum.setCellValueFactory(new PropertyValueFactory<>("no"));

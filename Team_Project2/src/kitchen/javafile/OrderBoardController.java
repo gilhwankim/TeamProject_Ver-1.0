@@ -38,11 +38,6 @@ public class OrderBoardController implements Initializable {
       private ObjectOutputStream oos;
       
       private Data data;
-      
-      StringTokenizer st;
-      StringTokenizer st2;
-      StringTokenizer st3;
-      
       private @FXML Label tableNum; //테이블 번호 라벨 
       private TableView<OrderBoardMenu> kitchenTableview; //테이블 뷰
       private @FXML ListView<HBox> orderBoardlv; //리스트뷰
@@ -50,8 +45,8 @@ public class OrderBoardController implements Initializable {
       private List<AnchorPane> nodeList = new ArrayList<>();
       private int cnt = 0;
       
-      @FXML Label dateLabel; //오더보드 상단 날짜
-      @FXML Label timeLabel;// 오더보드 상단 시간
+      private @FXML Label dateLabel; // 오더보드 상단 날짜
+      private @FXML Label timeLabel; // 오더보드 상단 시간
       
    @Override
    public void initialize(URL location, ResourceBundle resources) {
@@ -63,7 +58,6 @@ public class OrderBoardController implements Initializable {
    }
    public OrderBoardController() {
    }
-   
      private void startClient() {
          try {
            //서버 연결

@@ -44,8 +44,10 @@ import javafx.scene.layout.RowConstraints;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
+import javafx.scene.text.TextAlignment;
 import javafx.stage.Stage;
 import pos.PosMain;
+import pos.management.PaymentInfo;
 import pos.tablepayment.TablePaymentController;
 
 public class PosController implements Initializable{
@@ -58,6 +60,7 @@ public class PosController implements Initializable{
    private ExecutorService threadPool;
    private List<Tablet> tablet_list = new ArrayList<>();   //테이블 소켓,클래스관리
    private List<TableData> tables = new ArrayList<TableData>();
+   
    private @FXML BorderPane bp;
    private @FXML GridPane gp;
    private @FXML Button home;
@@ -137,7 +140,8 @@ public class PosController implements Initializable{
          bp.setCenter(posSetting());
          posSet = true;
       });
-    
+      //서버 최초 시작시 현재 판매내역을 불러와 담는다.
+      AllPayment.makeList();
       //서버 열기
       startPos();
    }

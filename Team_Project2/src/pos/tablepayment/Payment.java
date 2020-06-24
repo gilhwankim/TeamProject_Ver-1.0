@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 
 import javax.swing.JOptionPane;
 
@@ -18,12 +19,15 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.TextField;
+import javafx.scene.text.TextAlignment;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
+import pos.javafile.AllPayment;
 import pos.javafile.DAO;
 import pos.javafile.Popup;
 import pos.javafile.PosController.Tablet;
+import pos.management.PaymentInfo;
 
 public class Payment {
    
@@ -36,7 +40,7 @@ public class Payment {
    private TextField price; //현금영수증 결제 금액
    private TextField change; //거스름돈
    private TextField customerInfo; //현금영수증 번호
-   private TextField cardNum; //현금영수증 번호
+   private TextField cardNum; //카드 번호
    private Button cashPaymentbtn; //현금 결제 버튼
    private Button cardPaymentbtn; //카드 결제 버튼
    private Button approval; //승인요청 버튼
@@ -90,7 +94,7 @@ public class Payment {
         	  
              SimpleDateFormat sdf = new SimpleDateFormat("yyyy년MM월dd일 hh:mm:ss a");
              String date = sdf.format(new Date());
-             dao.PaymentInfo(date,t.om_list,amountOfPayment.getText(), false, customerInfo.getText());
+             AllPayment.insertList(new PaymentInfo(date,t.om_list,amountOfPayment.getText(),"",customerInfo.getText(),"현금"));
              //결제완료 후 Stage닫음
              pop.popupMsg("받은 금액: " + amountReceived.getText()+"원\n\n결제 금액: "+ amountOfPayment.getText() + "원\n\n결제가 완료되었습니다.");
              dialog.close();
@@ -264,7 +268,7 @@ public class Payment {
              }
              SimpleDateFormat sdf = new SimpleDateFormat("yyyy년MM월dd일 hh:mm:ss a");
              String date = sdf.format(new Date());
-             dao.PaymentInfo(date,t.om_list,amountOfPayment.getText(), true, cardNum.getText());
+             AllPayment.insertList(new PaymentInfo(date,t.om_list,amountOfPayment.getText(),cardNum.getText(),"","카드"));
              
              //결제완료 후 Stage닫음
              pop.popupMsg("결제 금액: "+ amountOfPayment.getText() + "원\n\n할부 개월: "+installment.getSelectionModel().getSelectedItem()+"\n\n결제가 완료되었습니다.");

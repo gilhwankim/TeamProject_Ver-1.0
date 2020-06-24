@@ -24,6 +24,7 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.KeyCode;
 import javafx.scene.paint.Color;
+import pos.javafile.AllPayment;
 import pos.javafile.DAO;
 
 public class ReceiptController implements Initializable{
@@ -41,7 +42,7 @@ public class ReceiptController implements Initializable{
    ObservableList<MenuData> obOmList = FXCollections.observableArrayList(); //세부메뉴 테이블 리스트   
   
    @Override
-   public void initialize(URL location, ResourceBundle resources) {      
+   public void initialize(URL location, ResourceBundle resources) {   
       //현재 날짜 출력 및 DB에서 오늘날짜 거래내역 가져옴
       showDb(currentDateSetting());
       //선택한 날짜에 맞는 거래내역 가져옴
@@ -52,7 +53,7 @@ public class ReceiptController implements Initializable{
             obOmList.clear();
          }else {
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy년MM월dd일");  
-            showDb(newDate.format(formatter));        
+            showDb(newDate.format(formatter));
             obOmList.clear();
          }
       });    
@@ -66,14 +67,11 @@ public class ReceiptController implements Initializable{
       
       refund.setOnAction( e -> {
           PaymentInfo pi = receiptTable.getSelectionModel().getSelectedItem();
-          String str = pi.getDate();
-          if(str != null && !str.equals("")) {
-             //여기 팝업창 띄워서 확인 취소 받아서
-             //확인이면 지우는걸로 ????
-             if(dao.refund(str)) {
-            	 pi.setPayMethod("환불");
-            	 receiptTable.refresh();
-             }
+          if(pi!=null) {
+        	  //DB,POS가 가지고 있는 데이터를 환불로 바꾼다.
+        	  AllPayment.refundsList(pi);
+        	  //테이블 새로고침
+        	  receiptTable.refresh();
           }
        });
       
@@ -95,8 +93,19 @@ public class ReceiptController implements Initializable{
    } 
    //거래내역 가져오는 메서드
    public void showDb(String date) { 
-	   System.out.println("@@@@@@@@@@@@@DB부르는 날짜: " + date);
-      payList = dao.selectDate(date); //DB에서 가져옴           
+	   obPayList = FXCollections.observableArrayList();
+	   System.out.println("date: " + date);
+	   if(date==null) {
+		   obPayList = FXCollections.observableArrayList(AllPayment.payInfoList);
+	   }else {
+	   
+	   for(PaymentInfo pi : AllPayment.payInfoList) {
+		   System.out.println("pos: " + pi.getDate().substring(0, 8));
+		   if(pi.getDate().substring(0, 11).equals(date)) {
+			   obPayList.add(pi);
+		   }
+	   	 }
+	   }
       //테이블에 내용 세팅
       TableColumn<PaymentInfo, ?> dateTc = receiptTable.getColumns().get(0);
       dateTc.setCellValueFactory(new PropertyValueFactory<>("date"));      
@@ -114,25 +123,25 @@ public class ReceiptController implements Initializable{
                 setTextFill(Color.RED);
              }else {
                 setText(item);
+                setTextFill(Color.BLACK);
              }
           }
        }
-      
       });
-      obPayList = FXCollections.observableArrayList(payList);
+      
       receiptTable.setItems(obPayList);
       //해당 날짜에 가져올 내역이 없으면 없다고 출력
-      if(payList.size() == 0)
+      if(obPayList.size() == 0)
       try {
         obOmList.clear();
       }catch (Exception e) {
    }
       receiptDetailTable.setItems(obOmList);
-      receiptTable.setPlaceholder(new Label("내역이 없습니다.")); 
+      receiptTable.setPlaceholder(new Label("내역이 없습니다."));
       receiptDetailTable.setPlaceholder(new Label("내역이 없습니다."));
       totalPrice.setText(""); //받은게 없으니 결제 금액 안보임
       
-   }      
+   }
    //테이블에 클릭된 결제내역을 받아와서 세부테이블에 보여주는 메서드
    public int showDetailDB(PaymentInfo paymentInfo) {
       //총 결제액 담을 변수

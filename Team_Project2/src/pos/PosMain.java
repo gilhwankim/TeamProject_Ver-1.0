@@ -11,12 +11,12 @@ import javafx.stage.Stage;
 public class PosMain extends Application{
 	
 	public static Stage posStage;
-	
 	@Override
 	public void start(Stage primaryStage) throws Exception {
 		posStage = primaryStage;
 		Parent parent = FXMLLoader.load(getClass().getResource("fxml/pos.fxml"));
 		Scene scene = new Scene(parent);
+//		scene.getStylesheets().add(getClass().getResource("../css/sdda.css").toString());
 		primaryStage.setScene(scene);
 		primaryStage.show();
 	}

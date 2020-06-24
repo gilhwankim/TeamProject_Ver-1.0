@@ -5,10 +5,12 @@ import java.awt.event.WindowListener;
 import java.io.IOException;
 
 import javafx.fxml.FXMLLoader;
+import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.text.TextAlignment;
 import javafx.stage.Stage;
 //팝업창 클래스
 public class Popup {
@@ -34,6 +36,7 @@ public class Popup {
 	}
 	//팝업 메세지 내용 
 	public void popupMsg(String label) {
+		textLabel.setAlignment(Pos.CENTER);
 		textLabel.setText(label);
 		stage.show();
 	}
