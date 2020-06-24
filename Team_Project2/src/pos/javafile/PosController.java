@@ -77,7 +77,7 @@ public class PosController implements Initializable{
    
    private Pattern p = Pattern.compile("^[0-9]*$");   //숫자만
    private Matcher m;
-   
+   private Popup pop = new Popup();
    
    
    @Override
@@ -638,14 +638,9 @@ public class PosController implements Initializable{
               send(data);
           }//테블릿에서 직원호출을 할 때
          else if(data.getStatus().equals("직원호출")) { 
-             for(int i=0; i<tables.size(); i++) {
-                //해당하는 테이블 찾음
-                VBox vbox = (VBox) gp.getChildren().get(i);
-                if(vbox.getId().equals(data.getTableNo())) {
-                   vbox.setStyle("-fx-border-color:red");
-                }
-             }
-             JOptionPane.showMessageDialog(null,"호출.");
+        	 //@@@@@@@
+        	 System.out.println("직원호출 듣는다");
+        	 Platform.runLater(()->pop.popupMsg("호출"));
          }
          save();
       }
