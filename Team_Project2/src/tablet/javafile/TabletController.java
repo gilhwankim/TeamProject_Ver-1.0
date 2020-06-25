@@ -251,7 +251,7 @@ public class TabletController implements Initializable{
                labelPrice.setText(df.format(md.getPrice())+ "원");            
                
                node.setOnMouseClicked(e -> {
-                  if(e.getClickCount() == 2) {
+                  if(e.getClickCount() == 1) {
                      System.out.println("메뉴이름 : " + labelName.getText() + "메뉴가격 : " + labelPrice.getText());
                      addOrdertable(labelName.getText());
                   }

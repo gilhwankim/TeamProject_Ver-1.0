@@ -31,9 +31,30 @@ Button {
 .table-view .column-header-background .label {
 	-fx-text-fill: #ffffff;
 }
+
+.table-view {   
+   -fx-border-color: #cccccc; 
+}
+.table-view:focused {   
+   -fx-border-color: #cccccc;
+    -fx-background-insets: 0px; /*선택시 파란색 선을 안나타나게 함 */   
+}
+
 /* 테이블 뷰 셀 */
 .table-row-cell {
 	-fx-background-color: #ffffff;
+}
+
+/* 테이블 뷰 선택된 셀 */
+.table-row-cell:selected .table-cell {
+    /*-fx-text-fill: black;*/
+    -fx-text-fill: red;
+    -fx-border-color: white;
+}
+
+/* 테이블뷰 행 텍스트 중앙정렬(디폴트값) */
+ .table-column {
+    -fx-alignment: center;
 }
 
 /* 탭 배경 */
@@ -58,7 +79,28 @@ Button {
 .list-view {
 	-fx-background-color: #fcfcfc;
 }
+
 /* 리스트 뷰 셀 */
 .list-cell{
 	-fx-background-color: #ffffff;
+}
+
+.list-cell:selected .label {
+    -fx-text-fill: black; /*태블릿 메뉴 선택되었을때 글자 색 지정 */
+}
+
+.table-view *.scroll-bar:horizontal *.increment-button,
+.table-view *.scroll-bar:horizontal *.decrement-button {
+    -fx-background-color: null;
+    -fx-background-radius: 0;
+    -fx-background-insets: 0;
+    -fx-padding: 0;
+}
+.table-view *.scroll-bar:horizontal *.increment-arrow, 
+.table-view *.scroll-bar:horizontal *.decrement-arrow {
+    -fx-background-color: null;
+    -fx-background-radius: 0;
+    -fx-background-insets: 0;
+    -fx-padding: 0;
+    -fx-shape: null;
 }
