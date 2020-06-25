@@ -8,19 +8,19 @@
 <?import javafx.scene.layout.BorderPane?>
 
 
-<BorderPane prefHeight="760.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="kitchen.javafile.OrderBoardController">
+<BorderPane styleClass="bg_white" prefHeight="760.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="kitchen.javafile.OrderBoardController">
    <padding>
       <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
    </padding>
    <top>
-      <HBox alignment="CENTER" prefHeight="30.0" spacing="20.0" BorderPane.alignment="CENTER">
+      <HBox styleClass="font_bold" alignment="CENTER" prefHeight="30.0" spacing="20.0" BorderPane.alignment="CENTER">
          <children>
-            <Label fx:id="dateLabel" text="2020년 05월 21일 목요일">
+            <Label styleClass="font_bold" fx:id="dateLabel" text="2020년 05월 21일 목요일">
                <font>
                   <Font size="20.0" />
                </font>
             </Label>
-            <Label fx:id="timeLabel" text="15시  00분  00초">
+            <Label styleClass="font_bold" fx:id="timeLabel" text="15시  00분  00초">
                <font>
                   <Font size="20.0" />
                </font>

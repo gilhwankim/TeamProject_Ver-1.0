@@ -37,9 +37,9 @@
             </HBox>
             <HBox prefHeight="100.0" prefWidth="200.0">
                <children>
-                  <Button id="payCash" minHeight="150.0" minWidth="140.0" mnemonicParsing="false" text="현금" />
-                  <Button id="payCard" minHeight="150.0" minWidth="140.0" mnemonicParsing="false" text="카드" />
-                  <Button id="payOrder" minHeight="150.0" minWidth="140.0" mnemonicParsing="false" text="주문" />
+                  <Button styleClass="btn_blue" id="payCash" minHeight="150.0" minWidth="140.0" mnemonicParsing="false" text="현금" />
+                  <Button styleClass="btn_blue" id="payCard" minHeight="150.0" minWidth="140.0" mnemonicParsing="false" text="카드" />
+                  <Button styleClass="btn_red" id="payOrder" minHeight="150.0" minWidth="140.0" mnemonicParsing="false" text="주문" />
                </children>
             </HBox>
          </children>

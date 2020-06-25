@@ -72,7 +72,6 @@ public class SalesStatusController implements Initializable{
 		//날짜 선택 기본 값
 		
 		today = LocalDate.now();
-		System.out.println("@@@@@@"+today);
 		dateSel.setValue(today);
 		//날짜 선택시 매출 내역 변경
 		dateSel.setOnAction(e->{
@@ -139,7 +138,6 @@ public class SalesStatusController implements Initializable{
 		cnt = 0;
 		totalPrice = 0;
 		for(PaymentInfo mpi : monthlyList) {
-			System.out.println("@@@@@@@" + mpi.getDate().substring(0, 11));
 			if(mpi.getDate().substring(0, 11).equals(date)) {
 				//환불 건 수를 제외한 카드/현금 결제 금액 합계
 				if(!mpi.getPayMethod().equals("환불")) {

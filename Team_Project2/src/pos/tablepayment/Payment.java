@@ -64,6 +64,7 @@ public class Payment {
        try {
           Parent cashPayment = FXMLLoader.load(getClass().getResource("CashPayment.fxml"));
           Scene scene = new Scene(cashPayment);
+          scene.getStylesheets().add(getClass().getResource("/css/style.css").toString());
           dialog.setScene(scene);
           dialog.setResizable(false); //사용자가 크기를 조절하지 못하게 함
           dialog.show();
@@ -240,6 +241,7 @@ public class Payment {
        try {
           Parent cardPayment = FXMLLoader.load(getClass().getResource("PayingCreditCard.fxml"));
           Scene scene = new Scene(cardPayment);
+          scene.getStylesheets().add(getClass().getResource("/css/style.css").toString());
           dialog.setScene(scene);
           dialog.setResizable(false); //사용자가 크기를 조절하지 못하게 함
           dialog.show();

@@ -88,10 +88,11 @@ public class Bill {
               //tableBill의 X표시 누르면 창닫힘
               billExitBtn.setOnMouseClicked(e -> dialog.close());             
             
-              Scene scene = new Scene(tableBill);            
-                dialog.setScene(scene);
-                dialog.setResizable(false);  //사용자가 크기를 조절하지 못하게 함
-                dialog.show();       
+              Scene scene = new Scene(tableBill);  
+              scene.getStylesheets().add(getClass().getResource("/css/style.css").toString());
+	            dialog.setScene(scene);
+	            dialog.setResizable(false);  //사용자가 크기를 조절하지 못하게 함
+	            dialog.show();       
            } catch (IOException e) {
               e.printStackTrace(); 
            }      

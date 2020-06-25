@@ -111,6 +111,7 @@ public class TablePaymentController  {
          tp = mt.make(menu_list, tp);
          
          Scene scene = new Scene(hbox);
+         scene.getStylesheets().add(getClass().getResource("/css/style.css").toString());
          stage.setScene(scene);
          
       } catch (Exception e) {

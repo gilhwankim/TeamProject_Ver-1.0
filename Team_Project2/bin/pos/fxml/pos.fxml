@@ -6,7 +6,7 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<BorderPane fx:id="bp" maxHeight="720.0" maxWidth="1000.0" minHeight="720.0" minWidth="800.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="pos.javafile.PosController">
+<BorderPane styleClass="bg_white" fx:id="bp" maxHeight="720.0" maxWidth="1000.0" minHeight="720.0" minWidth="800.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="pos.javafile.PosController">
    <center>
       <GridPane fx:id="gp" BorderPane.alignment="CENTER">
          <columnConstraints>
@@ -28,7 +28,7 @@
             <Button fx:id="menuSetting" focusTraversable="false" mnemonicParsing="false" prefWidth="100.0" text="메뉴관리" />
             <Button fx:id="receipt" focusTraversable="false" mnemonicParsing="false" prefWidth="100.0" text="영수증관리" />
             <Button fx:id="posSetting" focusTraversable="false" mnemonicParsing="false" prefWidth="100.0" text="테이블관리" />
-            <Button fx:id="salesHistory" focusTraversable="false" mnemonicParsing="false" prefWidth="100.0" text="판매내역" />
+            <Button fx:id="salesHistory" focusTraversable="false" mnemonicParsing="false" prefWidth="100.0" text="매장분석" />
          </children>
       </VBox>
    </right>

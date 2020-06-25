@@ -90,6 +90,7 @@ public class TabletController implements Initializable{
       fp = (FlowPane)settableNo.lookup("#fp");
       
       Scene scene = new Scene(settableNo); 
+      scene.getStylesheets().add(getClass().getResource("/css/style.css").toString());
       stage.setScene(scene);
       stage.setTitle("좌석 번호 선택");
       stage.show();
