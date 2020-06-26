@@ -119,6 +119,8 @@ public class TabletController implements Initializable{
          }
       }
       });
+      orderTable.setPlaceholder(new Label("메뉴를 추가해주세요."));
+      
       t.start();
    }
    

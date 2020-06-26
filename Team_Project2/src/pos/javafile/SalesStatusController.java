@@ -41,6 +41,7 @@ public class SalesStatusController implements Initializable{
 	private @FXML DatePicker dateSel;
 	private @FXML ProgressBar cardBar;
 	private @FXML ProgressBar cashBar;
+	private @FXML Button export;
 	List<PaymentInfo> monthlyList;
 	List<PaymentInfo> dailyList;
 	List<PaymentInfo> thirtyDaysList;
@@ -48,6 +49,7 @@ public class SalesStatusController implements Initializable{
 	private SimpleDateFormat sdfMonth = new SimpleDateFormat("yyyy년MM월"); //월 단위 
 	private SimpleDateFormat sdfdaily = new SimpleDateFormat("yyyy년MM월dd일"); //일 단위
 	private DecimalFormat df = new DecimalFormat("###,###");
+	private ExportExcel ee = new ExportExcel();
 	private int dayPrice;
 	private int totalPrice;// 총 결제 금액
 	private int cardPrice;
@@ -56,6 +58,8 @@ public class SalesStatusController implements Initializable{
 	private int cardCnt;
 	private int cashCnt;
 	private LocalDate today;
+	DAO dao = DAO.getinstance();
+	
 	public SalesStatusController() {
 		
 	}
@@ -108,8 +112,16 @@ public class SalesStatusController implements Initializable{
 			dayPrice = 0;
 		}
 		int totalAvg = totalPrice/cnt;
-		lastThirtydayPay.setText(df.format(totalAvg)+"원");	
+		lastThirtydayPay.setText(df.format(totalAvg)+"원");   
+	      //엑셀 내보내기
+	      export.setOnAction(e -> {
+	         String date = dateSel.getValue().format(DateTimeFormatter.ofPattern("yyyy년MM월"));
+	         ee.export(dao.selectDate(date));
+	         
+	      });
 	}
+	
+	
 	
 	//날짜 선택 시 해당 날짜가 속하는 달을 기준으로 변경.
 	public void pickerMonthlyPay(String date) {
@@ -228,4 +240,3 @@ public class SalesStatusController implements Initializable{
 		              }
 					}
 				}
-				

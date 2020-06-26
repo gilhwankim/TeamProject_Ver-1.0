@@ -6,9 +6,8 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
-	
+
 public class PosMain extends Application{
-	
 	public static Stage posStage;
 	@Override
 	public void start(Stage primaryStage) throws Exception {

@@ -17,8 +17,6 @@ import java.util.concurrent.Executors;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import javax.swing.JOptionPane;
-
 import com.jfoenix.controls.JFXListView;
 
 import data.Data;
@@ -44,10 +42,9 @@ import javafx.scene.layout.RowConstraints;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
-import javafx.scene.text.TextAlignment;
 import javafx.stage.Stage;
+import makeSound.MakeSound;
 import pos.PosMain;
-import pos.management.PaymentInfo;
 import pos.tablepayment.TablePaymentController;
 
 public class PosController implements Initializable{
@@ -157,6 +154,7 @@ public class PosController implements Initializable{
                gp.add(v, j, i);
                int idx = gp.getChildren().indexOf(v);
                v.setId("기본" + idx);
+ 
             }else {
                TableData td = tables.get(m);
                td.setColor("0xff0000ff");   //빨간불 초기화
@@ -167,7 +165,6 @@ public class PosController implements Initializable{
          }
       }
    }
-   
    //그리드페인의 각 테이블에 관한 셋팅
    //테이블id, 활성화/비활성화 여부, 주문한 메뉴정보, 총 금액 정보
    @SuppressWarnings("unchecked")
@@ -243,7 +240,7 @@ public class PosController implements Initializable{
                   vb.setOpacity(10.0);
                }
                save();
-            }//@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+            }
          }
        });
       
@@ -259,7 +256,6 @@ public class PosController implements Initializable{
             }
          }
       });
-      
       
       tf.setOnKeyReleased( e -> {
          if(tf.isFocused()) {
@@ -298,8 +294,8 @@ public class PosController implements Initializable{
    private void save() {
       int oC = gp.getColumnConstraints().size();
       int oR = gp.getRowConstraints().size();
-      seatData.setRow(oC);
-      seatData.setCol(oR);
+      seatData.setRow(oR);
+      seatData.setCol(oC);
       seatData.setTables(tables);
       dao.save("좌석", seatData);
    }
@@ -313,7 +309,9 @@ public class PosController implements Initializable{
       Button apply = (Button)bp.lookup("#apply");
       Button reset = (Button)bp.lookup("#reset");
       bp.setCenter(gp);
-      
+      //현재 적용되어 있는 테이블 행/열 값 setText
+      row.setText(Integer.toString(gp.getRowConstraints().size()));
+      col.setText(Integer.toString(gp.getColumnConstraints().size()));
        //적용 버튼
       apply.setOnAction( e -> {
          int c =  Integer.parseInt(col.getText());
@@ -322,6 +320,9 @@ public class PosController implements Initializable{
          int oR = gp.getRowConstraints().size();
          //현재 가로세로와 입력 가로세로가 같을때는 리턴
          if(oC == c && oR == r) {
+             //적용 완료 후 다시 홈 화면으로 돌린다.
+             this.bp.setCenter(gp);
+             posSet = false;
             return;
          }else {
             //새로 설정한 가로,세로 길이 만큼 다시 테이블 정보 설정
@@ -354,15 +355,18 @@ public class PosController implements Initializable{
                m.setCnt(0);
             }
          }
+         //적용 완료 후 다시 홈 화면으로 돌린다.
+         this.bp.setCenter(gp);
+         posSet = false;
       });
       //행,열 텍스트 감시(10이 최대)
       col.textProperty().addListener( (ob, oldS, newS) -> {
-         if(Integer.parseInt(newS) > 10) {            
+         if(!newS.equals("")&&Integer.parseInt(newS) > 10) {            
             col.setText(oldS);
          }
       });
       row.textProperty().addListener( (ob, oldS, newS) -> {
-         if(Integer.parseInt(newS) > 10) {            
+         if(!newS.equals("")&&Integer.parseInt(newS) > 10) {
             row.setText(oldS);
          }
       });
@@ -398,6 +402,9 @@ public class PosController implements Initializable{
          for(MenuData m : mc.m_list) {
             m.setCnt(0);
          }
+         //적용 완료 후 다시 홈 화면으로 돌린다.
+         this.bp.setCenter(gp);
+         posSet = false;
       });
       
       return bp;
@@ -510,7 +517,6 @@ public class PosController implements Initializable{
             listen();
          } catch (Exception e) {
             e.printStackTrace();
-            
          }
       }
       
@@ -525,8 +531,8 @@ public class PosController implements Initializable{
          } catch (Exception e) {
             e.printStackTrace();
          }
-         
       }
+      
       private void listen() {
          Runnable runnable = new Runnable() {
             @Override
@@ -644,7 +650,8 @@ public class PosController implements Initializable{
          else if(data.getStatus().equals("직원호출")) { 
         	 //@@@@@@@
         	 System.out.println("직원호출 듣는다");
-        	 Platform.runLater(()->pop.popupMsg("호출"));
+        	 MakeSound.kitchenOrderSound();
+        	 Platform.runLater(()->pop.popupMsg(data.getTableNo() + "번 테이블 호출"));
          }
          save();
       }

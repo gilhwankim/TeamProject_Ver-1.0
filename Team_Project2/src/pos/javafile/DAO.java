@@ -31,7 +31,6 @@ public class DAO {
             System.out.println("드라이버 로드 실패!!");
         }
    }
-   
     public static DAO getinstance() {
           if(instance == null) {
              instance = new DAO();

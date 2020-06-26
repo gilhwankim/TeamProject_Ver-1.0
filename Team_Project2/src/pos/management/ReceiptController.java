@@ -94,13 +94,11 @@ public class ReceiptController implements Initializable{
    //거래내역 가져오는 메서드
    public void showDb(String date) { 
 	   obPayList = FXCollections.observableArrayList();
-	   System.out.println("date: " + date);
 	   if(date==null) {
 		   obPayList = FXCollections.observableArrayList(AllPayment.payInfoList);
 	   }else {
 	   
 	   for(PaymentInfo pi : AllPayment.payInfoList) {
-		   System.out.println("pos: " + pi.getDate().substring(0, 8));
 		   if(pi.getDate().substring(0, 11).equals(date)) {
 			   obPayList.add(pi);
 		   }

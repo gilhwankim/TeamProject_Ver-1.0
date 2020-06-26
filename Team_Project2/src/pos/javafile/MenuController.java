@@ -1,18 +1,12 @@
 package pos.javafile;
 
 import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
-import javax.imageio.ImageIO;
-import javax.imageio.stream.ImageInputStream;
 
 import data.CategoryData;
 import data.MenuData;
@@ -23,11 +17,11 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.effect.ImageInput;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
@@ -93,7 +87,10 @@ public class MenuController  {
 				comboBox_ol.add(s);
 			}
 		}
+		//테이블 뷰 빈 화면 기본 텍스트
+		table.setPlaceholder(new Label("메뉴를 추가해 주세요."));
 		table.setItems(m_ol);
+
 		comboBox.setItems(comboBox_ol);
 		//처음 기본 선택되는 index = 0
 		comboBox.getSelectionModel().clearAndSelect(0);
