@@ -31,6 +31,8 @@ import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.effect.ColorAdjust;
+import javafx.scene.effect.GaussianBlur;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.FlowPane;
@@ -219,6 +221,11 @@ public class TabletController implements Initializable{
            for(MenuData m : data.getOm_list()) {
               System.out.println(m.getName());
            }
+           //계산서 요청시 태플릿 화면 흐리게
+           ColorAdjust adj = new ColorAdjust(0, -0.5, -0.4, 0);
+           GaussianBlur blur = new GaussianBlur(55);
+           adj.setInput(blur);
+          tabletStage.getScene().getRoot().setEffect(adj);
            Platform.runLater(()->{
               bill.show(data.getOm_list());         
            });       

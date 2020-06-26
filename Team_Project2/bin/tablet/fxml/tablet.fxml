@@ -19,7 +19,7 @@
    <right>
       <VBox fx:id="vbox" alignment="TOP_CENTER" prefWidth="280.0" spacing="5.0" BorderPane.alignment="CENTER">
          <children>
-            <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="35.0" prefWidth="108.0" styleClass="font_bold" text="주문서">
+            <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="35.0" prefWidth="108.0" styleClass="font_extraBold" text="주문서">
                <font>
                   <Font size="20.0" />
                </font>

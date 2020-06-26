@@ -86,7 +86,11 @@ public class Bill {
                  totalPrice.setText((df.format(totalResult)) + "원"); //현재까지 주문한 가격 출력                   
               }
               //tableBill의 X표시 누르면 창닫힘
-              billExitBtn.setOnMouseClicked(e -> dialog.close());             
+              billExitBtn.setOnMouseClicked(e -> {
+                 //계산서 닫으면 태블릿 화면 다시 선명하게
+                  tabletStage.getScene().getRoot().setEffect(null);
+                 dialog.close();  
+              });       
             
               Scene scene = new Scene(tableBill);  
               scene.getStylesheets().add(getClass().getResource("/css/style.css").toString());

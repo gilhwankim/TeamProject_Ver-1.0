@@ -26,8 +26,11 @@
                      </children>
                   </HBox>
                </children>
+               <VBox.margin>
+                  <Insets bottom="3.0" />
+               </VBox.margin>
             </HBox>
-            <JFXListView id="lv" VBox.vgrow="ALWAYS" />
+            <ListView id="lv" maxWidth="200.0" prefHeight="77.0" prefWidth="200.0" VBox.vgrow="ALWAYS" />
             <HBox>
                <children>
                   <HBox alignment="TOP_RIGHT" HBox.hgrow="ALWAYS">

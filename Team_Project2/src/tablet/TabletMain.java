@@ -13,6 +13,7 @@ public class TabletMain extends Application{
 	@Override
 	public void start(Stage primaryStage) throws Exception {
 		Font.loadFont(getClass().getResourceAsStream("/font/NanumGothi.ttf"), 14);
+		Font.loadFont(getClass().getResourceAsStream("/font/NanumGothicBold.ttf"), 14);
 		Font.loadFont(getClass().getResourceAsStream("/font/NanumGothicExtraBold.ttf"), 14);
 		
 		tabletStage = primaryStage;

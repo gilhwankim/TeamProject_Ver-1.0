@@ -11,7 +11,7 @@
    <children>
       <AnchorPane prefHeight="30.0">
          <children>
-            <Label styleClass="font_bold" layoutX="201.0" layoutY="-1.0" prefHeight="30.0" text="계산서">
+            <Label styleClass="font_extraBold" layoutX="201.0" layoutY="-1.0" prefHeight="30.0" text="계산서">
                <font>
                   <Font size="20.0" />
                </font>

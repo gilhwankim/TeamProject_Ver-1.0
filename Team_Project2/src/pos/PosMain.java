@@ -11,8 +11,9 @@ public class PosMain extends Application{
 	public static Stage posStage;
 	@Override
 	public void start(Stage primaryStage) throws Exception {
-		Font.loadFont(getClass().getResourceAsStream("/font/NanumGothi.ttf"), 12);
-		Font.loadFont(getClass().getResourceAsStream("/font/NanumGothicExtraBold.ttf"), 12);
+		Font.loadFont(getClass().getResourceAsStream("/font/NanumGothi.ttf"), 14);
+		Font.loadFont(getClass().getResourceAsStream("/font/NanumGothicBold.ttf"), 14);
+		Font.loadFont(getClass().getResourceAsStream("/font/NanumGothicExtraBold.ttf"), 14);
 		
 		posStage = primaryStage;
 		Parent parent = FXMLLoader.load(getClass().getResource("fxml/pos.fxml"));

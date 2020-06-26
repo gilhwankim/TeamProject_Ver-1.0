@@ -9,7 +9,7 @@
 
 <BorderPane prefHeight="740.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="pos.management.ReceiptController">
    <top>
-      <Label styleClass="font_bold" prefHeight="30.0" text="영수증 관리" BorderPane.alignment="CENTER">
+      <Label styleClass="font_extraBold" prefHeight="30.0" text="영수증 관리" BorderPane.alignment="CENTER">
          <font>
             <Font size="20.0" />
          </font>

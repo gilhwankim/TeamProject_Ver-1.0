@@ -17,12 +17,11 @@ import java.util.concurrent.Executors;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import com.jfoenix.controls.JFXListView;
-
 import data.Data;
 import data.MenuData;
 import data.TableData;
 import javafx.application.Platform;
+import javafx.beans.property.SimpleDoubleProperty;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -30,6 +29,8 @@ import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.ListCell;
+import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.MouseButton;
@@ -65,6 +66,11 @@ public class PosController implements Initializable{
    private @FXML Button receipt;
    private @FXML Button posSetting;
    private @FXML Button salesHistory;
+   
+   private String vboxStyle =
+				    		"-fx-border-color: #cccccc;\n" + 
+				      		"-fx-background-color: #ffffff;\n" + 
+				      		"-fx-border-insets: 1;";
    
    private boolean posSet;
    
@@ -173,26 +179,27 @@ public class PosController implements Initializable{
       VBox vb = (VBox)v.lookup("#vb");
       TextField tf = (TextField)v.lookup("#tf");
       Circle c = (Circle)v.lookup("#circle");
-      JFXListView<HBox> lv = (JFXListView<HBox>)v.lookup("#lv");
+      ListView<HBox> lv = (ListView<HBox>)v.lookup("#lv");
       ObservableList<HBox> lv_ol = lv.getItems();
       Label price = (Label)v.lookup("#price");
-      
       //아이디가 없거나 ""인 테이블은 id가 항상 "기본"이다.
       v.setId(id);
-      
       if(id.indexOf("기본") != -1)
          tf.setText("");
       else
          tf.setText(id);
       
       c.setFill(Color.web("0xff0000ff"));
-      
       //활성화/비활성화 여부
       vb.setDisable(d);
-      if(d)
-         vb.setOpacity(0.0);
-      else
+      if(d) {
+        vb.setOpacity(0.0);
+      	v.setStyle(null);
+      }
+      else {
          vb.setOpacity(10.0);
+         v.setStyle(vboxStyle);
+      }
       
       //주문 메뉴들을 불러와 넣는다.
       if(list != null) {
@@ -231,6 +238,7 @@ public class PosController implements Initializable{
                if(!vb.isDisable()) {
                   vb.setDisable(true);
                   tables.get(idx).setDisable(true);
+                  v.setStyle(null);
                   vb.setOpacity(0.0);
                   tf.clear();
                }
@@ -238,6 +246,7 @@ public class PosController implements Initializable{
                   vb.setDisable(false);
                   tables.get(idx).setDisable(false);
                   vb.setOpacity(10.0);
+                  v.setStyle(vboxStyle);
                }
                save();
             }
@@ -664,7 +673,7 @@ public class PosController implements Initializable{
                VBox v = (VBox)gp.getChildren().get(i);
                if(v.getId().equals(no)) {
                   @SuppressWarnings("unchecked")
-                  JFXListView<HBox> lv = (JFXListView<HBox>)v.lookup("#lv");
+                  ListView<HBox> lv = (ListView<HBox>)v.lookup("#lv");
                   Label price = (Label)v.lookup("#price");
                   
                   ObservableList<HBox> lv_ol = lv.getItems();
@@ -773,7 +782,7 @@ public class PosController implements Initializable{
          for(int i=0; i<gp.getChildren().size(); i++) {
             VBox v = (VBox) gp.getChildren().get(i);
             if(v.getId().equals(this.TableNo)) {
-               JFXListView<HBox> lv = (JFXListView<HBox>)v.lookup("#lv");
+               ListView<HBox> lv = (ListView<HBox>)v.lookup("#lv");
                  ObservableList<HBox> lv_ol = lv.getItems();
                  Label price = (Label)v.lookup("#price");
                  lv_ol.clear();

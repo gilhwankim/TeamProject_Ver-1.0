@@ -1,6 +1,9 @@
 /* 폰트 */
 .font_bold {
-	-fx-font-family: "NanumGothicExtraBold";
+   -fx-font-family: "NanumGothicBold";
+}
+.font_extraBold {
+   -fx-font-family: "NanumGothicExtraBold";
 }
 /* 배경 */
 .bg_white {
@@ -89,6 +92,7 @@ Button {
     -fx-text-fill: black; /*태블릿 메뉴 선택되었을때 글자 색 지정 */
 }
 
+/*가로 스크롤바*/
 .table-view *.scroll-bar:horizontal *.increment-button,
 .table-view *.scroll-bar:horizontal *.decrement-button {
     -fx-background-color: null;
@@ -104,6 +108,59 @@ Button {
     -fx-padding: 0;
     -fx-shape: null;
 }
+/*@@@@@@@@@@@ */
+/* 스크롤바 UI 변경 */
+.scroll-bar:horizontal .track,
+.scroll-bar:vertical .track{
+    -fx-background-color :transparent;
+    -fx-border-color :transparent;
+    -fx-background-radius : 0.0em;
+    -fx-border-radius :2.0em;
+}
+
+
+.scroll-bar:horizontal .increment-button ,
+.scroll-bar:horizontal .decrement-button {
+    -fx-background-color :transparent;
+    -fx-background-radius : 0.0em;
+    -fx-padding :0.0 0.0 7.0 0.0;
+
+}
+
+.scroll-bar:vertical .increment-button ,
+.scroll-bar:vertical .decrement-button {
+    -fx-background-color :transparent;
+    -fx-background-radius : 0.0em;
+    -fx-padding :0.0 7.0 0.0 0.0;
+
+}
+
+ .scroll-bar .increment-arrow,
+ .scroll-bar .decrement-arrow{
+    -fx-shape : " ";    
+    -fx-padding :0.1em 0.0;
+}
+
+ .scroll-bar:vertical .increment-arrow,
+ .scroll-bar:vertical .decrement-arrow{
+    -fx-shape : " ";    
+    -fx-padding :0.0 0.1em;
+}
+
+.scroll-bar:horizontal .thumb,
+.scroll-bar:vertical .thumb {
+    -fx-background-color :derive(black,95.0%);
+    -fx-background-insets : 2.0, 0.0, 0.0;
+    -fx-background-radius : 2.0em;
+}
+
+.scroll-bar:horizontal .thumb:hover,
+.scroll-bar:vertical .thumb:hover {
+    -fx-background-color :derive(#4D4C4F,10.0%);
+    -fx-background-insets : 2.0, 0.0, 0.0;
+    -fx-background-radius : 2.0em;
+}
+
 /*콤보박스 아이템 스타일 */
 .combo-box .list-cell 
 {
@@ -126,3 +183,15 @@ Button {
     -fx-border-insets: 1;
 }*/
 
+/*텍스트 필드 선택시 테두리 색 지정 */
+.text-field:focused {
+    -fx-border-color: #545454;    
+    -fx-border-radius: 5px;
+    -fx-background-insets: 0px; 
+    -fx-font-size: 10px;
+}
+
+/*프로그레스바 색상 */
+.progress-bar .bar{
+   -fx-background-color: #545454;
+}

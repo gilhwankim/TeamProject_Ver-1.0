@@ -14,6 +14,7 @@ public class KitchenMain extends Application{
 	@Override
 	public void start(Stage primaryStage) throws Exception {
 		Font.loadFont(getClass().getResourceAsStream("/font/NanumGothi.ttf"), 14);
+		Font.loadFont(getClass().getResourceAsStream("/font/NanumGothicBold.ttf"), 14);
 		Font.loadFont(getClass().getResourceAsStream("/font/NanumGothicExtraBold.ttf"), 14);
 		
 		KitchenStage = primaryStage;
