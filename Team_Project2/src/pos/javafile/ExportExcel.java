@@ -110,7 +110,13 @@ public class ExportExcel {
       c.setCellFormula("SUM(B" + (j+3) + ":B" + (j+4) + ")");
       c = r.createCell(2);
       c.setCellValue("전체");
-
+      
+      //폴더 생성 경로에 폴더 자동 생성
+      File dir = new File(directory);
+      if(!dir.exists()) {
+         dir.mkdirs();
+      }
+      
       try {
          file = new File(directory + list.get(0).getDate().substring(0, 8) + ".xlsx");
          if(!file.exists()) {
@@ -118,6 +124,8 @@ public class ExportExcel {
          }
          FileOutputStream fos = new FileOutputStream(file);
          wb.write(fos);
+         fos.flush();
+         fos.close();
       } catch (Exception e) {
          e.printStackTrace();
       }
