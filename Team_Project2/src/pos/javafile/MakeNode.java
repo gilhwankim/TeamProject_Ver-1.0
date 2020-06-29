@@ -27,7 +27,10 @@ public class MakeNode {
 			 Label name = (Label)h.lookup("#name");
 			 Label cnt = (Label)h.lookup("#cnt");
 			 name.setText(n);
-			 cnt.setText(c + "");
+			 if(c == 0)
+	             cnt.setText("");
+	          else
+	             cnt.setText(c + "");
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

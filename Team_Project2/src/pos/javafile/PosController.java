@@ -17,11 +17,13 @@ import java.util.concurrent.Executors;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import com.jfoenix.controls.JFXListView;
+
 import data.Data;
 import data.MenuData;
 import data.TableData;
 import javafx.application.Platform;
-import javafx.beans.property.SimpleDoubleProperty;
+import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -29,7 +31,6 @@ import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
@@ -201,15 +202,28 @@ public class PosController implements Initializable{
          v.setStyle(vboxStyle);
       }
       
+      ObservableList<HBox> lv_ol_tmp = FXCollections.observableArrayList();
       //주문 메뉴들을 불러와 넣는다.
       if(list != null) {
-         for(MenuData om : list) {
-            if(om.getName() != null) {
-               HBox h = makeNode.menuMake(om.getName(), om.getCnt());
-               Platform.runLater( () -> lv_ol.add(h));
+          for(MenuData om : list) {
+             if(om.getName() != null) {
+                HBox h = makeNode.menuMake(om.getName(), om.getCnt());
+                Platform.runLater( () -> {
+                lv_ol_tmp.add(h);
+                if(lv_ol.size() < 3) {
+                   lv_ol.add(h);
+                }
+                });
+             }
+          }
+          Platform.runLater( () -> {
+             int t = lv_ol_tmp.size()-3;
+            if(lv_ol.size() >= 3) {
+               lv_ol.add(makeNode.menuMake("외 " + t + "개", 0));
             }
-         }
-      }
+          });
+       }
+
       price.setText(total);
       
       lv.setOnMouseClicked(e->{
@@ -666,45 +680,61 @@ public class PosController implements Initializable{
       }
       
       public void makeNode(String no) {
-        tpc.priceUpdate();
-         try {
-            int total = 0;
-            for(int i=0; i<gp.getChildren().size(); i++) {
-               VBox v = (VBox)gp.getChildren().get(i);
-               if(v.getId().equals(no)) {
-                  @SuppressWarnings("unchecked")
-                  ListView<HBox> lv = (ListView<HBox>)v.lookup("#lv");
-                  Label price = (Label)v.lookup("#price");
-                  
-                  ObservableList<HBox> lv_ol = lv.getItems();
-                  Platform.runLater( () -> lv_ol.clear());
-                  
-                  for(MenuData om : om_list) {
-                     System.out.println("여기");
-                     System.out.println(om.getName());
-                     HBox hbox = makeNode.menuMake(om.getName(), om.getCnt());
-                     Platform.runLater( () -> lv_ol.add(hbox));
-                     total += om.getTotal();
-                  }
-                  lv.refresh();
-                  int t = total;
-                  Platform.runLater( () -> price.setText(t + ""));
-                  break;
-               }
-            }
-            //현재 테이블의 메뉴정보와 총 금액을 저장
-            for(TableData td : tables) {
-               if(td.getTableId().equals(no)) {
-                  td.setOm_list(this.om_list);
-                  td.setTotal(total + "");
-                  break;
-               }
-            }
-            
-         }catch (Exception e) {
-            e.printStackTrace();
-         }
-      }
+          tpc.priceUpdate();
+           try {
+              int total = 0;
+              for(int i=0; i<gp.getChildren().size(); i++) {
+                 VBox v = (VBox)gp.getChildren().get(i);
+                 if(v.getId().equals(no)) {
+                    @SuppressWarnings("unchecked")
+                    ListView<HBox> lv = (ListView<HBox>)v.lookup("#lv");
+                    Label price = (Label)v.lookup("#price");
+                    
+                    ObservableList<HBox> lv_ol = lv.getItems();
+                    ObservableList<HBox> lv_ol_tmp = FXCollections.observableArrayList();
+                    
+                    Platform.runLater( () -> lv_ol.clear());
+                    
+                    for(MenuData om : om_list) {
+                       HBox hbox = makeNode.menuMake(om.getName(), om.getCnt());
+
+                     Platform.runLater( () -> {
+                        lv_ol_tmp.add(hbox);
+                        if(lv_ol.size() < 3) {
+                           lv_ol.add(hbox);
+                        }else {
+                           int t = lv_ol_tmp.size()-3;
+                           if(lv_ol.size() == 3) {
+                              lv_ol.add(makeNode.menuMake("외 " + t + "개", 0));
+                           }else {
+                              HBox h1 = lv_ol.get(3);
+                                Label l = (Label)h1.getChildren().get(0);
+                                l.setText("외 " + t + "개");
+                           }
+                        }
+                     });
+                     
+                       total += om.getTotal();
+                    }
+                    lv.refresh();
+                    int t = total;
+                    Platform.runLater( () -> price.setText(t + ""));
+                    break;
+                 }
+              }
+              //현재 테이블의 메뉴정보와 총 금액을 저장
+              for(TableData td : tables) {
+                 if(td.getTableId().equals(no)) {
+                    td.setOm_list(this.om_list);
+                    td.setTotal(total + "");
+                    break;
+                 }
+              }
+              
+           }catch (Exception e) {
+              e.printStackTrace();
+           }
+        }
       
       private void sinho() {
          for(int i=0; i<gp.getChildren().size(); i++) {

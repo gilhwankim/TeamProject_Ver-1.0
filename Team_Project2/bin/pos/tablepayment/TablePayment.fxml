@@ -21,13 +21,19 @@
                 <TableColumn prefWidth="167.0" text="메뉴명" />
                 <TableColumn minWidth="0.0" prefWidth="101.0" text="단가" />
                   <TableColumn prefWidth="53.0" text="수량" />
-                  <TableColumn prefWidth="97.0" text="금액" />
+                  <TableColumn prefWidth="107.0" text="금액" />
               </columns>
             </TableView>
             <HBox>
                <children>
-                  <Button id="plus" prefHeight="30.0" prefWidth="30.0" text="+" />
-                  <Button id="minus" prefHeight="30.0" prefWidth="30.0" text="-" />
+                  <Button id="plus" prefHeight="30.0" prefWidth="30.0" text="+">
+                     <HBox.margin>
+                        <Insets bottom="3.0" right="3.0" top="3.0" />
+                     </HBox.margin></Button>
+                  <Button id="minus" prefHeight="30.0" prefWidth="30.0" text="-">
+                     <HBox.margin>
+                        <Insets bottom="3.0" top="3.0" />
+                     </HBox.margin></Button>
                   <Label id="payTotal" alignment="CENTER_RIGHT" prefHeight="30.0" prefWidth="358.0" text="총금액">
                      <padding>
                         <Insets left="10.0" right="10.0" />
@@ -37,9 +43,12 @@
             </HBox>
             <HBox prefHeight="100.0" prefWidth="200.0">
                <children>
-                  <Button styleClass="btn_blue" id="payCash" minHeight="150.0" minWidth="140.0" mnemonicParsing="false" text="현금" />
-                  <Button styleClass="btn_blue" id="payCard" minHeight="150.0" minWidth="140.0" mnemonicParsing="false" text="카드" />
-                  <Button styleClass="btn_red" id="payOrder" minHeight="150.0" minWidth="140.0" mnemonicParsing="false" text="주문" />
+                  <Button id="payCash" minHeight="150.0" minWidth="140.0" mnemonicParsing="false" styleClass="btn_blue" text="현금" />
+                  <Button id="payCard" minHeight="150.0" minWidth="140.0" mnemonicParsing="false" styleClass="btn_blue" text="카드">
+                     <HBox.margin>
+                        <Insets left="5.0" right="5.0" />
+                     </HBox.margin></Button>
+                  <Button id="payOrder" minHeight="150.0" minWidth="140.0" mnemonicParsing="false" styleClass="btn_red" text="주문" />
                </children>
             </HBox>
          </children>

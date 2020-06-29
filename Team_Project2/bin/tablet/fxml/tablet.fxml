@@ -40,7 +40,7 @@
             <HBox alignment="CENTER_RIGHT" prefHeight="30.0" spacing="10.0">
                <children>
                   <Label text="합계" />
-                  <Label fx:id="total" alignment="CENTER_RIGHT" contentDisplay="RIGHT" prefWidth="120.0">
+                  <Label fx:id="total" alignment="CENTER_RIGHT" contentDisplay="RIGHT" prefWidth="120.0" text="0원">
                      <font>
                         <Font size="16.0" />
                      </font>
