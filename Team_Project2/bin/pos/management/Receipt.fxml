@@ -21,7 +21,7 @@
       <TableView fx:id="receiptTable" prefWidth="500.0" BorderPane.alignment="CENTER">
         <columns>
           <TableColumn prefWidth="248.0" text="거래일자" />
-            <TableColumn prefWidth="125.0" text="결제금액" />
+            <TableColumn styleClass="text_r" prefWidth="125.0" text="결제금액" />
             <TableColumn prefWidth="125.0" text="결제방법" />
         </columns>
          <columnResizePolicy>
@@ -55,9 +55,9 @@
             <TableView fx:id="receiptDetailTable" prefHeight="560.0">
               <columns>
                 <TableColumn prefWidth="160.0" text="메뉴명" />
-                <TableColumn text="단가" />
+                <TableColumn styleClass="text_r" text="단가" />
                   <TableColumn prefWidth="40.0" text="수량" />
-                  <TableColumn prefWidth="90.0" text="금액" />
+                  <TableColumn styleClass="text_r" prefWidth="90.0" text="금액" />
               </columns>
             </TableView>
             <Separator prefWidth="200.0" />

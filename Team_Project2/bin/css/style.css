@@ -5,34 +5,35 @@
 .font_extraBold {
    -fx-font-family: "NanumGothicExtraBold";
 }
+
 /* 배경 */
 .bg_white {
-	-fx-background-color: #ffffff;
+   -fx-background-color: #ffffff;
 }
 
 /* 버튼 */
 Button {
-	-fx-background-color: #545454;
-	-fx-text-fill: #ffffff;
+   -fx-background-color: #545454;
+   -fx-text-fill: #ffffff;
 }
 
 .btn_red{
-	-fx-background-color: #ad141c;
-	-fx-text-fill: #ffffff;
+   -fx-background-color: #ad141c;
+   -fx-text-fill: #ffffff;
 }
 
 .btn_blue {
-	-fx-background-color: #272d35;
-	-fx-text-fill: #ffffff;
+   -fx-background-color: #272d35;
+   -fx-text-fill: #ffffff;
 }
 
 /* 테이블 뷰 상단 배경 */
 .table-view .column-header {
-	-fx-background-color: #272d35;
+   -fx-background-color: #272d35;
 }
 /* 테이블 뷰 상단 글자 */
 .table-view .column-header-background .label {
-	-fx-text-fill: #ffffff;
+   -fx-text-fill: #ffffff;
 }
 
 .table-view {   
@@ -45,7 +46,7 @@ Button {
 
 /* 테이블 뷰 셀 */
 .table-row-cell {
-	-fx-background-color: #ffffff;
+   -fx-background-color: #ffffff;
 }
 
 /* 테이블 뷰 선택된 셀 */
@@ -60,32 +61,39 @@ Button {
     -fx-alignment: center;
 }
 
+ .table-column.text_r {
+    -fx-alignment: center-right;
+    -fx-padding: 0 15px 0 0;
+}
+
 /* 탭 배경 */
 .tab-pane .tab-header-background {
-	-fx-background-color: #ffffff;
+   -fx-background-color: #ffffff;
 }
 /* 탭 */
 .tab-pane .tab {
-	-fx-pref-width: 100px;
-	-fx-background-color: #272d35;
+   -fx-pref-width: 100px;
+   -fx-padding: 5px;
+   -fx-background-color: #272d35;
+   -fx-background-radius: 0;
 }
-/* 선택한 택 */
+/* 선택한 탭 */
 .tab-pane .tab:selected {
-	-fx-background-color: #ad141c;
+   -fx-background-color: #ad141c;
 }
 /* 탭 글자 */
 .tab-pane .tab-label {
-	-fx-text-fill: #ffffff;
+   -fx-text-fill: #ffffff;
 }
 
 /* 리스트 뷰 */
 .list-view {
-	-fx-background-color: #fcfcfc;
+   -fx-background-color: #fcfcfc;
 }
 
 /* 리스트 뷰 셀 */
 .list-cell{
-	-fx-background-color: #ffffff;
+   -fx-background-color: #ffffff;
 }
 
 .list-cell:selected .label {
@@ -108,7 +116,7 @@ Button {
     -fx-padding: 0;
     -fx-shape: null;
 }
-/*@@@@@@@@@@@ */
+
 /* 스크롤바 UI 변경 */
 .scroll-bar:horizontal .track,
 .scroll-bar:vertical .track{
@@ -177,18 +185,11 @@ Button {
     -fx-background-radius: 3px, 3px, 2px, 1px;
 }
 
-/*VBox {
-	-fx-border-color: #000000;
-    -fx-background-color: #ffffff;
-    -fx-border-insets: 1;
-}*/
-
 /*텍스트 필드 선택시 테두리 색 지정 */
 .text-field:focused {
     -fx-border-color: #545454;    
-    -fx-border-radius: 5px;
+    -fx-border-radius: 3px;
     -fx-background-insets: 0px; 
-    -fx-font-size: 10px;
 }
 
 /*프로그레스바 색상 */

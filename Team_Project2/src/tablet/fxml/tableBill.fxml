@@ -23,7 +23,7 @@
         <columns>
           <TableColumn id="menu" prefWidth="272.0" text="메뉴" />
           <TableColumn id="num" prefWidth="69.0" text="수량" />
-            <TableColumn id="price" prefWidth="120.0" text="가격" />
+            <TableColumn styleClass="text_r" id="price" prefWidth="120.0" text="가격" />
         </columns>
       </TableView>
       <Separator prefWidth="200.0" />

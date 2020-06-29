@@ -28,7 +28,7 @@
                <columns>
                   <TableColumn fx:id="tMenuName" prefWidth="149.0" text="메뉴명" />
                   <TableColumn fx:id="tMenuNum" prefWidth="39.0" text="수량" />
-                  <TableColumn fx:id="tMenuPrice" prefWidth="79.0" text="가격" />
+                  <TableColumn styleClass="text_r" fx:id="tMenuPrice" prefWidth="79.0" text="가격" />
                </columns>
             </TableView>
             <HBox alignment="TOP_RIGHT" prefHeight="30.0" spacing="5.0">

@@ -18,7 +18,7 @@
                       <TableColumn editable="false" maxWidth="55.0" minWidth="44.0" prefWidth="55.0" text="No" />
                       <TableColumn editable="false" maxWidth="130.0" minWidth="100.0" prefWidth="121.0" sortable="false" text="종류" />
                         <TableColumn editable="false" maxWidth="265.0" minWidth="19.0" prefWidth="244.0" sortable="false" text="메뉴명" />
-                        <TableColumn editable="false" maxWidth="239.0" minWidth="0.0" prefWidth="126.0" text="가격" />
+                        <TableColumn styleClass="text_r" editable="false" maxWidth="239.0" minWidth="0.0" prefWidth="126.0" text="가격" />
                     </columns>
                      <VBox.margin>
                         <Insets />

@@ -19,9 +19,9 @@
             <TableView id="tableView" minHeight="530.0" minWidth="420.0">
               <columns>
                 <TableColumn prefWidth="167.0" text="메뉴명" />
-                <TableColumn minWidth="0.0" prefWidth="101.0" text="단가" />
+                <TableColumn styleClass="text_r" prefWidth="101.0" text="단가" />
                   <TableColumn prefWidth="53.0" text="수량" />
-                  <TableColumn prefWidth="107.0" text="금액" />
+                  <TableColumn styleClass="text_r" prefWidth="107.0" text="금액" />
               </columns>
             </TableView>
             <HBox>

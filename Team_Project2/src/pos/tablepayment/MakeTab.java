@@ -91,6 +91,7 @@ public class MakeTab {
             node.setMargin(PaymentMenuBtn, new Insets(5,0,0,0));
             PaymentMenuBtn.setText(name);
             Label PaymentMenuPrice = (Label)node.lookup("#PaymentMenuPrice");
+            PaymentMenuPrice.setStyle("-fx-text-fill: white;");
             PaymentMenuPrice.setText(price+"");
             
             //각 버튼의 액션을 정해준 뒤 넣는 순서로 한다.
