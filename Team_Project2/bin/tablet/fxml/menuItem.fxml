@@ -11,7 +11,7 @@
    <children>
       <ImageView id="menuImg" fitHeight="140.0" fitWidth="210.0" pickOnBounds="true">
       </ImageView>
-      <Label id="labelName" prefHeight="35.0" prefWidth="200.0" text="메뉴명">
+      <Label id="labelName" prefHeight="35.0" prefWidth="200.0" styleClass="font_bold, font20" text="메뉴명">
          <font>
             <Font size="20.0" />
          </font>
@@ -23,6 +23,9 @@
          <VBox.margin>
             <Insets left="5.0" right="5.0" />
          </VBox.margin>
+         <font>
+            <Font size="16.0" />
+         </font>
       </Label>
    </children>
    <padding>

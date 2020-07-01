@@ -16,6 +16,6 @@
           <TableColumn prefWidth="59.0" text="01" />
         </columns>
       </TableView>
-      <Button id="orderCom" layoutX="146.0" layoutY="5.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="59.0" text="완료" />
+      <Button id="orderCom" styleClass="btn_red" layoutX="146.0" layoutY="5.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="59.0" text="완료" />
    </children>
 </AnchorPane>

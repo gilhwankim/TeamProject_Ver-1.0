@@ -8,57 +8,59 @@
 <?import javafx.scene.layout.BorderPane?>
 
 <BorderPane prefHeight="740.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="pos.management.ReceiptController">
-   <top>
-      <Label styleClass="font_extraBold" prefHeight="30.0" text="영수증 관리" BorderPane.alignment="CENTER">
-         <font>
-            <Font size="20.0" />
-         </font>
+    <top>
+      <Label styleClass="font_extraBold" text="영수증 관리" BorderPane.alignment="CENTER">
          <BorderPane.margin>
             <Insets bottom="20.0" />
-         </BorderPane.margin></Label>
+         </BorderPane.margin>
+         <font>
+            <Font size="22.0" />
+         </font>
+      </Label>
    </top>
    <left>
       <TableView fx:id="receiptTable" prefWidth="500.0" BorderPane.alignment="CENTER">
         <columns>
-          <TableColumn prefWidth="248.0" text="거래일자" />
-            <TableColumn styleClass="text_r" prefWidth="125.0" text="결제금액" />
-            <TableColumn prefWidth="125.0" text="결제방법" />
+          <TableColumn prefWidth="287.0" text="거래일자" />
+            <TableColumn prefWidth="116.0" styleClass="text_r" text="결제금액" />
+            <TableColumn prefWidth="95.0" text="결제방법" />
         </columns>
-         <columnResizePolicy>
-            <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
-         </columnResizePolicy>
       </TableView>
    </left>
    <right>
-      <VBox prefWidth="380.0" spacing="10.0" BorderPane.alignment="CENTER">
+      <VBox prefWidth="380.0" spacing="5.0" BorderPane.alignment="CENTER">
          <padding>
             <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
          </padding>
          <children>
-            <BorderPane prefHeight="30.0">
-               <padding>
-                  <Insets left="5.0" right="5.0" />
-               </padding>
-               <right>
-                  <DatePicker fx:id="dateChoice" BorderPane.alignment="CENTER" />
-               </right>
-               <center>
-                  <Label text="거래일자" BorderPane.alignment="CENTER_RIGHT">
+            <BorderPane prefHeight="35.0">
+               <left>
+                  <Label text="거래일자" BorderPane.alignment="CENTER">
                      <BorderPane.margin>
                         <Insets right="10.0" />
-                     </BorderPane.margin></Label>
-               </center>
-               <left>
-                  <Button fx:id="refund" text="환불 하기" BorderPane.alignment="CENTER" />
+                     </BorderPane.margin>
+                  </Label>
                </left>
+               <center>
+                  <DatePicker fx:id="dateChoice" prefHeight="35.0" BorderPane.alignment="CENTER" />
+               </center>
+               <right>
+                  <Button fx:id="refund" prefHeight="35.0" styleClass="btn_red" text="환불하기" BorderPane.alignment="CENTER">
+                     <BorderPane.margin>
+                        <Insets left="5.0" />
+                     </BorderPane.margin></Button>
+               </right>
             </BorderPane>
-            <TableView fx:id="receiptDetailTable" prefHeight="560.0">
+            <TableView fx:id="receiptDetailTable" prefHeight="550.0">
               <columns>
                 <TableColumn prefWidth="160.0" text="메뉴명" />
                 <TableColumn styleClass="text_r" text="단가" />
                   <TableColumn prefWidth="40.0" text="수량" />
-                  <TableColumn styleClass="text_r" prefWidth="90.0" text="금액" />
+                  <TableColumn prefWidth="90.0" styleClass="text_r" text="금액" />
               </columns>
+               <VBox.margin>
+                  <Insets bottom="5.0" />
+               </VBox.margin>
             </TableView>
             <Separator prefWidth="200.0" />
             <BorderPane prefHeight="30.0">
@@ -76,6 +78,6 @@
       </VBox>
    </right>
    <padding>
-      <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+      <Insets bottom="15.0" left="15.0" right="15.0" top="15.0" />
    </padding>
 </BorderPane>

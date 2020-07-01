@@ -13,9 +13,9 @@
             <Button id="exit" alignment="CENTER" prefHeight="30.0" prefWidth="30.0" text="X" BorderPane.alignment="CENTER" />
          </right>
          <left>
-            <Label text="현금결제" BorderPane.alignment="CENTER">
+            <Label styleClass="font_extraBold" text="현금결제" BorderPane.alignment="CENTER">
                <font>
-                  <Font size="18.0" />
+                  <Font size="20.0" />
                </font>
             </Label>
          </left>
@@ -72,8 +72,8 @@
                   </Label>
                   <HBox alignment="CENTER_LEFT" spacing="10.0">
                      <children>
-                        <Button alignment="CENTER" prefHeight="30.0" prefWidth="120.0" text="개인" />
-                        <Button alignment="CENTER" prefHeight="30.0" prefWidth="120.0" text="사업자" />
+                        <Button styleClass="btn_blue" alignment="CENTER" prefHeight="30.0" prefWidth="120.0" text="개인" />
+                        <Button styleClass="btn_blue" alignment="CENTER" prefHeight="30.0" prefWidth="120.0" text="사업자" />
                      </children>
                   </HBox>
                   <HBox alignment="CENTER_LEFT" spacing="5.0">
@@ -88,7 +88,7 @@
                         <TextField id="customerInfo" alignment="CENTER_RIGHT" prefHeight="30.0" prefWidth="175.0" />
                      </children>
                   </HBox>
-                  <Button id="approval" alignment="CENTER" prefHeight="35.0" prefWidth="250.0" text="승인요청">
+                  <Button id="approval" styleClass="btn_blue" alignment="CENTER" prefHeight="35.0" prefWidth="250.0" text="승인요청">
                      <VBox.margin>
                         <Insets />
                      </VBox.margin>
@@ -149,7 +149,7 @@
                   </GridPane>
                </children>
             </HBox>
-            <Button id="Payment" alignment="CENTER" prefHeight="60.0" prefWidth="332.0" text="결제" />
+            <Button id="Payment" alignment="CENTER" prefHeight="60.0" prefWidth="332.0" styleClass="btn_red" text="결제" />
          </children>
       </VBox>
    </right>

@@ -1,13 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.text.*?>
 <?import javafx.scene.control.*?>
 <?import java.lang.*?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.layout.StackPane?>
 
-<AnchorPane styleClass="bg_white" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="160.0" prefWidth="214.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="200.0" prefWidth="250.0" styleClass="bg_white" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
    <children>
-      <Button id="okbtn" layoutX="87.0" layoutY="123.0" mnemonicParsing="false" text="확인" />
-      <Label id="textLabel" contentDisplay="CENTER" layoutX="23.0" layoutY="14.0" prefHeight="103.0" prefWidth="169.0" />
+      <Button id="okbtn" layoutX="80.0" layoutY="146.0" mnemonicParsing="false" prefHeight="35.0" prefWidth="90.0" styleClass="btn_blue" text="확인" />
+      <Label id="textLabel" contentDisplay="CENTER" layoutX="10.0" layoutY="14.0" prefHeight="120.0" prefWidth="230.0" styleClass="font_bold">
+         <font>
+            <Font size="15.0" />
+         </font></Label>
    </children>
 </AnchorPane>

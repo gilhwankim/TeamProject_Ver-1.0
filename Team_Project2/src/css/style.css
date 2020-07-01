@@ -5,6 +5,10 @@
 .font_extraBold {
    -fx-font-family: "NanumGothicExtraBold";
 }
+/* 폰트 사이즈 */
+.font20{
+	-fx-font-size: 20px;
+}
 
 /* 배경 */
 .bg_white {
@@ -27,12 +31,20 @@ Button {
    -fx-text-fill: #ffffff;
 }
 
+/* 포스기 버튼 */
+.posBtn {
+	-fx-pref-height: 40px;
+	-fx-background-color: #272d35;
+	-fx-background-radius: 0;
+}
+
 /* 테이블 뷰 상단 배경 */
 .table-view .column-header {
    -fx-background-color: #272d35;
 }
 /* 테이블 뷰 상단 글자 */
 .table-view .column-header-background .label {
+   -fx-padding: 0;
    -fx-text-fill: #ffffff;
 }
 
@@ -57,13 +69,17 @@ Button {
 }
 
 /* 테이블뷰 행 텍스트 중앙정렬(디폴트값) */
- .table-column {
+.table-column {
     -fx-alignment: center;
 }
 
  .table-column.text_r {
     -fx-alignment: center-right;
-    -fx-padding: 0 15px 0 0;
+    -fx-padding: 0 12px 0 0;
+}
+
+.column-header{
+	-fx-padding: 0;
 }
 
 /* 탭 배경 */
@@ -72,8 +88,7 @@ Button {
 }
 /* 탭 */
 .tab-pane .tab {
-   -fx-pref-width: 100px;
-   -fx-padding: 5px;
+   -fx-padding: 7px 10px;
    -fx-background-color: #272d35;
    -fx-background-radius: 0;
 }
@@ -81,9 +96,15 @@ Button {
 .tab-pane .tab:selected {
    -fx-background-color: #ad141c;
 }
+.tab-pane .tab:selected .focus-indicator {
+   -fx-border-width: 0;
+}
+
 /* 탭 글자 */
 .tab-pane .tab-label {
-   -fx-text-fill: #ffffff;
+	-fx-pref-width: 80px;
+	-fx-text-fill: #ffffff;
+	-fx-alignment: center;
 }
 
 /* 리스트 뷰 */
@@ -100,7 +121,7 @@ Button {
     -fx-text-fill: black; /*태블릿 메뉴 선택되었을때 글자 색 지정 */
 }
 
-/*가로 스크롤바*/
+/* 가로 스크롤바 */
 .table-view *.scroll-bar:horizontal *.increment-button,
 .table-view *.scroll-bar:horizontal *.decrement-button {
     -fx-background-color: null;
@@ -187,12 +208,12 @@ Button {
 
 /*텍스트 필드 선택시 테두리 색 지정 */
 .text-field:focused {
-    -fx-border-color: #545454;    
+    -fx-border-color: #9f9f9f;    
     -fx-border-radius: 3px;
     -fx-background-insets: 0px; 
 }
 
 /*프로그레스바 색상 */
-.progress-bar .bar{
-   -fx-background-color: #545454;
+.progress-bar .bar {
+   -fx-background-color: #272d35;
 }

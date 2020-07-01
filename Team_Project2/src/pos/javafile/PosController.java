@@ -17,14 +17,13 @@ import java.util.concurrent.Executors;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import com.jfoenix.controls.JFXListView;
-
 import data.Data;
 import data.MenuData;
 import data.TableData;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -69,9 +68,9 @@ public class PosController implements Initializable{
    private @FXML Button salesHistory;
    
    private String vboxStyle =
-				    		"-fx-border-color: #cccccc;\n" + 
-				      		"-fx-background-color: #ffffff;\n" + 
-				      		"-fx-border-insets: 1;";
+                      "-fx-border-color: #cccccc;\n" + 
+                        "-fx-background-color: #ffffff;\n" + 
+                        "-fx-border-insets: 1;";
    
    private boolean posSet;
    
@@ -117,37 +116,59 @@ public class PosController implements Initializable{
       
       //판매현황 
       salesHistory.setOnAction(e->{
-    	  
-    	  try {
-			Parent parent = FXMLLoader.load(getClass().getResource("../fxml/SalesStatus.fxml"));
-			bp.setCenter(parent);
-		} catch (Exception e2) {
-			e2.printStackTrace();
-		}
+         
+         try {
+         Parent parent = FXMLLoader.load(getClass().getResource("../fxml/SalesStatus.fxml"));
+         bp.setCenter(parent);
+      } catch (Exception e2) {
+         e2.printStackTrace();
+      }
+         buttonStyle(e);
       });
       
       //pos 화면 전환 여기
-      menuSetting.setOnAction( e -> bp.setCenter(mc.get()));
+      menuSetting.setOnAction( e -> {
+         bp.setCenter(mc.get());
+         buttonStyle(e);
+      });
+      
+      home.setStyle("-fx-background-color: #ad141c;");
       home.setOnAction( e -> {
          bp.setCenter(gp);
+         buttonStyle(e);
          posSet = false;
       });
       receipt.setOnAction(e ->{
         try {
          Parent p =  FXMLLoader.load(getClass().getResource("../management/Receipt.fxml"));
          bp.setCenter(p);
+         buttonStyle(e);
       } catch (IOException e1) {}
       });
       
       //포스기 테이블 관리 클릭
       posSetting.setOnAction(e-> {
          bp.setCenter(posSetting());
+         buttonStyle(e);
          posSet = true;
       });
       //서버 최초 시작시 현재 판매내역을 불러와 담는다.
       AllPayment.makeList();
       //서버 열기
       startPos();
+   }
+   
+   //현재 보여지는 페이지의 버튼 색 변경
+   private void buttonStyle(ActionEvent event) {
+      Button[] btnArray = new Button[] {home,menuSetting,receipt,posSetting,salesHistory};
+      for(Button b : btnArray) {
+    	 //event.getTarget()에 현재 버튼 이름이 있다면 위치(인덱스)를 리턴하고, 없다면 -1을 리턴한다.
+         if(event.getTarget().toString().indexOf(b.getId())!=-1) {
+            b.setStyle("-fx-background-color: #ad141c;");
+         }else {
+            b.setStyle(null);
+         }
+      }
    }
    
    //데이터베이스에서 받아온 테이블 정보를 gridpane(gp)에 적용
@@ -195,7 +216,7 @@ public class PosController implements Initializable{
       vb.setDisable(d);
       if(d) {
         vb.setOpacity(0.0);
-      	v.setStyle(null);
+         v.setStyle(null);
       }
       else {
          vb.setOpacity(10.0);
@@ -671,10 +692,10 @@ public class PosController implements Initializable{
               send(data);
           }//테블릿에서 직원호출을 할 때
          else if(data.getStatus().equals("직원호출")) { 
-        	 //@@@@@@@
-        	 System.out.println("직원호출 듣는다");
-        	 MakeSound.kitchenOrderSound();
-        	 Platform.runLater(()->pop.popupMsg(data.getTableNo() + "번 테이블 호출"));
+            //@@@@@@@
+            System.out.println("직원호출 듣는다");
+            MakeSound.kitchenOrderSound();
+            Platform.runLater(()->pop.popupMsg(data.getTableNo() + "번 테이블 호출"));
          }
          save();
       }

@@ -15,12 +15,12 @@
    <top>
       <HBox alignment="CENTER" prefHeight="30.0" spacing="20.0" BorderPane.alignment="CENTER">
          <children>
-            <Label styleClass="font_bold" fx:id="dateLabel" text="2020년 05월 21일 목요일">
+            <Label styleClass="font_extraBold" fx:id="dateLabel" text="2020년 05월 21일 목요일">
                <font>
                   <Font size="20.0" />
                </font>
             </Label>
-            <Label styleClass="font_bold" fx:id="timeLabel" text="15시  00분  00초">
+            <Label styleClass="font_extraBold" fx:id="timeLabel" text="15시  00분  00초">
                <font>
                   <Font size="20.0" />
                </font>

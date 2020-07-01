@@ -25,23 +25,23 @@
    <right>
       <VBox alignment="TOP_RIGHT" prefWidth="100.0" BorderPane.alignment="CENTER">
          <children>
-            <Button fx:id="home" focusTraversable="false" mnemonicParsing="false" prefWidth="100.0" text="홈">
+            <Button fx:id="home" styleClass="posBtn" focusTraversable="false" mnemonicParsing="false" prefWidth="100.0" text="홈">
                <VBox.margin>
                   <Insets bottom="3.0" />
                </VBox.margin></Button>
-            <Button fx:id="menuSetting" focusTraversable="false" mnemonicParsing="false" prefWidth="100.0" text="메뉴관리">
+            <Button fx:id="menuSetting" styleClass="posBtn" focusTraversable="false" mnemonicParsing="false" prefWidth="100.0" text="메뉴관리">
                <VBox.margin>
                   <Insets bottom="3.0" />
                </VBox.margin></Button>
-            <Button fx:id="receipt" focusTraversable="false" mnemonicParsing="false" prefWidth="100.0" text="영수증관리">
+            <Button fx:id="receipt" styleClass="posBtn" focusTraversable="false" mnemonicParsing="false" prefWidth="100.0" text="영수증관리">
                <VBox.margin>
                   <Insets bottom="3.0" />
                </VBox.margin></Button>
-            <Button fx:id="posSetting" focusTraversable="false" mnemonicParsing="false" prefWidth="100.0" text="테이블관리">
+            <Button fx:id="posSetting" styleClass="posBtn" focusTraversable="false" mnemonicParsing="false" prefWidth="100.0" text="테이블관리">
                <VBox.margin>
                   <Insets bottom="3.0" />
                </VBox.margin></Button>
-            <Button fx:id="salesHistory" focusTraversable="false" mnemonicParsing="false" prefWidth="100.0" text="매장분석" />
+            <Button fx:id="salesHistory" styleClass="posBtn" focusTraversable="false" mnemonicParsing="false" prefWidth="100.0" text="매장분석" />
          </children>
       </VBox>
    </right>

@@ -1,7 +1,5 @@
 package pos.javafile;
 
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowListener;
 import java.io.IOException;
 
 import javafx.fxml.FXMLLoader;
@@ -10,7 +8,6 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.text.TextAlignment;
 import javafx.stage.Stage;
 //팝업창 클래스
 public class Popup {
@@ -32,6 +29,7 @@ public class Popup {
 		okbtn.setOnAction((e)->stage.close());
 		textLabel = (Label)ac.lookup("#textLabel");
 		Scene scene = new Scene(ac);
+		scene.getStylesheets().add(getClass().getResource("/css/style.css").toString());
 		stage.setScene(scene);
 	}
 	//팝업 메세지 내용 

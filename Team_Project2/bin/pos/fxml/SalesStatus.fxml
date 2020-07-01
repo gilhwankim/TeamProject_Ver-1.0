@@ -10,13 +10,16 @@
 
 <VBox alignment="TOP_CENTER" prefHeight="720.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="pos.javafile.SalesStatusController">
    <padding>
-      <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+      <Insets bottom="15.0" left="15.0" right="15.0" top="15.0" />
    </padding>
    <children>
-      <Label alignment="CENTER" prefHeight="58.0" prefWidth="888.0" styleClass="font_extraBold" text="매장분석">
+      <Label alignment="CENTER" prefHeight="30.0" styleClass="font_extraBold" text="매장분석">
          <font>
             <Font size="22.0" />
          </font>
+         <VBox.margin>
+            <Insets bottom="20.0" />
+         </VBox.margin>
       </Label>
       <GridPane hgap="5.0" prefHeight="190.0" prefWidth="880.0" vgap="5.0">
         <columnConstraints>
@@ -179,9 +182,9 @@
             </VBox>
          </children>
       </GridPane>
-      <Button fx:id="export" prefHeight="36.0" prefWidth="100.0" text="내보내기">
+      <Button fx:id="export" prefHeight="35.0" prefWidth="100.0" styleClass="btn_red" text="내보내기">
          <VBox.margin>
-            <Insets bottom="10.0" top="10.0" />
+            <Insets top="10.0" />
          </VBox.margin></Button>
    </children>
 </VBox>

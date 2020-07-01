@@ -14,9 +14,9 @@
    <children>
       <BorderPane prefHeight="30.0">
          <left>
-            <Label prefHeight="30.0" text="카드결제" BorderPane.alignment="CENTER">
+            <Label styleClass="font_extraBold" prefHeight="30.0" text="카드결제" BorderPane.alignment="CENTER">
                <font>
-                  <Font size="18.0" />
+                  <Font size="20.0" />
                </font>
                <BorderPane.margin>
                   <Insets />
@@ -65,7 +65,7 @@
             <Insets bottom="10.0" top="10.0" />
          </padding>
       </VBox>
-      <Button prefHeight="40.0" id="payment" prefWidth="300.0" text="결제">
+      <Button styleClass="btn_red" prefHeight="40.0" id="payment" prefWidth="300.0" text="결제">
          <VBox.margin>
             <Insets top="30.0" />
          </VBox.margin>

@@ -12,9 +12,9 @@ public class TabletMain extends Application{
 	public static Stage tabletStage;
 	@Override
 	public void start(Stage primaryStage) throws Exception {
-		Font.loadFont(getClass().getResourceAsStream("/font/NanumGothi.ttf"), 14);
-		Font.loadFont(getClass().getResourceAsStream("/font/NanumGothicBold.ttf"), 14);
-		Font.loadFont(getClass().getResourceAsStream("/font/NanumGothicExtraBold.ttf"), 14);
+		Font.loadFont(getClass().getResourceAsStream("/font/NanumGothi.ttf"), 16);
+		Font.loadFont(getClass().getResourceAsStream("/font/NanumGothicBold.ttf"), 20);
+		Font.loadFont(getClass().getResourceAsStream("/font/NanumGothicExtraBold.ttf"), 25);
 		
 		tabletStage = primaryStage;
 		Parent parent = FXMLLoader.load(getClass().getResource("fxml/tablet.fxml"));

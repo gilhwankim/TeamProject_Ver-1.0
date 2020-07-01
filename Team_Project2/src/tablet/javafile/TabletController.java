@@ -67,6 +67,7 @@ public class TabletController implements Initializable{
    
    private @FXML TableView<MenuData> orderTable;   //구매 테이블
    private ObservableList<MenuData> orderTableOl = FXCollections.observableArrayList();
+   
    @Override
    public void initialize(URL location, ResourceBundle resources) {
       startTablet();

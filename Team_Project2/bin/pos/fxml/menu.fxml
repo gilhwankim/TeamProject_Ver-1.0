@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.text.*?>
 <?import javafx.scene.image.*?>
 <?import javafx.geometry.*?>
 <?import javafx.scene.control.*?>
@@ -18,7 +19,7 @@
                       <TableColumn editable="false" maxWidth="55.0" minWidth="44.0" prefWidth="55.0" text="No" />
                       <TableColumn editable="false" maxWidth="130.0" minWidth="100.0" prefWidth="121.0" sortable="false" text="종류" />
                         <TableColumn editable="false" maxWidth="265.0" minWidth="19.0" prefWidth="244.0" sortable="false" text="메뉴명" />
-                        <TableColumn styleClass="text_r" editable="false" maxWidth="239.0" minWidth="0.0" prefWidth="126.0" text="가격" />
+                        <TableColumn editable="false" maxWidth="239.0" minWidth="0.0" prefWidth="126.0" styleClass="text_r" text="가격" />
                     </columns>
                      <VBox.margin>
                         <Insets />
@@ -33,41 +34,57 @@
                         <ImageView id="imageView" fitHeight="200.0" fitWidth="320.0" pickOnBounds="true" preserveRatio="true" />
                      </children>
                   </StackPane>
-                  <VBox alignment="CENTER" fillWidth="false" prefHeight="200.0" prefWidth="100.0" spacing="10.0">
+                  <VBox alignment="CENTER" fillWidth="false" spacing="15.0">
                      <children>
-                        <Label text="번호:" />
-                        <TextField id="tfNum" prefWidth="120.0" />
-                        <Label text="종류 :" />
+                        <Label text="번호:">
+                           <font>
+                              <Font size="16.0" />
+                           </font></Label>
+                        <TextField id="tfNum" prefHeight="35.0" prefWidth="120.0" />
+                        <Label text="종류 :">
+                           <font>
+                              <Font size="16.0" />
+                           </font>
+                        </Label>
                         <HBox alignment="CENTER" spacing="5.0">
                            <children>
-                              <ComboBox id="comboBox" prefWidth="100.0">
+                              <ComboBox id="comboBox" prefHeight="35.0" prefWidth="120.0">
                                  <HBox.margin>
-                                    <Insets left="70.0" />
+                                    <Insets />
                                  </HBox.margin>
                               </ComboBox>
-                              <Button id="btnCAdd" focusTraversable="false" text="추가" />
-                              <Button id="btnCDel" focusTraversable="false" text="삭제" />
+                              <Button id="btnCAdd" focusTraversable="false" prefHeight="35.0" styleClass="btn_red" text="추가" />
+                              <Button id="btnCDel" focusTraversable="false" prefHeight="35.0" styleClass="btn_blue" text="삭제" />
                            </children>
                         </HBox>
-                        <Label text="이름 : " />
-                        <TextField id="tfName" prefWidth="120.0" />
-                        <Label text="가격 : " />
+                        <Label text="이름 : ">
+                           <font>
+                              <Font size="16.0" />
+                           </font></Label>
+                        <TextField id="tfName" prefHeight="35.0" prefWidth="120.0" />
+                        <Label text="가격 : ">
+                           <font>
+                              <Font size="16.0" />
+                           </font></Label>
                         <HBox alignment="CENTER" spacing="5.0">
                            <children>
-                              <TextField id="tfPrice" prefWidth="120.0">
+                              <TextField id="tfPrice" prefHeight="35.0" prefWidth="120.0">
                                  <HBox.margin>
                                     <Insets left="15.0" />
                                  </HBox.margin>
                               </TextField>
-                              <Label text="원" />
+                              <Label text="원">
+                                 <font>
+                                    <Font size="16.0" />
+                                 </font></Label>
                            </children>
                         </HBox>
                      </children>
                   </VBox>
-                  <HBox alignment="CENTER" spacing="30.0">
+                  <HBox alignment="CENTER" spacing="10.0">
                      <children>
-                        <Button id="btnMAdd" focusTraversable="false" text="메뉴 저장" />
-                        <Button id="btnMDel" focusTraversable="false" text="메뉴 삭제" />
+                        <Button id="btnMAdd" focusTraversable="false" prefHeight="35.0" prefWidth="90.0" styleClass="btn_red" text="메뉴저장" />
+                        <Button id="btnMDel" focusTraversable="false" prefHeight="35.0" prefWidth="90.0" styleClass="btn_blue" text="메뉴삭제" />
                      </children>
                   </HBox>
                </children>
